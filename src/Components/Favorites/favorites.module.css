@@ -1,0 +1,98 @@
+.container {
+    max-width: 1120px;
+    margin-inline: 1.5rem;
+  }
+  .grid {
+    display: grid;
+    gap: 1.5rem;
+  }
+  .section {
+    padding-block: 3rem 1rem;
+  }
+  
+  
+  /*=============== POPULAR ===============*/
+  .popular__container {
+    padding-top: 1.5rem;
+    grid-template-columns: 280px;
+    justify-content: center;
+    row-gap: 2.5rem;
+  }
+  .popular__img {
+    transition: transform 0.4s;
+  }
+  .popular__shadow {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: linear-gradient(
+      180deg,
+      hsla(0, 0%, 0%, 0) 50%,
+      hsl(0, 0%, 0%) 125%,
+    );
+  }
+  .popular__title {
+    font-size: var(--h3-font-size);
+    margin-bottom: 0.5rem;
+  }
+  .popular__location {
+    display: inline-flex;
+    align-items: center;
+    column-gap: 0.25rem;
+    font-size: var(--small-font-size);
+    font-family: var(--second-font);
+    font-weight: 500;
+  }
+  .popular__location i {
+    font-size: 1rem;
+  }
+  #popular__image:hover .popular__img {
+    transform: scale(1.2);
+  }
+  @media screen and (max-width: 340px) {
+    .container {
+      margin-inline: 1rem;
+    }
+    .footer__data {
+      grid-template-columns: max-content;
+    }
+  }
+  /* For medium devices */
+  @media screen and (min-width: 576px) {
+    .home__container,
+    .about__container,
+    .explore__content,
+    .join__container {
+      grid-template-columns: 380px;
+      justify-content: center;
+    }
+    .footer__data {
+      grid-template-columns: repeat(3, max-content);
+    }
+  }
+  @media screen and (min-width: 768px) {
+    .about__data,
+    .about__data .section__title,
+    .join__data,
+    .join__data .section__title {
+      text-align: initial;
+    }
+  }
+  
+  /* For large devices */
+  @media screen and (min-width: 1023px) {
+    .popular__container {
+      grid-template-columns: repeat(3, 240px);
+    }
+  }
+  @media screen and (min-width: 1152px) {
+    .container {
+      margin-inline: auto;
+    }
+    .section {
+      padding-block: 6rem 2rem;
+    }
+  }
+  

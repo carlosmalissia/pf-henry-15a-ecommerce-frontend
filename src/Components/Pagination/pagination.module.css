@@ -1,0 +1,15 @@
+.button {
+    font-size: 24px;
+    background-color: #474747;
+    border: 1px solid black;
+    border-radius: 8%;
+}
+.button:hover {
+    transform: scale(1.05);
+}
+.button[disabled] {
+    background-color: #918c8c;
+    cursor: no-drop;
+    border: 1px solid black;
+    border-radius: 8%;
+}
