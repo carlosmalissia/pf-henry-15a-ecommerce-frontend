@@ -1,16 +1,17 @@
 import style from "./Card.module.css";
 import Image from "next/image";
-//import Link from "next/link";
+import Link from "next/link";
 //import AddToCart from "../Cart/AddToCart/AddToCart";
 
-export default  function Card({
+export default function Card({
   id,
   title,
-  price, 
+  price,
   images
-  
-})  {
+
+}) {
   return (
+
     <div className={`bg-white-500 `} >
      <div className={style.content__img}>
             <Image
@@ -33,5 +34,6 @@ export default  function Card({
       Detalles
       </button>
   </div>
+
   )
 }
