@@ -7,6 +7,18 @@ module.exports = {
   ],
   theme: {
     extend: {
+      colors:{
+        'primary': '#07beb8',
+        'secondary': '#0a58ca',
+        'bgpriceRed': '#F02055',
+         'rosado': '#F6B3C',//este es el rosado
+         'bgbotones':  '#009FAF', //el verde de los botones
+        'bgnovedad': '#00C16C', //el verde del cartel de novedad
+         'bgoff':  ' #2648CE', //azul para el off
+         'bgfooter': '#0E3A5A', //fondo del footer
+         'bgred': '#F02055', //rojo de los precios
+         'bggris': '#A5A5A5', //gris de las CATEGORIAS
+      },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':
