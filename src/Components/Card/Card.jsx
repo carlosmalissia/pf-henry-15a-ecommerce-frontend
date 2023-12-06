@@ -11,7 +11,7 @@ export default  function Card({
   
 })  {
   return (
-    <div className={`bg-white-500 `} >
+    <div className={style.container} >
      <div className={style.content__img}>
             <Image
               className={style.img}
@@ -21,17 +21,12 @@ export default  function Card({
               height={300}
             />
           </div>             
-    <h3 className="text-bggris items-center text-center ">Ref: {id}</h3> 
+    <h3 className="text-red-400">Ref: {id}</h3> 
     <div className="flex justify-between w-48">
-        <h2 className="text-center text-black hover:scale-110 items-center">{title}</h2> 
+        <h2 className="text-center text-white hover:scale-110">{title}</h2> 
     </div>
-    <h3 className=" text-bgpriceRed items-center text-center ">Precio: {price} U$</h3>
-    
-    <button className="bg-primary text-white p-3 rounded-lg mx-auto 
-                        flex justify-center items-center text-center hover:bg-bgred
-                      hover:text-white transition duration-300">
-      Detalles
-      </button>
+    <h3 className="text-base">Precio: {price} U$</h3>
+
   </div>
   )
 }
