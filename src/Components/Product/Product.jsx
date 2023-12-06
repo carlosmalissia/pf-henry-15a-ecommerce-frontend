@@ -9,7 +9,7 @@ export default function Product() {
     const [product, setProduct] = useState([]); //estado para los productos
     const getProduct = async () => {
       try {
-          const response = await axios.get(`https://api.escuelajs.co/api/v1/products`);
+          const response = await axios.get(`https://fakestoreapi.com/products`);
           console.log(response.data)
           setProduct(response.data)
           

@@ -10,12 +10,13 @@ export default function DetailID({ params }) {
     id: 0,
     title: "",
     price: 0,
-    images: [],
+    image: [],
     description: ""
   })
   const getDatos = async () => {
     try {
-      let res = await axios(`https://api.escuelajs.co/api/v1/products/${id}`);
+      let res = await axios(`https://fakestoreapi.com/products/${id}`);
+      console.log(res);
       let datos = res.data;
       console.log(datos);
       if (!datos.title) {
@@ -37,7 +38,7 @@ export default function DetailID({ params }) {
       <div className="flex">
         <div className="flex gap-5 w-[90%] mx-auto justify-center my-2 mt-10">
 
-          <h1 className="text-center text-2xl ">{productById.title}</h1>
+          <h1 className="text-center text-2xl text-black">{productById.title}</h1>
 
         </div>
       </div>
@@ -45,14 +46,14 @@ export default function DetailID({ params }) {
         <div className="">
           <Image
             className="w-[100%]"
-            src={productById.images[0]}
+            src={productById.image}
             alt={productById.title}
             width={450}
             height={500}
           />
         </div>
-        <div className="w-[100%] my-10 md:my-0">
-          <h2>{productById.description}</h2>
+        <div className="w-[100%] my-10 md:my-0 ">
+          <h2 className="text-center text-2xl text-black">{productById.description}</h2>
         </div>
       </div>
 

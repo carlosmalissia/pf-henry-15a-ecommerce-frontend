@@ -13,57 +13,38 @@
     box-shadow: 0 10px 6px #000;
     
   }
-  
-  .container img {
+
+
+.img {
     border-radius: 5px;
     margin-top: 0.2em;
-  }
-  .content__img {
+    
+    background-size: cover;
+    background-position: center;
+}
+
+.content__img {
     width: 14em;
     height: 12em;
     border-radius: 15%;
     position: relative;
     overflow: hidden;
-  }
-  .content__img img {
-    transition: all 0.4s ease-in-out;
-    transform: scale(1.1);
-  }
-  .content__img:hover img {
-    transform: scale(1.2);
-  }
-  .container button {
-    border-radius: 0.5em;
-    border: #00ff40 solid;
-    margin-top: 2em;
-    background-color: rgb(71, 30, 84);
-    color: rgb(216, 213, 216);
-    font-size: 0.8em;
-    transform: scale(1);
-    padding: 0.5em;
-    font-weight: 700;
-    transition: transform 0.3s ease;
-  }
-  .container button:hover {
-    background-color: #ff6f3c;
-    transform: scale(1.1);
-  }
-  .container h2 {
-    font-size: 1.2em;
-    margin: 0.2em;
-  }
-  
-  .img {
+    
+}
+
+.content__img {
     object-fit: cover;
-    width: 100%;
-    height: 100%;
-  }
-  .botones {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    width: 100%;
-  }
+    transition: all 0.4s ease-in-out;
+    transform: scale(1);
+    
+}
+
+.content__img:hover {
+    transform: scale(1.2);
+    object-fit: cover;
+}
   
-  
+  .btn:hover span {
+    opacity: 1;
+}
   
