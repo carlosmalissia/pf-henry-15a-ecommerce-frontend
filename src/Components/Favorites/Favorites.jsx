@@ -11,18 +11,18 @@ export default function Popular() {
 
   const getProduct = async () => {
     try {
-        const response = await axios.get(`https://api.escuelajs.co/api/v1/products`);
-        console.log(response.data)
-        setProduct(response.data)
-        
-    } 
-    catch (error) {
-        throw new Error(error);
+      const response = await axios.get(`https://fakestoreapi.com/products`);
+      console.log(response.data)
+      setProduct(response.data)
+
     }
-}
+    catch (error) {
+      throw new Error(error);
+    }
+  }
   useEffect(() => {
     getProduct();
-    
+
   }, []);
   /* const filter = attraction.sort((a, b) => {
     if(a.ranking > b.ranking) {
@@ -33,7 +33,7 @@ export default function Popular() {
     }
     return 0;
     }) */
-  
+
   return (
     <>
       <h2 className="text-center text-2xl">
@@ -44,26 +44,26 @@ export default function Popular() {
       >
         {product.slice(0, 3).map((e) => {
           return (
-            <article key={e.id}className={styles.popular__card}>
+            <article key={e.id} className={styles.popular__card}>
               <Link href={`/Detail/${e.id}`}>
-              <div className="relative mb-[1rem] overflow-hidden w-full h-[240px] hover:scale-105 transition-all duration-300 ease-in-out">
-                <Image
-                  src={e.images[0]}
-                  layout="fill"
-                  alt="popular image"
-                  className={styles.popular__img}
-                />
-                <div className={styles.popular__shadow} />
-              </div>
+                <div className="relative mb-[1rem] overflow-hidden w-full h-[240px] hover:scale-105 transition-all duration-300 ease-in-out">
+                  <Image
+                    src={e.image}
+                    layout="fill"
+                    alt="popular image"
+                    className={styles.popular__img}
+                  />
+                  <div className={styles.popular__shadow} />
+                </div>
               </Link>
               <h2 className={styles.popular__title}>{e.title}</h2>
               <div className={styles.popular__location}>
-                
+
                 <div className="flex justify-around">
-                
-                <span className="ml-12">
-                  Precio: {e.price} U$
-                </span>
+
+                  <span className="ml-12">
+                    Precio: {e.price} U$
+                  </span>
                 </div>
               </div>
             </article>
