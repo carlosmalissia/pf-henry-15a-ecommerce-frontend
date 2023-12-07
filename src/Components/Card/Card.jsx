@@ -47,5 +47,6 @@ export default function Card({ id, title, price, image }) {
         </button>
       </div>
     </div>
+   
   );
 }
