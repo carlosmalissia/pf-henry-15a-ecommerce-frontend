@@ -4,7 +4,7 @@
     align-items: center;
     background: rgba(24, 24, 24, 0.6);
     font-family: "Courier New", Courier, monospace;
-    width: 15em;
+    width: 400px;
     height: 22em;
     font-size: 1em;
     margin: 1rem 1em 0em 1em;
@@ -40,7 +40,7 @@
 }
 
 .content__img:hover {
-    transform: scale(1.2);
+    transform: scale(1.06);
     object-fit: cover;
 }
   
