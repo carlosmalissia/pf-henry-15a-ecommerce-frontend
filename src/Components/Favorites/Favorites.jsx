@@ -4,6 +4,8 @@ import "remixicon/fonts/remixicon.css";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import axios from 'axios';
+import Card from "../Card/Card";
+
 
 
 export default function Popular() {
@@ -36,7 +38,7 @@ export default function Popular() {
 
   return (
     <>
-      <h2 className="text-center text-2xl">
+      <h2 className="items-center text-center text-2xl">
         Los mas votados por nuestros clientes <i className="ri-arrow-right-line" />
       </h2>
       <div
@@ -44,29 +46,14 @@ export default function Popular() {
       >
         {product.slice(0, 3).map((e) => {
           return (
-            <article key={e.id} className={styles.popular__card}>
-              <Link href={`/Detail/${e.id}`}>
-                <div className="relative mb-[1rem] overflow-hidden w-full h-[240px] hover:scale-105 transition-all duration-300 ease-in-out">
-                  <Image
-                    src={e.image}
-                    layout="fill"
-                    alt="popular image"
-                    className={styles.popular__img}
-                  />
-                  <div className={styles.popular__shadow} />
-                </div>
-              </Link>
-              <h2 className={styles.popular__title}>{e.title}</h2>
-              <div className={styles.popular__location}>
-
-                <div className="flex justify-around">
-
-                  <span className="ml-12">
-                    Precio: {e.price} U$
-                  </span>
-                </div>
-              </div>
-            </article>
+            <Card className="border border-bgred rounded-md p-4"
+                key={e.id}
+                id={e.id}
+                image={e.image}
+                title={e.title}
+                price={e.price}
+                category={e.category}
+              />
           );
         })}
       </div>
