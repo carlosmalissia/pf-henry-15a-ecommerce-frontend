@@ -18,6 +18,7 @@ module.exports = {
          'bgfooter': '#0E3A5A', //fondo del footer
          'bgred': '#F02055', //rojo de los precios
          'bggris': '#A5A5A5', //gris de las CATEGORIAS
+         'bggris2': '#EAEDED', //gris de las CATEGORIAS
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
