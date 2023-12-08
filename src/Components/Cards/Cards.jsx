@@ -26,6 +26,7 @@ export default function Cards(props) {
                 image={e.image}
                 title={e.title}
                 price={e.price}
+                category={e.category}
               />
             );
           })}
