@@ -49,9 +49,9 @@ export default function Product() {
               defaultValue={"selectPlease"}
             >
               <option value="selectPlease">Rango de precios</option>
-              <option value="R1">De 0-1000</option>
-              <option value="R2">De 1000-2000</option>
-              <option value="R3">Más de 2000</option>
+              <option value="R1">De 0-200</option>
+              <option value="R2">De 200-500</option>
+              <option value="R3">Más de 500</option>
             </select>
             <select
               name="order"
