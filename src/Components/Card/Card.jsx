@@ -4,14 +4,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { MdOutlineShoppingCart } from "react-icons/md";
 
-export default function Card({ id, title, price, image, category }) {
+export default function Card({ _id, title, price, image, category }) {
   const [hovered, setHovered] = useState(false);
 
   return (
     <div
       className={`bg-white-500 w-full  border border-gray-300 rounded-md p-4 relative flex flex-col`}
     >
-      <Link href={`/Detail/${id}`} className="flex-1">
+      <Link href={`/Detail/${_id}`} className="flex-1">
         <div className={`${style.content__img} mb-4 overflow-visible relative`}>
           <Image
             className={`object-contain w-full h-full transition-transform transform hover:scale-110`}
@@ -37,8 +37,7 @@ export default function Card({ id, title, price, image, category }) {
         <button
           className={`bg-primary text-white p-3 rounded-lg mx-auto 
             flex justify-center items-center text-center 
-            transition duration-300 ease-in-out ${
-              hovered ? "hover:bg-bgred hover:text-white" : ""
+            transition duration-300 ease-in-out ${hovered ? "hover:bg-bgred hover:text-white" : ""
             } w-40`}
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}
