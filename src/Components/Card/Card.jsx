@@ -25,7 +25,6 @@ export default function Card({ _id, title, price, image, category }) {
           <h2 className="text-center text-sm text-black">{title}</h2>
         </div>
       </Link>
-  
       {/* Contenido inferior de la tarjeta */}
       <div className="flex flex-col mt-auto">
         {/* Categoría */}
@@ -41,6 +40,7 @@ export default function Card({ _id, title, price, image, category }) {
           className={`bg-primary text-white p-3 rounded-lg mx-auto flex justify-center items-center text-center transition duration-300 ease-in-out transform ${
             hovered ? 'hover:bg-bgred hover:text-white hover:scale-110' : ''
           } w-40`}
+
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}
         >
@@ -53,5 +53,5 @@ export default function Card({ _id, title, price, image, category }) {
       </div>
     </div>
   );
-  
+
 }
