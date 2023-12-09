@@ -9,6 +9,24 @@ import Login from "../Login/Login";
 //import ProfileInfo from "@/components/ProfileInfo/ProfileInfo";
 //import { usePathname } from "next/navigation";
 
+//-------iconos---//
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faHome,
+  faHeart,
+  faShoppingBag,
+  faUsers,
+  faUserShield, 
+  
+} from '@fortawesome/free-solid-svg-icons';
+
+const home = <FontAwesomeIcon icon={faHome} />;
+const favorite = <FontAwesomeIcon icon={faHeart} />;
+const productos = <FontAwesomeIcon icon={faShoppingBag} />;
+const user = <FontAwesomeIcon icon={faUsers} />;
+const admin = <FontAwesomeIcon icon={faUserShield} />;
+
+
 function NavBar() {
   /* const pathname = usePathname();
   if (pathname === "/AdminDashboard") return; */
@@ -96,25 +114,25 @@ function NavBar() {
                 href="/#home"
                 className={`${styles.nav__link} ${styles.active_link}`}
               >
-                Inicio
+                {home} Inicio
               </a>
             </li>
 
             <li className={styles.nav__item}>
               <a href="/#favorites" className={styles.nav__link}>
-                Favoritos
+                {favorite}  Favoritos
               </a>
             </li>
             <li className={styles.nav__item}>
               {/* <a href="/#product" className="nav__link relative text-title-color text-second-font font-medium hover:text-title-color-hover hover:after-width-70 active:after-width-70"> */}
 
               <Link href="/#product" className={styles.nav__link}>
-                Productos
+                {productos}  Productos
               </Link>
             </li>
             <li className={styles.nav__item}>
               <a href="/about" className={styles.nav__link}>
-                Quiénes somos
+                {user}  Quiénes somos
               </a>
             </li>
             {/* <li className="relative mx-auto">
@@ -136,12 +154,12 @@ function NavBar() {
                 href="/#home"
                 className={`${styles.nav__link}`}
               >
-                <Login/>
+                <Login />
               </a>
             </li>
             <li className={styles.nav__item}>
               <Link href="/AdminDashboard" className={styles.nav__link}>
-                Admin
+                {admin} Admin
               </Link>
             </li>
           </ul>
@@ -154,8 +172,8 @@ function NavBar() {
         <div className={styles.nav__toggle + " z-[103]"} id="nav-toggle">
           <i className="ri-menu-fill" />
         </div>
-       
-      
+
+
       </nav>
     </header>
   );
