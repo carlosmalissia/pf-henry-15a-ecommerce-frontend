@@ -22,11 +22,11 @@ export default function Cards(props) {
             return (
               <Card className="border border-bgred rounded-md p-4"
                 key={index}
-                id={e.id}
+                _id={e._id}
                 image={e.image}
                 title={e.title}
                 price={e.price}
-                category={e.category}
+                category={e.category.name}
               />
             );
           })}

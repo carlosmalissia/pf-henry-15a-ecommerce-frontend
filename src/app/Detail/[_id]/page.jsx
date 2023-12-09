@@ -8,19 +8,21 @@ import { MdOutlineShoppingCart } from "react-icons/md";
 import { BsHeart, BsHeartFill } from "react-icons/bs";
 
 export default function DetailID({ params }) {
-  const { id } = params;
+  const { _id } = params;
 
   const [productById, setProductById] = useState({
-    id: 0,
+    _id: 0,
     title: "",
     price: 0,
     image: [],
     description: "",
     category: "",
-    rating: {
+    averageRating: 0,
+    stock: 0
+    /* rating: {
       rate: 0,
       count: 0,
-    },
+    }, */
   });
 
   const [hoveredCarButon, setHoveredCarButon] = useState(false);
@@ -28,7 +30,7 @@ export default function DetailID({ params }) {
 
   const getDatos = async () => {
     try {
-      let res = await axios(`https://fakestoreapi.com/products/${id}`);
+      let res = await axios(`https://pf-15a.up.railway.app/api/product/${_id}`);
       let datos = res.data;
       if (!datos.title) {
         window.alert("No existe un detalle de este producto");
@@ -42,7 +44,7 @@ export default function DetailID({ params }) {
 
   useEffect(() => {
     getDatos();
-  }, [id]);
+  }, [_id]);
 
   const handleQuantityChange = (e) => {
     const newQuantity = parseInt(e.target.value, 10);
@@ -71,8 +73,8 @@ export default function DetailID({ params }) {
         <Image
           src={productById.image}
           alt={productById.title}
-          width={400} 
-          height={300} 
+          width={400}
+          height={300}
           className="object-contain w-[400px] h-[300px] transition-transform transform hover:scale-110"
         />
       </div>
@@ -95,7 +97,7 @@ export default function DetailID({ params }) {
           </button>
           {/* rating y cuenta */}
           <h2 className="text-start text-sm text-bggris">
-            {productById.rating.rate} / 5 - {productById.rating.count} votos
+            {productById.averageRating} votos
           </h2>
         </div>
 
@@ -108,7 +110,7 @@ export default function DetailID({ params }) {
         </p>
         <br />
         <h2 className="text-start text-sm text-bggris">
-          {productById.category}
+          Disponibles: {productById.stock} unidades
         </h2>
         <br />
         {/* Precio */}
@@ -131,9 +133,8 @@ export default function DetailID({ params }) {
               onClick={handleAddToCart}
               className={`bg-bgbotones text-white text-base py-2 px-10 rounded-lg mx-2 
     flex justify-center items-center text-center 
-    transition duration-700 ease-in-out ${
-      hoveredCarButon ? "hover:bg-bgred hover:text-white" : ""
-    } whitespace-nowrap`}
+    transition duration-700 ease-in-out ${hoveredCarButon ? "hover:bg-bgred hover:text-white" : ""
+                } whitespace-nowrap`}
               onMouseEnter={() => setHoveredCarButon(true)}
               onMouseLeave={() => setHoveredCarButon(false)}
             >

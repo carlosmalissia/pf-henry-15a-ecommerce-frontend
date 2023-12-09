@@ -1,0 +1,112 @@
+/* 
+.formContainer {
+  margin: 20px;
+  padding: 20px;
+  border: 1px solid #e9f1e98a;
+  border-radius: 8px;
+  
+  
+}
+
+.formGroup {
+  margin-bottom: 15px;
+}
+
+.label {
+  display: block;
+  margin-bottom: 5px;
+  color: rgb(245, 244, 247);
+}
+
+.input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #e9f1e98a;
+  border-radius: 4px;
+}
+.input:hover {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #e9f1e98a;
+  border-radius: 4px;
+  background-color:  #7e807e8a;
+}
+
+.error {
+  color: red;
+  margin-top: 5px;
+}
+
+.temperamentContainer {
+  display: flex;
+  flex-wrap: wrap;
+  display: inline;
+  color: rgb(249, 247, 247);
+  margin: 4px 5px 3px 5px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+
+.checkbox {
+  margin: 10px;
+
+}
+
+
+
+.checkbox:hover {
+  margin: 10px;
+  cursor: pointer;
+}
+
+.successMessage {
+  color: rgb(12, 234, 123);
+  font-size: 25px;
+  background-color: #171616;
+  
+  border: 1px solid #025e17;
+ 
+  padding: 8px;
+
+}
+
+.successMessage::before {
+  content: "✔ ";
+  
+}
+
+.errorMessage {
+  color: rgb(242, 10, 10);
+  font-size: 25px;
+  background-color: #171616;
+  
+  border: 1px solid #ff0000;
+  
+  padding: 8px;
+  
+
+}
+
+.errorMessage::before {
+  content: "⚠ ";
+  
+}
+
+.btnvolver {
+  background-color: #e9f1e98a;
+  color: black;
+}
+.btnvolver:hover {
+  background-color: #2f96f770;
+  color: black;
+}
+
+.btncrearraza{
+  background-color: #e9f1e98a;
+  color: black;
+}
+.btncrearraza:hover{
+  background-color: #2f96f770;
+  color: black;
+} */
