@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faLock, faEnvelope } from '@fortawesome/free-solid-svg-icons';
+import Link from "next/link";
 
 const Login = () => {
     const [isHovered, setIsHovered] = useState(false);
@@ -33,16 +34,16 @@ const Login = () => {
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
             >
-              {userIcon}  Ingresar
+                {userIcon}  Ingresar
             </button>
 
             {isHovered && (
                 <div className='fixed flex justify-center items-center' onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
                     <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full h-96" onSubmit={handleSubmit}>
                         <div className='flex flex-col'>
-                            <button className='ml-32 text-red-500'>
+                            <Link href="/Register" className='ml-32 text-red-500'>
                                 Crear cuenta
-                            </button>
+                            </Link>
                             <h2 className='mb-4 text-lg'>Ingresa</h2>
                             <label htmlFor='email' className='mr-3 font-semibold font-[Poppins] pt-4'>
                                 {envelopeIcon} Correo electrónico
