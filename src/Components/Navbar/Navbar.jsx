@@ -5,6 +5,7 @@ import styles from "./navBar.module.css";
 //import CartCounter from "@/components/Cart/CartCounter/CartCounter";
 //import { useSession } from "next-auth/react";
 import { useEffect } from "react";
+import Login from "../Login/Login";
 //import ProfileInfo from "@/components/ProfileInfo/ProfileInfo";
 //import { usePathname } from "next/navigation";
 
@@ -135,7 +136,7 @@ function NavBar() {
                 href="/#home"
                 className={`${styles.nav__link}`}
               >
-                Ingresar
+                <Login/>
               </a>
             </li>
             <li className={styles.nav__item}>
@@ -153,6 +154,8 @@ function NavBar() {
         <div className={styles.nav__toggle + " z-[103]"} id="nav-toggle">
           <i className="ri-menu-fill" />
         </div>
+       
+      
       </nav>
     </header>
   );
