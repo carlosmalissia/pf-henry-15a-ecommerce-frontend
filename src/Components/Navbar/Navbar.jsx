@@ -16,8 +16,8 @@ import {
   faHeart,
   faShoppingBag,
   faUsers,
-  faUserShield, 
-  
+  faUserShield,
+
 } from '@fortawesome/free-solid-svg-icons';
 
 const home = <FontAwesomeIcon icon={faHome} />;
@@ -130,11 +130,9 @@ function NavBar() {
                 {productos}  Productos
               </Link>
             </li>
-            <li className={styles.nav__item}>
-              <a href="/about" className={styles.nav__link}>
-                {user}  Quiénes somos
-              </a>
-            </li>
+            <Link href="/about" className={styles.nav__link}>
+              {user}  Quiénes somos
+            </Link>
             {/* <li className="relative mx-auto">
                 <Link href="/cart" id="carrito">
                   <CartCounter />
