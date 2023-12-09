@@ -17,12 +17,13 @@ export default function RootLayout({ children }) {
   
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <Navbar />
-        {children}</body>
-        <footer className="bg-bgfooter p-10">
-          <Footer />
-        </footer>   
-    </html>
+    <body className={inter.className}>
+      <Navbar />
+      {children}
+      <footer className="bg-bgfooter p-10">
+        <Footer />
+      </footer>  
+    </body>
+  </html>
   )
 }

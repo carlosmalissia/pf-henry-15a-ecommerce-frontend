@@ -39,10 +39,6 @@
     
 }
 
-.content__img:hover {
-    transform: scale(1.06);
-    object-fit: cover;
-}
   
   .btn:hover span {
     opacity: 1;
