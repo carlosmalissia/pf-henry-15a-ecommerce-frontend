@@ -17,7 +17,7 @@ import {
   faShoppingBag,
   faUsers,
   faUserShield, 
-  faStore
+  
 } from '@fortawesome/free-solid-svg-icons';
 
 const home = <FontAwesomeIcon icon={faHome} />;
@@ -25,7 +25,7 @@ const favorite = <FontAwesomeIcon icon={faHeart} />;
 const productos = <FontAwesomeIcon icon={faShoppingBag} />;
 const user = <FontAwesomeIcon icon={faUsers} />;
 const admin = <FontAwesomeIcon icon={faUserShield} />;
-const store=  <FontAwesomeIcon icon={faStore} />;
+
 
 function NavBar() {
   /* const pathname = usePathname();
@@ -105,7 +105,7 @@ function NavBar() {
     <header className={styles.header} id="header">
       <nav className={`${styles.nav} ${styles.container}`}>
         <a href="/#" className="text-2xl">
-           Henrucci
+          Henrucci
         </a>
         <div className={styles.nav__menu} id="nav-menu">
           <ul className={styles.nav__list}>
