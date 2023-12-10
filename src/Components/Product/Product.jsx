@@ -3,15 +3,22 @@ import Image from "next/image";
 import styles from "./product.module.css";
 import Cards from "@/components/Cards/Cards";
 import { useEffect, useState, useRef, ChangeEvent } from "react";
+import { useAppSelector } from "@/redux/hooks";
 import axios from 'axios';
 
 export default function Product() {
   const [product, setProduct] = useState([]); //estado para los productos
+  // Trayendo el estado global
+  const actualPage = useAppSelector(state => state.countPageReducer.page)
+  //const [page, setPage] = useState(1); //page es la pagina actual lo puse en estado global
+  const [pageSize, setPageSize] = useState(12); // pageSize cantidad de cards x pagina
+  const [pageAmount, setPageAmount] = useState(0) //cantidad de paginas
   const getProduct = async () => {
     try {
-      const response = await axios.get(`https://pf-15a.up.railway.app/api/product`);
+      const response = await axios.get(`https://pf-15a.up.railway.app/api/paginado?itemsperpage=${pageSize}&actualpage=${actualPage}`);
       console.log(response.data)
-      setProduct(response.data)
+      setProduct(response.data.products)
+      setPageAmount(response.data.totalPages)
 
     }
     catch (error) {
@@ -21,7 +28,7 @@ export default function Product() {
   useEffect(() => {
     getProduct();
     console.log(product)
-  }, []);
+  }, [actualPage]);
   return (
     <div className={styles.explore__container}>
       <div className="flex">
@@ -93,7 +100,7 @@ export default function Product() {
             </div>
           </div>
           <div className="">
-            <Cards data={product} />
+            <Cards data={product} pageSize={pageSize} pageAmount={pageAmount} />
           </div>
         </div>
       </div>
