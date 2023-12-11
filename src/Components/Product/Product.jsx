@@ -2,23 +2,22 @@
 import Image from "next/image";
 import styles from "./product.module.css";
 import Cards from "@/components/Cards/Cards";
-import { useEffect, useState, useRef, ChangeEvent } from "react";
 import { useAppSelector } from "@/redux/hooks";
-import { useGetProductByPageQuery } from '@/redux/services/productApi'
-import axios from 'axios';
+import { useGetProductByPageQuery } from "@/redux/services/productApi";
 
 export default function Product() {
-  const [product, setProduct] = useState([]); //estado para los productos
-  // Trayendo el estado global
-  const actualPage = useAppSelector(state => state.countPageReducer.page)
-  //const [page, setPage] = useState(1); //page es la pagina actual lo puse en estado global
-  const [pageSize, setPageSize] = useState(12); // pageSize cantidad de cards x pagina
-  const [pageAmount, setPageAmount] = useState(0) //cantidad de paginas
+  const actualPage = useAppSelector((state) => state.countPageReducer.page);
+  const pageSize = 12; // pageSize cantidad de cards x pagina
 
-  const { data, error, isLoading, isFetching } = useGetProductByPageQuery(pageSize, actualPage)
-  console.log(data);
-  if (isLoading || isFetching) return <p>Loading....</p>
-  if (error) return <p>Some error</p>
+  const { data, error, isLoading, isFetching } = useGetProductByPageQuery({
+    pageSize,
+    actualPage,
+  });
+
+  console.log(data)
+
+  if (isLoading || isFetching) return <p>Loading....</p>;
+  if (error) return <p>Some error</p>;
   /* const getProduct = async () => {
     try {
       const response = await axios.get(`https://pf-15a.up.railway.app/api/paginado?itemsperpage=${pageSize}&actualpage=${actualPage}`);
@@ -45,20 +44,19 @@ export default function Product() {
               name="category"
               id=""
               /* onChange={handleChange} */
-              className="bg-gray-300 border-solid border border-gray-300 rounded-md text-gray-300 text-sm text-center rounded-lg focus:ring-gray-500 focus:border-gray-500 block  p-2.5 dark:bg-black-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-gray-500 dark:focus:border-gray-500 mt-2 mb-20 w-[200px]"
+              className="bg-gray-300 border-solid border border-gray-300  text-gray-300 text-sm text-center rounded-lg focus:ring-gray-500 focus:border-gray-500 block  p-2.5 dark:bg-black-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-gray-500 dark:focus:border-gray-500 mt-2 mb-20 w-[200px]"
             >
               <option value="">Categorias</option>
               <option value="A">Ropa de hombre</option>
               <option value="D">Ropa de mujer</option>
               <option value="RA">Joyería</option>
-
             </select>
 
             <select
               id="priceRange"
               name="priceRange"
               /* onChange={handleChange} */
-              className="bg-gray-300 border border-solid border border-gray-300 rounded-md text-black text-sm text-center rounded-lg focus:ring-gray-500 focus:border-gray-500 block  p-2.5 dark:bg-black-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-gray-500 dark:focus:border-gray-500 mt-2 mb-20 w-[200px]"
+              className="bg-gray-300 border border-solid  border-gray-300  text-black text-sm text-center rounded-lg focus:ring-gray-500 focus:border-gray-500 block  p-2.5 dark:bg-black-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-gray-500 dark:focus:border-gray-500 mt-2 mb-20 w-[200px]"
               defaultValue={"selectPlease"}
             >
               <option value="selectPlease">Rango de precios</option>
@@ -70,7 +68,7 @@ export default function Product() {
               name="order"
               id=""
               /* onChange={handleChange} */
-              className="bg-gray-300 border-solid border border-gray-300 rounded-md text-gray-300 text-sm text-center rounded-lg focus:ring-gray-500 focus:border-gray-500 block  p-2.5 dark:bg-black-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-gray-500 dark:focus:border-gray-500  w-[200px]"
+              className="bg-gray-300 border-solid border border-gray-300  text-gray-300 text-sm text-center rounded-lg focus:ring-gray-500 focus:border-gray-500 block  p-2.5 dark:bg-black-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-gray-500 dark:focus:border-gray-500  w-[200px]"
             >
               <option value="">Orden</option>
               <option value="A">A-Z</option>
@@ -86,7 +84,6 @@ export default function Product() {
           <div
             className={`${styles.explore__content} ${styles.contaimer} ${styles.grid}`}
           >
-
             <div className="flex justify-center gap-16 items-center my-6">
               <h2 className="text-center text-2xl">
                 Productos <i className="ri-arrow-right-line" />
@@ -95,18 +92,21 @@ export default function Product() {
                 <input
                   type="search"
                   placeholder="Buscar..."
-                  className="bg-white-500 w-full border-solid border border-gray-300 rounded-md w-[15em] h-[2em] text-center"
+                  className="bg-white-500  border-solid border border-gray-300 rounded-md w-[15em] h-[2em] text-center"
                 /* onChange={onQueryChanged} */
                 />
                 <span className="bg-white-500 backdrop-blur-xl -ml-8 pt-[6px] pb-[7px] opacity-80 color-white pr-1 pl-1">
                   <i className="ri-search-2-line" />
                 </span>
-
               </div>
             </div>
           </div>
           <div className="">
-            <Cards data={data.products} pageSize={pageSize} pageAmount={pageAmount} />
+            <Cards
+              data={data.products}
+              pageSize={pageSize}
+              pageAmount={data.totalPages}
+            />
           </div>
         </div>
       </div>

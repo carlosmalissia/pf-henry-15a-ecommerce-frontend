@@ -13,7 +13,7 @@ export const productApi = createApi({
             query: (_id) => `product/${_id}` // trae un producto x su id
         }),
         getProductByPage: builder.query({
-            query: (pageSize, actualPage) => `paginado?itemsperpage=${pageSize}&actualpage=${actualPage}` // trae productos x paginas 
+            query: ({pageSize, actualPage}) => `paginado?itemsperpage=${pageSize}&actualpage=${actualPage}` // trae productos x paginas 
         })
     })
 })
