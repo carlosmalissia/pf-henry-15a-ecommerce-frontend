@@ -93,7 +93,10 @@ export default function Product() {
                   type="search"
                   placeholder="Buscar..."
                   className="bg-white-500  border-solid border border-gray-300 rounded-md w-[15em] h-[2em] text-center"
-                /* onChange={onQueryChanged} */
+
+
+                  /* onChange={onQueryChanged} */
+
                 />
                 <span className="bg-white-500 backdrop-blur-xl -ml-8 pt-[6px] pb-[7px] opacity-80 color-white pr-1 pl-1">
                   <i className="ri-search-2-line" />

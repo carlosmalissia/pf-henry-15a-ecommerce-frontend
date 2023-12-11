@@ -4,7 +4,6 @@ import { increment, decrement } from '@/redux/features/countPageSlice'
 //import  NumberPage from '../numberPage/NumberPage'
 
 const Pagination = ({ pageAmount }) => {
-    console.log(pageAmount);
     const actualPage = useAppSelector(state => state.countPageReducer.page)
     const dispatch = useAppDispatch()
     /* const nextPage = () => {
@@ -13,7 +12,6 @@ const Pagination = ({ pageAmount }) => {
     const previusPage = () => {
         setPage(page - 1)
     } */
-    console.log(actualPage);
     const numeracion = [];
     let i = 1
     while (i <= pageAmount) {
