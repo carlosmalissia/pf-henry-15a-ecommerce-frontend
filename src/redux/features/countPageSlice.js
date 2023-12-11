@@ -1,7 +1,7 @@
 import {createSlice} from '@reduxjs/toolkit'
 
 const initialState= {
-    page: 2
+    page: 1
 }
 
 export const countPageSlice = createSlice({

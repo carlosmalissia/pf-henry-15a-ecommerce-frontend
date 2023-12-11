@@ -14,9 +14,7 @@ export default function Popular() {
   const getProduct = async () => {
     try {
       const response = await axios.get(`https://fakestoreapi.com/products`);
-      console.log(response.data)
       setProduct(response.data)
-
     }
     catch (error) {
       throw new Error(error);
