@@ -13,13 +13,6 @@ export default function Product() {
   const actualPage = useAppSelector((state) => state.countPageReducer.page);
   const pageSize = 12;
 
-  const [select, setSelect] = useState({
-    category: "",
-    priceRange: "",
-    rating: "",
-    price: "",
-  });
-
   const [searchTerm, setSearchTerm] = useState("");
 
   const {
@@ -29,20 +22,27 @@ export default function Product() {
     isFetching: searchFetching,
   } = useGetProductByTitleQuery(
     { productTitle: searchTerm },
-    { skip: searchTerm.length === 0 } // Evitar la consulta si el término de búsqueda está vacío
+    {
+      skip: searchTerm.length === 0,
+      onError: (error) => {
+        console.error("Error en la búsqueda:", error);
+      },
+    }
   );
-
-    console.log("searchData", searchData);
 
   const { data, error, isLoading, isFetching } = useGetProductByPageQuery({
     pageSize,
     actualPage,
   });
 
+  useEffect(() => {
+    // Cuando cambia actualPage, se vuelve a cargar la página actual
+    // Puedes realizar otras acciones aquí si es necesario
+  }, [actualPage]);
 
+  console.log("searchData", searchData);
 
-  if (isLoading || isFetching) return <p>Loading....</p>;
-  if (error) return <p>Error: {error.message}</p>;
+  /*  */
   return (
     <div className={styles.explore__container}>
       <div className="flex">
@@ -52,6 +52,7 @@ export default function Product() {
             <select
               name="category"
               id=""
+              /* onChange={handleChange} */
               className="bg-gray-300 border-solid border border-gray-300  text-gray-300 text-sm text-center rounded-lg focus:ring-gray-500 focus:border-gray-500 block  p-2.5 dark:bg-black-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-gray-500 dark:focus:border-gray-500 mt-2 mb-20 w-[200px]"
             >
               <option value="">Categorias</option>
@@ -60,11 +61,34 @@ export default function Product() {
               <option value="joyeria">Joyería</option>
             </select>
 
-            {/* Resto de tus selects... */}
+            <select
+              name="price"
+              id=""
+              /* onChange={handleChange} */
+              className="bg-gray-300 border-solid border border-gray-300 rounded-md text-gray-300 text-sm text-center rounded-lg focus:ring-gray-500 focus:border-gray-500 block  p-2.5 dark:bg-black-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-gray-500 dark:focus:border-gray-500 mb-20 w-[200px]"
+            >
+              <option value="">Price</option>
+              <option value="as">Precio Asc.</option>
+              <option value="des">Precio Desc.</option>
+            </select>
+
+            <select
+              id="priceRange"
+              name="priceRange"
+              /* onChange={handleChange} */
+              className="bg-gray-300 border border-solid border border-gray-300 rounded-md text-black text-sm text-center rounded-lg focus:ring-gray-500 focus:border-gray-500 block  p-2.5 dark:bg-black-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-gray-500 dark:focus:border-gray-500 mt-2 mb-20 w-[200px]"
+              defaultValue={"selectPlease"}
+            >
+              <option value="selectPlease">Rango de precios</option>
+              <option value="R1">De 0-200</option>
+              <option value="R2">De 200-500</option>
+              <option value="R3">Más de 500</option>
+            </select>
 
             <select
               name="rating"
               id=""
+              /* onChange={handleChange} */
               className="bg-gray-300 border-solid border border-gray-300 rounded-md text-gray-300 text-sm text-center rounded-lg focus:ring-gray-500 focus:border-gray-500 block  p-2.5 dark:bg-black-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-gray-500 dark:focus:border-gray-500  w-[200px]"
             >
               <option value="">Rating</option>
@@ -95,18 +119,34 @@ export default function Product() {
               </div>
             </div>
           </div>
-          {!searchLoading && !searchError && (
-            <div>
-              {searchData?.products && searchData?.products.length === 0 && (
-                <p>No se encontraron resultados.</p>
-              )}
-              <Cards
-                data={searchData?.products || data?.products}
-                pageSize={pageSize}
-                pageAmount={searchData?.totalPages || data?.totalPages}
-              />
-            </div>
-          )}
+          <div className="">
+            {searchLoading && <p>Buscando...</p>}
+            {searchError && (
+              <p>Error al realizar la búsqueda: {searchError.message}</p>
+            )}
+            {!searchLoading && !searchError && (
+              <div>
+                {searchData && searchData.length > 0 ? (
+                  <Cards
+                    data={searchData}
+                    pageSize={pageSize}
+                    pageAmount={searchData?.totalPages}
+                  />
+                ) : (
+                  !searchTerm && (
+                    <Cards
+                      data={data?.products} // Mostrar todos los productos
+                      pageSize={pageSize}
+                      pageAmount={data?.totalPages}
+                    />
+                  )
+                )}
+                {searchData && searchData.length === 0 && searchTerm && (
+                  <p>No se encontraron resultados.</p>
+                )}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

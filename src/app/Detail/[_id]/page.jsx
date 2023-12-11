@@ -106,6 +106,10 @@ export default function DetailID({ params }) {
             Disponibles: {productById.stock} unidades
           </h2>
           <br />
+          <h2 className="text-start text-sm text-bggris">
+            categoria: {productById.category} 
+          </h2>
+          <br />
           {/* Precio */}
           <div className="flex flex-col items-center md:items-start gap-2 md:w-full">
             <span className="font-bold text-2xl text-bgred">
