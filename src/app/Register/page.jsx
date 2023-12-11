@@ -13,6 +13,8 @@ const lockIcon = <FontAwesomeIcon icon={faLock} />;
 
 const Register = () => {
 
+ 
+
   const [newUser] = useCreateUserMutation();// hook para pegarle al endpoint del back
 
   const [showRegisterForm, setShowRegisterForm] = useState(true);
@@ -71,7 +73,7 @@ const Register = () => {
 
          alert('Usuario creado exitosamente'); 
         console.log("Usuario creado:", response);
-         window.location.href = '/'; 
+          window.location.href = '/';  
         // Limpia el formulario 
         setFormData({
           name: "",
