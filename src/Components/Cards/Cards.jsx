@@ -12,17 +12,18 @@ export default function Cards(props) {
       <div
         className={`grid sm:grid-cols-2 md:grid-cols-3 gap-10 md:w-[70vw] lg:w-[60vw]   mx-auto justify-end`}
       >
-        {props?.data.map((e, index) => (
-          <Card
-            className="border border-bgred rounded-md p-4"
-            key={index}
-            _id={e._id}
-            image={e.image}
-            title={e.title}
-            price={e.price}
-            category={e.category.name}
-          />
-        ))}
+        {Array.isArray(props?.data) &&
+          props.data.map((e, index) => (
+            <Card
+              className="border border-bgred rounded-md p-4"
+              key={index}
+              _id={e._id}
+              image={e.image}
+              title={e.title}
+              price={e.price}
+              category={e.category?.name} // Asegúrate de verificar también si category es undefined
+            />
+          ))}
       </div>
       <div className="text-center">
         <Pagination
