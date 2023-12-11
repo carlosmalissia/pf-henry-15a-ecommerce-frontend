@@ -6,6 +6,7 @@ import { increment, decrement } from '@/redux/features/countPageSlice'
 const Pagination = ({ pageAmount }) => {
     const actualPage = useAppSelector(state => state.countPageReducer.page)
     const dispatch = useAppDispatch()
+    console.log(pageAmount);
     /* const nextPage = () => {
         setPage(page + 1)
     }
