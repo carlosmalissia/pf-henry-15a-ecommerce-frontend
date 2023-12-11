@@ -30,7 +30,6 @@ export default function Cards(props) {
           setPage={props.setPage}
           pageAmount={props.pageAmount}
         />
-        {console.log(props)}
       </div>
     </div>
   );

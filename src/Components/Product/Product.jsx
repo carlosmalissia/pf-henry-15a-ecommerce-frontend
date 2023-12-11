@@ -1,64 +1,48 @@
-"use client";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import styles from "./product.module.css";
 import Cards from "@/components/Cards/Cards";
-import { useState } from 'react'
 import { useAppSelector } from "@/redux/hooks";
 import {
   useGetProductByPageQuery,
   useGetProductByTitleQuery,
-  useGetProductByFilterAndPageQuery
+  useGetProductByFilterAndPageQuery,
 } from "@/redux/services/productApi";
 
 export default function Product() {
+  const actualPage = useAppSelector((state) => state.countPageReducer.page);
+  const pageSize = 12;
 
-  const actualPage = useAppSelector((state) => state.countPageReducer.page); // contador para paginado
-  const pageSize = 12; // pageSize cantidad de cards x pagina
-
-
-  /* Estado de los select */
   const [select, setSelect] = useState({
     category: "",
     priceRange: "",
     rating: "",
-    price: ""
+    price: "",
   });
+
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const {
+    data: searchData,
+    error: searchError,
+    isLoading: searchLoading,
+    isFetching: searchFetching,
+  } = useGetProductByTitleQuery(
+    { productTitle: searchTerm },
+    { skip: searchTerm.length === 0 } // Evitar la consulta si el término de búsqueda está vacío
+  );
+
+    console.log("searchData", searchData);
 
   const { data, error, isLoading, isFetching } = useGetProductByPageQuery({
     pageSize,
-    actualPage
-  }
-  )
+    actualPage,
+  });
 
 
-  console.log(data?.products)
 
   if (isLoading || isFetching) return <p>Loading....</p>;
   if (error) return <p>Error: {error.message}</p>;
-
-  // SearchBar filtro por title, busqueda parcial por letras de coincidencia
-
-  /* const debounceRef = useRef();
-
-  const onQueryChanged = (e) => {
-    if (debounceRef.current) {
-      clearTimeout(debounceRef.current);
-    }
-    const productTitle = e.target.value;
-    debounceRef.current = setTimeout(() => {
-      const { data, error, isLoading, isFetching } = useGetProductByTitleQuery({
-        productTitle,
-      });
-      if (isLoading || isFetching) return <p>Loading....</p>;
-      if (error) return <p>Some error</p>;
-      //setProduct(data)
-
-    }, 1000);
-  } */
-
-  /* Fitros por categoria, rango de precio y orden */
-  //Trajendo los stados de los selects
-  /*  */
   return (
     <div className={styles.explore__container}>
       <div className="flex">
@@ -68,7 +52,6 @@ export default function Product() {
             <select
               name="category"
               id=""
-              /* onChange={handleChange} */
               className="bg-gray-300 border-solid border border-gray-300  text-gray-300 text-sm text-center rounded-lg focus:ring-gray-500 focus:border-gray-500 block  p-2.5 dark:bg-black-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-gray-500 dark:focus:border-gray-500 mt-2 mb-20 w-[200px]"
             >
               <option value="">Categorias</option>
@@ -77,34 +60,11 @@ export default function Product() {
               <option value="joyeria">Joyería</option>
             </select>
 
-            <select
-              name="price"
-              id=""
-              /* onChange={handleChange} */
-              className="bg-gray-300 border-solid border border-gray-300 rounded-md text-gray-300 text-sm text-center rounded-lg focus:ring-gray-500 focus:border-gray-500 block  p-2.5 dark:bg-black-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-gray-500 dark:focus:border-gray-500 mb-20 w-[200px]"
-            >
-              <option value="">Price</option>
-              <option value="as">Precio Asc.</option>
-              <option value="des">Precio Desc.</option>
-            </select>
-
-            <select
-              id="priceRange"
-              name="priceRange"
-              /* onChange={handleChange} */
-              className="bg-gray-300 border border-solid border border-gray-300 rounded-md text-black text-sm text-center rounded-lg focus:ring-gray-500 focus:border-gray-500 block  p-2.5 dark:bg-black-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-gray-500 dark:focus:border-gray-500 mt-2 mb-20 w-[200px]"
-              defaultValue={"selectPlease"}
-            >
-              <option value="selectPlease">Rango de precios</option>
-              <option value="R1">De 0-200</option>
-              <option value="R2">De 200-500</option>
-              <option value="R3">Más de 500</option>
-            </select>
+            {/* Resto de tus selects... */}
 
             <select
               name="rating"
               id=""
-              /* onChange={handleChange} */
               className="bg-gray-300 border-solid border border-gray-300 rounded-md text-gray-300 text-sm text-center rounded-lg focus:ring-gray-500 focus:border-gray-500 block  p-2.5 dark:bg-black-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-gray-500 dark:focus:border-gray-500  w-[200px]"
             >
               <option value="">Rating</option>
@@ -125,11 +85,9 @@ export default function Product() {
                 <input
                   type="search"
                   placeholder="Buscar..."
-                  className="bg-white-500  border-solid border border-gray-300 rounded-md w-[15em] h-[2em] text-center"
-
-
-                /* onChange={onQueryChanged} */
-
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="bg-white-500 border-solid border border-gray-300 rounded-md w-[15em] h-[2em] text-center"
                 />
                 <span className="bg-white-500 backdrop-blur-xl -ml-8 pt-[6px] pb-[7px] opacity-80 color-white pr-1 pl-1">
                   <i className="ri-search-2-line" />
@@ -137,13 +95,18 @@ export default function Product() {
               </div>
             </div>
           </div>
-          <div className="">
-            <Cards
-              data={data?.products}
-              pageSize={pageSize}
-              pageAmount={data.totalPages}
-            />
-          </div>
+          {!searchLoading && !searchError && (
+            <div>
+              {searchData?.products && searchData?.products.length === 0 && (
+                <p>No se encontraron resultados.</p>
+              )}
+              <Cards
+                data={searchData?.products || data?.products}
+                pageSize={pageSize}
+                pageAmount={searchData?.totalPages || data?.totalPages}
+              />
+            </div>
+          )}
         </div>
       </div>
     </div>
