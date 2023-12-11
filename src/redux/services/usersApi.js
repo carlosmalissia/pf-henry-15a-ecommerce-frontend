@@ -1,10 +1,11 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
-export const productApi = createApi({
+export const userApi = createApi({
     reducerPath: "usersAPI",
     baseQuery: fetchBaseQuery({
         baseUrl: 'https://pf-15a.up.railway.app/api'
     }),
+    tagTypes: ['Users'],
     endpoints: (builder) => ({
         getAllUsers: builder.query({
             query: () => '/users',
@@ -38,4 +39,4 @@ export const {
    useCreateUserMutation,
    useUpdateUserMutation
 
-} = productApi
+} = userApi
