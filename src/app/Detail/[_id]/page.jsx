@@ -2,46 +2,22 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import axios from "axios";
 import Image from "next/image";
 import { MdOutlineShoppingCart } from "react-icons/md";
 import { BsHeart, BsHeartFill } from "react-icons/bs";
+import { useGetProductByIdQuery } from "@/redux/services/productApi"; // Reemplaza con la ubicación correcta
 
 export default function DetailID({ params }) {
   const { _id } = params;
 
-  const [productById, setProductById] = useState({
-    _id: 0,
-    title: "",
-    price: 0,
-    image: [],
-    description: "",
-    category: "",
-    averageRating: 0,
-    stock: 0,
-    reviews: [],
-  });
+   const { data: productById, error, isLoading, isFetching } = useGetProductByIdQuery(
+    _id
+  );
 
   const [hoveredCarButon, setHoveredCarButon] = useState(false);
   const [quantity, setQuantity] = useState(1);
 
-  const getDatos = async () => {
-    try {
-      let res = await axios(`https://pf-15a.up.railway.app/api/product/${_id}`);
-      let datos = res.data;
-      if (!datos.title) {
-        window.alert("No existe un detalle de este producto");
-      } else {
-        setProductById(datos);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    getDatos();
-  }, [_id]);
+  useEffect(() => {}, [_id]);
 
   const handleQuantityChange = (e) => {
     const newQuantity = parseInt(e.target.value, 10);
@@ -54,25 +30,32 @@ export default function DetailID({ params }) {
     );
   };
 
-  //favoritos
+  // Favoritos
   const [isFavorite, setIsFavorite] = useState(false);
   const handleAddToFavorites = () => {
     setIsFavorite(!isFavorite);
     console.log(`Agregar a favoritos: ${productById.title}`);
   };
 
-//colores de reviews
-function getRatingColorClass(rating) {
-  if (rating === 1 || rating === 2) {
-    return 'font-bold text-red-600'; 
-  } else if (rating === 3 || rating === 4) {
-    return 'font-bold text-yellow-500';
-  } else if (rating === 5) {
-    return 'font-bold text-green-500'; 
-  } else {
-    return 'font-bold text-gray-700'; 
+  // Colores de reviews
+  function getRatingColorClass(rating) {
+    if (rating === 1 || rating === 2) {
+      return 'font-bold text-red-600'; 
+    } else if (rating === 3 || rating === 4) {
+      return 'font-bold text-yellow-500';
+    } else if (rating === 5) {
+      return 'font-bold text-green-500'; 
+    } else {
+      return 'font-bold text-gray-700'; 
+    }
   }
-}
+
+  if (isLoading || isFetching) return <p>Cargando...</p>;
+
+  if (error) {
+    console.error("Error al obtener el producto:", error);
+    return <p>Hubo un error al obtener el producto.</p>;
+  }
 
   return (
     <div>
@@ -85,7 +68,8 @@ function getRatingColorClass(rating) {
             width={400}
             height={300}
             className="object-contain w-[400px] h-[300px] transition-transform transform hover:scale-110"
-          />
+            priority={true}
+         />
         </div>
 
         {/* Detalles del producto a la derecha */}
