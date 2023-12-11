@@ -1,6 +1,3 @@
-
-/* import validator from "../../Components/Login/Validator" */
-
 "use client";
 import React, { useState } from 'react';
 import { FaGoogle } from 'react-icons/fa';
@@ -16,7 +13,7 @@ const lockIcon = <FontAwesomeIcon icon={faLock} />;
 
 const Register = () => {
 
-  //const [ newUser ] = useCreateUserMutation() // hook para pegarle al endpoint del back
+  const [newUser] = useCreateUserMutation();// hook para pegarle al endpoint del back
 
   const [showRegisterForm, setShowRegisterForm] = useState(true);
   const [showLoginForm, setShowLoginForm] = useState(false);
@@ -64,13 +61,31 @@ const Register = () => {
     return Object.keys(errors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (validateForm()) {
-      //si el formulario es válido enviar datos al servidor aquí)
-      console.log("Formulario válido", formData);
+      try {
+        // Envía los datos al servidor aquí
+        const response = await newUser(formData);
 
+         alert('Usuario creado exitosamente'); 
+        console.log("Usuario creado:", response);
+         window.location.href = '/'; 
+        // Limpia el formulario 
+        setFormData({
+          name: "",
+          lastname: "",
+          email: "",
+          password: "",
+          loginEmail: "",
+          loginPassword: "",
+        });
+
+      } catch (error) {
+        // Maneja los errores de la creación del usuario aquí
+        console.error("Error al crear el usuario:", error);
+      }
     } else {
       console.log("Formulario inválido");
     }
