@@ -8,11 +8,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faLock, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import { validateRegisterForm, validateLoginForm } from './formValidation';
 
+import { useCreateUserMutation } from '@/redux/services/usersApi'
+
 const envelopeIcon = <FontAwesomeIcon icon={faEnvelope} />;
 const userIcon = <FontAwesomeIcon icon={faUser} />;
 const lockIcon = <FontAwesomeIcon icon={faLock} />;
 
 const Register = () => {
+
+  //const [ newUser ] = useCreateUserMutation() // hook para pegarle al endpoint del back
+
   const [showRegisterForm, setShowRegisterForm] = useState(true);
   const [showLoginForm, setShowLoginForm] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -65,13 +70,14 @@ const Register = () => {
     if (validateForm()) {
       //si el formulario es válido enviar datos al servidor aquí)
       console.log("Formulario válido", formData);
+
     } else {
       console.log("Formulario inválido");
     }
   };
 
   return (
-    
+
     <div className="min-h-screen ml-48 flex items-center justify-center ">
       <div className="bg-white p-4 rounded shadow-xl w-96 flex flex-col">
         {showRegisterForm ? (
@@ -291,8 +297,8 @@ const Register = () => {
         ) : null}
       </div>
       <div className='min-h-screen mt-12 mb-48 flex items-center justify-center '>
-       </div>
-        <div className='bg-white p-8 rounded shadow-xl w-96 flex flex-col ml-32 font-serif text-lg font-thin mb-32'><h1 className='text-2xl font-bold mb-4 text-center font-serif '>Registro</h1>Registrarte en este sitio te permite acceder al estado e historial de tu pedido. Simplemente completa los campos a continuación y configuremos una nueva cuenta para ti en un abrir y cerrar de ojos. Solo te pediremos la información necesaria para que el proceso de compra sea más rápido y sencillo.</div>
+      </div>
+      <div className='bg-white p-8 rounded shadow-xl w-96 flex flex-col ml-32 font-serif text-lg font-thin mb-32'><h1 className='text-2xl font-bold mb-4 text-center font-serif '>Registro</h1>Registrarte en este sitio te permite acceder al estado e historial de tu pedido. Simplemente completa los campos a continuación y configuremos una nueva cuenta para ti en un abrir y cerrar de ojos. Solo te pediremos la información necesaria para que el proceso de compra sea más rápido y sencillo.</div>
     </div>
   );
 };
