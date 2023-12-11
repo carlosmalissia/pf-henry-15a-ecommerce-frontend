@@ -18,6 +18,7 @@ export default function Card({ _id, title, price, image, category }) {
             alt=""
             width={200}
             height={300}
+            priority={true}
           />
         </div>
         {/* Título */}
