@@ -4,6 +4,7 @@ import styles from "./product.module.css";
 import Cards from "@/components/Cards/Cards";
 import Searchbar from "../searchbar/searchbar";
 import { useAppSelector } from "@/redux/hooks";
+import axios from 'axios'
 import {
   useGetProductByPageQuery,
   useGetProductByTitleQuery,
@@ -12,7 +13,7 @@ import {
 
 export default function Product() {
   const actualPage = useAppSelector((state) => state.countPageReducer.page);
-  const pageSize = 12;
+  const pageSize = 6;
 
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -31,12 +32,66 @@ export default function Product() {
     }
   );
 
-  const { data, error, isLoading, isFetching } = useGetProductByPageQuery({
+  /* const { data, error, isLoading, isFetching } = useGetProductByPageQuery({
     pageSize,
     actualPage,
   });
+ */
+  const [product, setProduct] = useState([]); //estado para los productos
+  /*Estado para los select*/
+  const [select, setSelect] = useState({
+    category: "",
+    price: "",
+    rating: ""
+  })
+  //trayendo los select seleccionados
+  const handleChange = (e) => {
+    let newState = {
+      ...select,
+      [e.target.name]: e.target.value,
+    };
+    console.log(newState);
+    setSelect(newState);
+  };
 
+  const category = select.category
+  const price = select.price
+  const rating = select.rating
+  /*Peticion pe productos al back */
+  console.log("categoria: " + select.category, " precio: " + select.price, " rating: " + select.rating);
+  const getProduct = async () => {
+    try {
+      const response = await axios.post(`https://pf-15a.up.railway.app/api/filter?itemsperpage=${pageSize}&actualpage=${actualPage}`,
+        {
+          filters: [
+            {
+              filter: "category",
+              type: category
+            },
+            {
+              filter: "price",
+              order: price
+            },
+            {
+              filter: "rating",
+              order: rating
+            }
+          ]
+        }
+      );
+      console.log(response.data)
+      setProduct(response.data)
+    }
 
+    catch (error) {
+      throw new Error(error);
+    }
+  }
+  useEffect(() => {
+    getProduct();
+    console.log(product)
+  }, [actualPage, select]);
+  console.log(select.category, select.price, select.rating);
 
   const handlesearchName = (e) => {
 
@@ -47,20 +102,20 @@ export default function Product() {
   useEffect(() => {
     // Cuando cambia actualPage, se vuelve a cargar la página actual
     // Puedes realizar otras acciones aquí si es necesario
-  }, [actualPage]);
+  }, []);
 
 
   /*  */
   return (
     <div className={styles.explore__container}>
       <div className="flex">
-      <div className="border-solid border border-gray-300 w-1/4 mt-20">
+        <div className="border-solid border border-gray-300 w-1/4 mt-20">
           <h2 className="text-center text-xl ">Filtros</h2>
           <div className="flex-col h-48 ml-14 mt-8">
             <select
               name="category"
               id=""
-              /* onChange={handleChange} */
+              onChange={handleChange}
               className="bg-gray-300 border-solid border border-gray-300  text-gray-300 text-sm text-center rounded-lg focus:ring-gray-500 focus:border-gray-500 block  p-2.5 dark:bg-black-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-gray-500 dark:focus:border-gray-500 mt-2 mb-20 w-[200px]"
             >
               <option value="">Categorias</option>
@@ -72,18 +127,18 @@ export default function Product() {
             <select
               name="price"
               id=""
-              /* onChange={handleChange} */
+              onChange={handleChange}
               className="bg-gray-300 border-solid border border-gray-300  text-gray-300 text-sm text-center rounded-lg focus:ring-gray-500 focus:border-gray-500 block  p-2.5 dark:bg-black-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-gray-500 dark:focus:border-gray-500 mb-20 w-[200px]"
             >
               <option value="">Price</option>
-              <option value="as">Precio Asc.</option>
+              <option value="asc">Precio Asc.</option>
               <option value="des">Precio Desc.</option>
             </select>
 
             <select
               id="priceRange"
               name="priceRange"
-              /* onChange={handleChange} */
+              onChange={handleChange}
               className="bg-gray-300 border-solid border border-gray-300  text-black text-sm text-center rounded-lg focus:ring-gray-500 focus:border-gray-500 block  p-2.5 dark:bg-black-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-gray-500 dark:focus:border-gray-500 mt-2 mb-20 w-[200px]"
               defaultValue={"selectPlease"}
             >
@@ -100,7 +155,7 @@ export default function Product() {
               className="bg-gray-300 border-solid border border-gray-300  text-gray-300 text-sm text-center rounded-lg focus:ring-gray-500 focus:border-gray-500 block  p-2.5 dark:bg-black-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-gray-500 dark:focus:border-gray-500  w-[200px]"
             >
               <option value="">Rating</option>
-              <option value="as">Ranking Asc.</option>
+              <option value="asc">Ranking Asc.</option>
               <option value="des">Ranking Desc.</option>
             </select>
           </div>
@@ -131,9 +186,9 @@ export default function Product() {
                 ) : (
                   !searchTerm && (
                     <Cards
-                      data={data?.products} // Mostrar todos los productos
+                      data={product?.products} // Mostrar todos los productos
                       pageSize={pageSize}
-                      pageAmount={data?.totalPages}
+                      pageAmount={product?.totalPages}
                     />
                   )
                 )}
