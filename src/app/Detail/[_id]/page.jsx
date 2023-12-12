@@ -67,8 +67,7 @@ export default function DetailID({ params }) {
             alt={productById.title}
             width={400}
             height={300}
-            className="object-contain w-[400px] h-[300px] transition-transform transform hover:scale-110"
-            priority={true}
+            className="border-none object-contain w-[400px] h-[300px] transition-transform transform hover:scale-110"
          />
         </div>
 
@@ -107,7 +106,7 @@ export default function DetailID({ params }) {
           </h2>
           <br />
           <h2 className="text-start text-sm text-bggris">
-            categoria: {productById.category} 
+            categoria: {productById.category.name} 
           </h2>
           <br />
           {/* Precio */}
