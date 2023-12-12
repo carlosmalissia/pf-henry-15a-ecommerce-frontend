@@ -37,7 +37,9 @@ export default function Product() {
   });
 
 
- const handlesearchName = (e) => {
+
+  const handlesearchName = (e) => {
+
     e.preventDefault();
     setSearchTerm(e.target.value);
   };
@@ -108,7 +110,9 @@ export default function Product() {
             className={`${styles.explore__content} ${styles.contaimer} ${styles.grid}`}
           >
             <div className="flex justify-center gap-16 items-center my-6">
-            <Searchbar handlesearchName={handlesearchName} />
+
+              <Searchbar handlesearchName={handlesearchName} />
+
             </div>
           </div>
           <div className="">
