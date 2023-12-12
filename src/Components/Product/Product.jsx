@@ -37,7 +37,9 @@ export default function Product() {
   });
 
 
+
   const handlesearchName = (e) => {
+
     e.preventDefault();
     setSearchTerm(e.target.value);
   };
@@ -52,7 +54,7 @@ export default function Product() {
   return (
     <div className={styles.explore__container}>
       <div className="flex">
-        <div className="border-solid border border-gray-300 w-1/4 mt-20">
+      <div className="border-solid border border-gray-300 w-1/4 mt-20">
           <h2 className="text-center text-xl ">Filtros</h2>
           <div className="flex-col h-48 ml-14 mt-8">
             <select
@@ -108,7 +110,9 @@ export default function Product() {
             className={`${styles.explore__content} ${styles.contaimer} ${styles.grid}`}
           >
             <div className="flex justify-center gap-16 items-center my-6">
+
               <Searchbar handlesearchName={handlesearchName} />
+
             </div>
           </div>
           <div className="">
