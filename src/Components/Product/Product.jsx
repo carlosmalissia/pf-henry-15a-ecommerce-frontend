@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import styles from "./product.module.css";
 import Cards from "@/components/Cards/Cards";
+import Searchbar from "../searchbar/searchbar";
 import { useAppSelector } from "@/redux/hooks";
 import {
   useGetProductByPageQuery,
@@ -35,12 +36,17 @@ export default function Product() {
     actualPage,
   });
 
+
+  const handlesearchName = (e) => {
+    e.preventDefault();
+    setSearchTerm(e.target.value);
+  };
+
   useEffect(() => {
     // Cuando cambia actualPage, se vuelve a cargar la página actual
     // Puedes realizar otras acciones aquí si es necesario
   }, [actualPage]);
 
-  console.log("searchData", searchData);
 
   /*  */
   return (
@@ -65,7 +71,7 @@ export default function Product() {
               name="price"
               id=""
               /* onChange={handleChange} */
-              className="bg-gray-300 border-solid border border-gray-300 rounded-md text-gray-300 text-sm text-center rounded-lg focus:ring-gray-500 focus:border-gray-500 block  p-2.5 dark:bg-black-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-gray-500 dark:focus:border-gray-500 mb-20 w-[200px]"
+              className="bg-gray-300 border-solid border border-gray-300  text-gray-300 text-sm text-center rounded-lg focus:ring-gray-500 focus:border-gray-500 block  p-2.5 dark:bg-black-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-gray-500 dark:focus:border-gray-500 mb-20 w-[200px]"
             >
               <option value="">Price</option>
               <option value="as">Precio Asc.</option>
@@ -76,7 +82,7 @@ export default function Product() {
               id="priceRange"
               name="priceRange"
               /* onChange={handleChange} */
-              className="bg-gray-300 border border-solid border border-gray-300 rounded-md text-black text-sm text-center rounded-lg focus:ring-gray-500 focus:border-gray-500 block  p-2.5 dark:bg-black-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-gray-500 dark:focus:border-gray-500 mt-2 mb-20 w-[200px]"
+              className="bg-gray-300 border-solid border border-gray-300  text-black text-sm text-center rounded-lg focus:ring-gray-500 focus:border-gray-500 block  p-2.5 dark:bg-black-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-gray-500 dark:focus:border-gray-500 mt-2 mb-20 w-[200px]"
               defaultValue={"selectPlease"}
             >
               <option value="selectPlease">Rango de precios</option>
@@ -89,7 +95,7 @@ export default function Product() {
               name="rating"
               id=""
               /* onChange={handleChange} */
-              className="bg-gray-300 border-solid border border-gray-300 rounded-md text-gray-300 text-sm text-center rounded-lg focus:ring-gray-500 focus:border-gray-500 block  p-2.5 dark:bg-black-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-gray-500 dark:focus:border-gray-500  w-[200px]"
+              className="bg-gray-300 border-solid border border-gray-300  text-gray-300 text-sm text-center rounded-lg focus:ring-gray-500 focus:border-gray-500 block  p-2.5 dark:bg-black-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-gray-500 dark:focus:border-gray-500  w-[200px]"
             >
               <option value="">Rating</option>
               <option value="as">Ranking Asc.</option>
@@ -102,21 +108,7 @@ export default function Product() {
             className={`${styles.explore__content} ${styles.contaimer} ${styles.grid}`}
           >
             <div className="flex justify-center gap-16 items-center my-6">
-              <h2 className="text-center text-2xl">
-                Productos <i className="ri-arrow-right-line" />
-              </h2>
-              <div>
-                <input
-                  type="search"
-                  placeholder="Buscar..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="bg-white-500 border-solid border border-gray-300 rounded-md w-[15em] h-[2em] text-center"
-                />
-                <span className="bg-white-500 backdrop-blur-xl -ml-8 pt-[6px] pb-[7px] opacity-80 color-white pr-1 pl-1">
-                  <i className="ri-search-2-line" />
-                </span>
-              </div>
+              <Searchbar handlesearchName={handlesearchName} />
             </div>
           </div>
           <div className="">

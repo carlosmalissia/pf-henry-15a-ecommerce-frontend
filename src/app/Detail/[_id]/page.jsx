@@ -10,14 +10,14 @@ import { useGetProductByIdQuery } from "@/redux/services/productApi"; // Reempla
 export default function DetailID({ params }) {
   const { _id } = params;
 
-   const { data: productById, error, isLoading, isFetching } = useGetProductByIdQuery(
+  const { data: productById, error, isLoading, isFetching } = useGetProductByIdQuery(
     _id
   );
 
   const [hoveredCarButon, setHoveredCarButon] = useState(false);
   const [quantity, setQuantity] = useState(1);
 
-  useEffect(() => {}, [_id]);
+  useEffect(() => { }, [_id]);
 
   const handleQuantityChange = (e) => {
     const newQuantity = parseInt(e.target.value, 10);
@@ -40,13 +40,13 @@ export default function DetailID({ params }) {
   // Colores de reviews
   function getRatingColorClass(rating) {
     if (rating === 1 || rating === 2) {
-      return 'font-bold text-red-600'; 
+      return 'font-bold text-red-600';
     } else if (rating === 3 || rating === 4) {
       return 'font-bold text-yellow-500';
     } else if (rating === 5) {
-      return 'font-bold text-green-500'; 
+      return 'font-bold text-green-500';
     } else {
-      return 'font-bold text-gray-700'; 
+      return 'font-bold text-gray-700';
     }
   }
 
@@ -69,7 +69,7 @@ export default function DetailID({ params }) {
             height={300}
             className="object-contain w-[400px] h-[300px] transition-transform transform hover:scale-110"
             priority={true}
-         />
+          />
         </div>
 
         {/* Detalles del producto a la derecha */}
@@ -107,7 +107,7 @@ export default function DetailID({ params }) {
           </h2>
           <br />
           <h2 className="text-start text-sm text-bggris">
-            categoria: {productById.category} 
+            Categoria: {productById.category}
           </h2>
           <br />
           {/* Precio */}
@@ -130,9 +130,8 @@ export default function DetailID({ params }) {
                 onClick={handleAddToCart}
                 className={`bg-bgbotones text-white text-base py-2 px-10 rounded-lg mx-2 
     flex justify-center items-center text-center 
-    transition duration-700 ease-in-out ${
-      hoveredCarButon ? "hover:bg-bgred hover:text-white" : ""
-    } whitespace-nowrap`}
+    transition duration-700 ease-in-out ${hoveredCarButon ? "hover:bg-bgred hover:text-white" : ""
+                  } whitespace-nowrap`}
                 onMouseEnter={() => setHoveredCarButon(true)}
                 onMouseLeave={() => setHoveredCarButon(false)}
               >
@@ -151,23 +150,23 @@ export default function DetailID({ params }) {
 
       {/* Sección de revisiones  */}
       <div className="bg-bggris2 mx-auto mt-8 w-80 md:w-4/5 p-4 rounded-lg shadow-md md:mb-8">
-  <h2 className="text-lg text-black">Opiniones del producto</h2>
-  {productById.reviews.length > 0 ? (
-    <ul className="space-y-4">
-      {productById.reviews.map((review) => (
-        <li key={review._id} className="bg-white border p-4 rounded-md">
-          <p>{review.user.name}</p>
-          <p className={getRatingColorClass(review.rating)}>
-            Puntos: {review.rating}
-          </p>
-          <p>Comentario: {review.comment}</p>
-        </li>
-      ))}
-    </ul>
-  ) : (
-    <p className="text-gray-600">Este producto aún no tiene comentarios.</p>
-  )}
-</div>
+        <h2 className="text-lg text-black">Opiniones del producto</h2>
+        {productById.reviews.length > 0 ? (
+          <ul className="space-y-4">
+            {productById.reviews.map((review) => (
+              <li key={review._id} className="bg-white border p-4 rounded-md">
+                <p>{review.user.name}</p>
+                <p className={getRatingColorClass(review.rating)}>
+                  Puntos: {review.rating}
+                </p>
+                <p>Comentario: {review.comment}</p>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="text-gray-600">Este producto aún no tiene comentarios.</p>
+        )}
+      </div>
 
 
       {/* cierre del contenedor mayor */}
