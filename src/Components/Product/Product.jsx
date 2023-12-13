@@ -135,7 +135,7 @@ export default function Product() {
               <option value="des">Precio Desc.</option>
             </select>
 
-            <select
+            {/* <select
               id="priceRange"
               name="priceRange"
               onChange={handleChange}
@@ -151,13 +151,13 @@ export default function Product() {
             <select
               name="rating"
               id=""
-              /* onChange={handleChange} */
+              onChange={handleChange}
               className="bg-gray-300 border-solid border border-gray-300  text-gray-300 text-sm text-center rounded-lg focus:ring-gray-500 focus:border-gray-500 block  p-2.5 dark:bg-black-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-gray-500 dark:focus:border-gray-500  w-[200px]"
             >
               <option value="">Rating</option>
               <option value="asc">Ranking Asc.</option>
               <option value="des">Ranking Desc.</option>
-            </select>
+            </select> */}
           </div>
         </div>
         <div className="w-3/4">
