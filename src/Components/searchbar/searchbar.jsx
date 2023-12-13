@@ -2,9 +2,10 @@ import React from "react";
 import { useAppSelector } from "@/redux/hooks";
 import { useGetProductByPageQuery } from "@/redux/services/productApi";
 
+
 const Searchbar = ({ handlesearchName }) => {
   const actualPage = useAppSelector((state) => state.countPageReducer.page);
-  const pageSize = 12;
+  const pageSize = useAppSelector((state) => state.countPageReducer.pageSize);
 
   const fetchProducts = () => {
     try {
