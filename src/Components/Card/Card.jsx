@@ -8,6 +8,7 @@ export default function Card({ _id, title, price, image, category }) {
   const [hovered, setHovered] = useState(false);
 
   return (
+
     <div className={`bg-white-500 w-full border border-gray-300 rounded-md p-4 relative flex flex-col`}>
       <Link href={`/Detail/${_id}`} className="flex-1">
         <div className={`${style.content__img} mb-4 overflow-visible relative`}>
@@ -56,3 +57,4 @@ export default function Card({ _id, title, price, image, category }) {
   );
 
 }
+
