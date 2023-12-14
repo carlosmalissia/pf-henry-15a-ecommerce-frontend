@@ -3,17 +3,21 @@ import Image from "next/image";
 import styles from "./product.module.css";
 import Cards from "@/components/Cards/Cards";
 import Searchbar from "../searchbar/searchbar";
-import { useAppSelector } from "@/redux/hooks";
+import { useAppSelector,useAppDispatch } from "@/redux/hooks";
 import axios from 'axios'
 import {
   useGetProductByPageQuery,
   useGetProductByTitleQuery,
   useGetProductByFilterAndPageQuery,
 } from "@/redux/services/productApi";
+import { useDispatch } from "react-redux";
+import {pageone} from '@/redux/features/countPageSlice'
 
 export default function Product() {
   const actualPage = useAppSelector((state) => state.countPageReducer.page);
-  const pageSize = 6;
+  const pageSize = useAppSelector((state) => state.countPageReducer.pageSize);
+  const dispatch = useAppDispatch()
+  
 
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -23,7 +27,10 @@ export default function Product() {
     isLoading: searchLoading,
     isFetching: searchFetching,
   } = useGetProductByTitleQuery(
-    { productTitle: searchTerm },
+    { productTitle: searchTerm,
+      pageSize: pageSize,
+      actualPage: actualPage
+    },
     {
       skip: searchTerm.length === 0,
       onError: (error) => {
@@ -94,7 +101,7 @@ export default function Product() {
   console.log(select.category, select.price, select.rating);
 
   const handlesearchName = (e) => {
-
+  dispatch(pageone())
     e.preventDefault();
     setSearchTerm(e.target.value);
   };
@@ -104,6 +111,7 @@ export default function Product() {
     // Puedes realizar otras acciones aquí si es necesario
   }, []);
 
+  // console.log(searchData?.pageSize , searchData?.actualPage)
 
   /*  */
   return (
@@ -177,9 +185,9 @@ export default function Product() {
             )}
             {!searchLoading && !searchError && (
               <div>
-                {searchData && searchData.length > 0 ? (
+                {searchData && searchData.products.length > 0 ? (
                   <Cards
-                    data={searchData}
+                    data={searchData?.products}
                     pageSize={pageSize}
                     pageAmount={searchData?.totalPages}
                   />

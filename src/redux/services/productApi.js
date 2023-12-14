@@ -16,7 +16,7 @@ export const productApi = createApi({
             query: ({ pageSize, actualPage }) => `paginado?itemsperpage=${pageSize}&actualpage=${actualPage}` // trae productos x paginas 
         }),
         getProductByTitle: builder.query({
-            query: ({ productTitle }) => `search/${productTitle}` // busca productos x title 
+            query: ({ pageSize, actualPage, productTitle }) => `search/${productTitle}?itemsperpage=${pageSize}&actualpage=${actualPage}` // busca productos x title 
         }),
         getProductByFilterAndPage: builder.query({
             query: ( filtro) =>({
