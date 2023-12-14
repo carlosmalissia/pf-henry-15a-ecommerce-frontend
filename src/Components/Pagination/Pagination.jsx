@@ -1,27 +1,32 @@
 import styles from "./pagination.module.css"
+import { useAppSelector, useAppDispatch } from "@/redux/hooks";
+import { increment, decrement } from '@/redux/features/countPageSlice'
 //import  NumberPage from '../numberPage/NumberPage'
 
- const Pagination = ({ page, setPage, pageAmount}) => {
-    
-    const nextPage = () => {
+const Pagination = ({ pageAmount }) => {
+    const actualPage = useAppSelector(state => state.countPageReducer.page)
+    const dispatch = useAppDispatch()
+    /* const nextPage = () => {
         setPage(page + 1)
     }
     const previusPage = () => {
         setPage(page - 1)
-    }
+    } */
     const numeracion = [];
     let i = 1
-    while (i <= pageAmount ) {
+    while (i <= pageAmount) {
         numeracion.push(i)
         i++
     }
-    
+
     return (pageAmount > 1) && (
-    
+
         <div className="flex justify-center -mb-28 mt-4 gap-2.5">
-            <button 
-                disabled={page === 1 || page < 1}
-                onClick={previusPage}
+            <button
+                disabled={actualPage === 1 || actualPage < 1}
+                onClick={() => {
+                    dispatch(decrement())
+                }}
                 className={styles.button}>
                 <i className="ri-arrow-left-circle-fill"></i>
             </button>
@@ -32,16 +37,18 @@ import styles from "./pagination.module.css"
                     page = {page}
                     setPage = {setPage}
                 />})} */}
-                <div className=" block text-2xl bg-blue color-white">
-                    {page} de {pageAmount}
-                </div>
-            <button 
-                disabled={page === Math.ceil (pageAmount) || page > Math.ceil (pageAmount)}
-                onClick={nextPage}
+            <div className=" block text-2xl bg-blue color-white">
+                {actualPage} de {pageAmount}
+            </div>
+            <button
+                disabled={actualPage === Math.ceil(pageAmount) || actualPage > Math.ceil(pageAmount)}
+                onClick={() => {
+                    dispatch(increment())
+                }}
                 className={styles.button}><i className="ri-arrow-right-circle-fill"></i>
             </button>
         </div>
     )
-               
+
 }
 export default Pagination

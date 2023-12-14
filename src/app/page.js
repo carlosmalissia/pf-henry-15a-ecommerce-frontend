@@ -6,11 +6,11 @@ import { useEffect } from "react";
 //Importando componentes
 import Product from "@/Components/Product/Product";
 import Favorites from "@/Components/Favorites/Favorites";
-import Footer from "@/Components/Footer/Footer"
+
 export default function Home() {
-  
-    useEffect(()=>{
-      /*=============== SHOW SCROLL UP ===============*/
+  /*=============== SHOW SCROLL UP ===============*/
+     useEffect(()=>{
+      
       const scrollUp = () => {
           const scrollUp = document.getElementById("scroll-up");
           if (!scrollUp) return;
@@ -20,8 +20,8 @@ export default function Home() {
             : scrollUp.classList.remove(styles.show_scroll);
         };
         window.addEventListener("scroll", scrollUp);
-        
-    },[])
+         
+    },[]) 
    
     return (
       <>
@@ -38,14 +38,11 @@ export default function Home() {
           </section>
           
         </main>
-        {/*==================== FOOTER ====================*/}
-        <footer className="bg-neutral-900 p-10">
-              <Footer />
-          </footer>
-          {/*========== SCROLL UP ==========*/}
+         
+           {/*========== SCROLL UP ==========*/}
           <a href="#" className={styles.scrollup} id="scroll-up">
               <i className="ri-arrow-up-line" />
-          </a>
+          </a> 
       </>
     );
   
