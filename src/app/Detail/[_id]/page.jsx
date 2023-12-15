@@ -5,30 +5,39 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { MdOutlineShoppingCart } from "react-icons/md";
 import { BsHeart, BsHeartFill } from "react-icons/bs";
-import { useGetProductByIdQuery } from "@/redux/services/productApi"; // Reemplaza con la ubicación correcta
+import { useGetProductByIdQuery } from "@/redux/services/productApi";
+import { useDispatch } from 'react-redux';
+import {addItem} from '@/redux/features/cart'
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+
 
 export default function DetailID({ params }) {
   const { _id } = params;
+  
+  const cartItems = useAppSelector((state) => state.cartReducer.cartItems);
+  const dispatch = useAppDispatch()
 
   const { data: productById, error, isLoading, isFetching } = useGetProductByIdQuery(
     _id
   );
 
+    // console.log(productById);
+
+
   const [hoveredCarButon, setHoveredCarButon] = useState(false);
   const [quantity, setQuantity] = useState(1);
 
   useEffect(() => { }, [_id]);
+  useEffect(() => {
+    console.log("Contenido del carrito:", cartItems);
+  },[cartItems]);
 
   const handleQuantityChange = (e) => {
     const newQuantity = parseInt(e.target.value, 10);
     setQuantity(newQuantity);
   };
 
-  const handleAddToCart = () => {
-    console.log(
-      `Añadir al carrito: ${quantity} unidades del producto ${productById.title}`
-    );
-  };
+  
 
   // Favoritos
   const [isFavorite, setIsFavorite] = useState(false);
@@ -57,6 +66,23 @@ export default function DetailID({ params }) {
     return <p>Hubo un error al obtener el producto.</p>;
   }
 
+  //agregar productos al carrito
+
+
+  const handleAddToCart = () => {
+    const productData = {
+      _id: productById._id,
+      title: productById.title,
+      price: productById.price,
+      quantity: quantity,
+      subtotal: productById.price * quantity
+    };
+    
+    dispatch(addItem(productData));
+  };
+
+  
+
   return (
     <div>
       <div className="bg-bggris2 relative pt-10 mx-auto min-w-[20rem] w-[80%] flex flex-col md:flex-row mt-40 mb-10">
@@ -67,8 +93,7 @@ export default function DetailID({ params }) {
             alt={productById.title}
             width={400}
             height={300}
-
-
+            priority={true}
             className="border-none object-contain w-[400px] h-[300px] transition-transform transform hover:scale-110"
          />
 
@@ -122,7 +147,7 @@ export default function DetailID({ params }) {
 
             {/* Cantidad y botón Agregar al carrito */}
             <div className="flex items-center mt-3 mb-10">
-              <label className="mr-2">Cantidad:</label>
+              <label className="mr-2">Cantidad: </label>
               <input
                 type="number"
                 min="1"

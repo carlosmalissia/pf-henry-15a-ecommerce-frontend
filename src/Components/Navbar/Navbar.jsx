@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import styles from "./navBar.module.css";
 //import CartCounter from "@/components/Cart/CartCounter/CartCounter";
@@ -17,14 +17,16 @@ import {
   faShoppingBag,
   faUsers,
   faUserShield,
-
+  faCartShopping,
 } from '@fortawesome/free-solid-svg-icons';
+import { useAppSelector } from "@/redux/hooks";
 
 const home = <FontAwesomeIcon icon={faHome} />;
 const favorite = <FontAwesomeIcon icon={faHeart} />;
 const productos = <FontAwesomeIcon icon={faShoppingBag} />;
 const user = <FontAwesomeIcon icon={faUsers} />;
 const admin = <FontAwesomeIcon icon={faUserShield} />;
+const cart = <FontAwesomeIcon icon={faCartShopping} />;
 
 
 function NavBar() {
@@ -100,6 +102,18 @@ function NavBar() {
     };
     window.addEventListener("scroll", scrollActive);
   }, []);
+
+  //items del carrito
+  const cartItems = useAppSelector((state) => state.cartReducer.cartItems);
+
+  const [cartItemsCount, setCartItemsCount] = useState(0);
+
+  useEffect(() => {
+    const count = cartItems.reduce((total, item) => total + item.quantity, 0);
+    setCartItemsCount(count);
+  }, [cartItems]);
+
+
   /* const { data: session, status } = useSession(); */
   return (
     <header className={styles.header} id="header">
@@ -158,6 +172,11 @@ function NavBar() {
             <li className={styles.nav__item}>
               <Link href="/AdminDashboard" className={styles.nav__link}>
                 {admin} Admin
+              </Link>
+            </li>
+            <li className={styles.nav__item}>
+              <Link href="/cartDetail" className={styles.nav__link}>
+                {cart} <span>{cartItemsCount}</span>
               </Link>
             </li>
           </ul>
