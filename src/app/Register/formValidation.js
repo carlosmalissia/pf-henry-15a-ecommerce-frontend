@@ -17,11 +17,10 @@ export const validateRegisterForm = (formData, showPassword) => {
   
     if (!formData.password.trim()) {
       errors.password = "La contraseña es requerida";
+    }else if (formData.password.length < 8) {
+      errors.password = "La contraseña debe tener al menos 8 caracteres";
     }
   
-    if (showPassword && formData.password !== formData.loginPassword) {
-      errors.loginPassword = "Las contraseñas no coinciden";
-    }
   
     return errors;
   };
