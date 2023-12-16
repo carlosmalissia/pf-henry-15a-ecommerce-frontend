@@ -29,9 +29,11 @@ export default function Card({ _id, title, price, image, category }) {
   }, [cartItems]);
 
   return (
+
     <div
       className={`bg-white-500 w-full border border-gray-300 rounded-md p-2 relative flex flex-col`}
     >
+
       <Link href={`/Detail/${_id}`} className="flex-1">
         <div className={`${style.content__img} mb-2 overflow-visible relative`}>
           {/* Contenido de la imagen */}
@@ -79,3 +81,4 @@ export default function Card({ _id, title, price, image, category }) {
     </div>
   );
 }
+

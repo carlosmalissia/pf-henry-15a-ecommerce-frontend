@@ -2,8 +2,10 @@
 import Card from "@/Components/Card/Card";
 import React, { useState } from "react";
 import Pagination from "@/Components/Pagination/Pagination";
+
 export default function Cards(props) {
   //Paginado
+
   //console.log(props);
   //const pageAmount = Math.ceil(props.data.length / props.pageSize); // cantidad de pag s/cant de cards
 
@@ -24,6 +26,7 @@ export default function Cards(props) {
               category={e.category?.name} // Asegúrate de verificar también si category es undefined
             />
           ))}
+
       </div>
       <div className="text-center">
         <Pagination
