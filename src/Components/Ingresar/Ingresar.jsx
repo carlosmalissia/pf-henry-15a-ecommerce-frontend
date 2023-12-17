@@ -1,3 +1,4 @@
+'use client'
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
@@ -7,9 +8,9 @@ const userIcon = <FontAwesomeIcon icon={faUser} />;
 const Ingresar = () => {
   return (
     <div>
-      <li >
-          {userIcon} Ingresar
-      </li>
+
+      {userIcon} Ingresar
+
     </div>
   );
 };
