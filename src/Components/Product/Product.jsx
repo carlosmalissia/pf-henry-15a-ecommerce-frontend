@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import styles from "./product.module.css";
-import Cards from "@/components/Cards/Cards";
+import Cards from "../Cards/Cards";
 import Searchbar from "../searchbar/searchbar";
-import { useAppSelector,useAppDispatch } from "@/redux/hooks";
+import { useAppSelector, useAppDispatch } from "@/redux/hooks";
 import axios from 'axios'
 import {
   useGetProductByPageQuery,
@@ -11,13 +11,13 @@ import {
   useGetProductByFilterAndPageQuery,
 } from "@/redux/services/productApi";
 import { useDispatch } from "react-redux";
-import {pageone} from '@/redux/features/countPageSlice'
+import { pageone } from '@/redux/features/countPageSlice'
 
 export default function Product() {
   const actualPage = useAppSelector((state) => state.countPageReducer.page);
   const pageSize = useAppSelector((state) => state.countPageReducer.pageSize);
   const dispatch = useAppDispatch()
-  
+
 
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -27,7 +27,8 @@ export default function Product() {
     isLoading: searchLoading,
     isFetching: searchFetching,
   } = useGetProductByTitleQuery(
-    { productTitle: searchTerm,
+    {
+      productTitle: searchTerm,
       pageSize: pageSize,
       actualPage: actualPage
     },
@@ -101,7 +102,7 @@ export default function Product() {
   // console.log(select.category, select.price, select.rating);
 
   const handlesearchName = (e) => {
-  dispatch(pageone())
+    dispatch(pageone())
     e.preventDefault();
     setSearchTerm(e.target.value);
   };

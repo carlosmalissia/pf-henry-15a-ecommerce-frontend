@@ -4,7 +4,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 
 import Link from "next/link";
-import styles from "./navBar.module.css";
+import styles from "./navbar.module.css";
 //import CartCounter from "@/components/Cart/CartCounter/CartCounter";
 //import { useSession } from "next-auth/react";
 import Ingresar from "../Ingresar/Ingresar";
