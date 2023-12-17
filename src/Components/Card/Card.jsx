@@ -1,4 +1,4 @@
-'use client'
+'use clientgit add .'
 import React, { useEffect, useState } from "react";
 import style from "./Card.module.css";
 import Image from "next/image";
