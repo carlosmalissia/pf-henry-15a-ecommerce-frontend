@@ -69,24 +69,8 @@ export default function Product() {
   // console.log("categoria: " + select.category, " precio: " + select.price, " rating: " + select.rating);
   const getProduct = async () => {
     try {
-      const response = await axios.post(`https://pf-15a.up.railway.app/api/filter?itemsperpage=${pageSize}&actualpage=${actualPage}`,
-        {
-          filters: [
-            {
-              filter: "category",
-              type: category
-            },
-            {
-              filter: "price",
-              order: price
-            },
-            {
-              filter: "rating",
-              order: rating
-            }
-          ]
-        }
-      );
+      const response = await axios
+        .get(`https://pf-15a.up.railway.app/api/filter?itemsperpage=${pageSize}&actualpage=${actualPage}&category=${category}&price=${price}&rating=${rating}`);
       // console.log(response.data)
       setProduct(response.data)
     }
