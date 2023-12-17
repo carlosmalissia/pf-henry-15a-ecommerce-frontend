@@ -1,16 +1,19 @@
 "use client";
+
 import React from "react";
+import { useEffect } from "react";
+
 import Link from "next/link";
 import styles from "./navBar.module.css";
 //import CartCounter from "@/components/Cart/CartCounter/CartCounter";
 //import { useSession } from "next-auth/react";
-import { useEffect } from "react";
-import Login from "../Login/Login";
+import Ingresar from "../Ingresar/Ingresar";
+
 //import ProfileInfo from "@/components/ProfileInfo/ProfileInfo";
 //import { usePathname } from "next/navigation";
 
 //-------iconos---//
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faHome,
   faHeart,
@@ -18,20 +21,22 @@ import {
   faUsers,
   faUserShield,
 
+  faCartShopping,
 } from '@fortawesome/free-solid-svg-icons';
+import { useAppSelector } from "@/redux/hooks";
+
 
 const home = <FontAwesomeIcon icon={faHome} />;
 const favorite = <FontAwesomeIcon icon={faHeart} />;
 const productos = <FontAwesomeIcon icon={faShoppingBag} />;
 const user = <FontAwesomeIcon icon={faUsers} />;
 const admin = <FontAwesomeIcon icon={faUserShield} />;
-
+const cart = <FontAwesomeIcon icon={faCartShopping} />;
 
 function NavBar() {
   /* const pathname = usePathname();
   if (pathname === "/AdminDashboard") return; */
   useEffect(() => {
-
     /*=============== SHOW MENU ===============*/
     const navMenu = document.getElementById("nav-menu"),
       navContainer = document.getElementById("header"),
@@ -72,7 +77,6 @@ function NavBar() {
     carrito?.addEventListener("click", linkAction);
     navLink.forEach((n) => n.addEventListener("click", linkAction));
 
-
     window.addEventListener("resize", () => {
       window.innerWidth > 1023
         ? navToggle && (navToggle.style.display = "none")
@@ -100,6 +104,18 @@ function NavBar() {
     };
     window.addEventListener("scroll", scrollActive);
   }, []);
+
+  //items del carrito
+  const cartItems = useAppSelector((state) => state.cartReducer.cartItems);
+
+  const [cartItemsCount, setCartItemsCount] = useState(0);
+
+  useEffect(() => {
+    const count = cartItems.reduce((total, item) => total + item.quantity, 0);
+    setCartItemsCount(count);
+  }, [cartItems]);
+
+
   /* const { data: session, status } = useSession(); */
   return (
     <header className={styles.header} id="header">
@@ -120,44 +136,35 @@ function NavBar() {
 
             <li className={styles.nav__item}>
               <a href="/#favorites" className={styles.nav__link}>
-                {favorite}  Favoritos
+                {favorite} Favoritos
               </a>
             </li>
             <li className={styles.nav__item}>
               {/* <a href="/#product" className="nav__link relative text-title-color text-second-font font-medium hover:text-title-color-hover hover:after-width-70 active:after-width-70"> */}
 
               <Link href="/#product" className={styles.nav__link}>
-                {productos}  Productos
+                {productos} Productos
               </Link>
             </li>
             <Link href="/about" className={styles.nav__link}>
-              {user}  Quiénes somos
+              {user} Quiénes somos
             </Link>
-            {/* <li className="relative mx-auto">
-                <Link href="/cart" id="carrito">
-                  <CartCounter />
-                </Link>
-              </li>
-              <li className={styles.nav__item}>
-                  {!session ? (
-                    <Link href="/login" className={styles.nav__link}>
-                      Ingresar
-                    </Link>
-                  ) : (
-                    <ProfileInfo />
-                  )}
-                </li> */}
+
+            {/* este es mi login */}
             <li className={styles.nav__item}>
-              <a
-                href="/#home"
-                className={`${styles.nav__link}`}
-              >
-                <Login />
-              </a>
+              <Link href="/Register" className={styles.nav__link}>
+                <Ingresar />
+              </Link>
             </li>
+
             <li className={styles.nav__item}>
               <Link href="/AdminDashboard" className={styles.nav__link}>
                 {admin} Admin
+              </Link>
+            </li>
+            <li className={styles.nav__item}>
+              <Link href="/cartDetail" className={styles.nav__link}>
+                {cart} <span>{cartItemsCount}</span>
               </Link>
             </li>
           </ul>
@@ -170,8 +177,6 @@ function NavBar() {
         <div className={styles.nav__toggle + " z-[103]"} id="nav-toggle">
           <i className="ri-menu-fill" />
         </div>
-
-
       </nav>
     </header>
   );

@@ -57,7 +57,7 @@ export default function Product() {
       ...select,
       [e.target.name]: e.target.value,
     };
-    console.log(newState);
+    // console.log(newState);
     setSelect(newState);
   };
 
@@ -65,7 +65,7 @@ export default function Product() {
   const price = select.price
   const rating = select.rating
   /*Peticion pe productos al back */
-  console.log("categoria: " + select.category, " precio: " + select.price, " rating: " + select.rating);
+  // console.log("categoria: " + select.category, " precio: " + select.price, " rating: " + select.rating);
   const getProduct = async () => {
     try {
       const response = await axios.post(`https://pf-15a.up.railway.app/api/filter?itemsperpage=${pageSize}&actualpage=${actualPage}`,
@@ -86,7 +86,7 @@ export default function Product() {
           ]
         }
       );
-      console.log(response.data)
+      // console.log(response.data)
       setProduct(response.data)
     }
 
@@ -96,9 +96,9 @@ export default function Product() {
   }
   useEffect(() => {
     getProduct();
-    console.log(product)
+    // console.log(product)
   }, [actualPage, select]);
-  console.log(select.category, select.price, select.rating);
+  // console.log(select.category, select.price, select.rating);
 
   const handlesearchName = (e) => {
   dispatch(pageone())
@@ -124,7 +124,7 @@ export default function Product() {
               name="category"
               id=""
               onChange={handleChange}
-              className="bg-gray-300 border-solid border border-gray-300  text-gray-300 text-sm text-center rounded-lg focus:ring-gray-500 focus:border-gray-500 block  p-2.5 dark:bg-black-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-gray-500 dark:focus:border-gray-500 mt-2 mb-20 w-[200px]"
+              className="block p-2 m-4 w-[200px] text-center rounded-lg text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
             >
               <option value="">Categorias</option>
               <option value="ropa hombre">Ropa de hombre</option>
@@ -136,7 +136,7 @@ export default function Product() {
               name="price"
               id=""
               onChange={handleChange}
-              className="bg-gray-300 border-solid border border-gray-300  text-gray-300 text-sm text-center rounded-lg focus:ring-gray-500 focus:border-gray-500 block  p-2.5 dark:bg-black-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-gray-500 dark:focus:border-gray-500 mb-20 w-[200px]"
+              className="block p-2 m-4 w-[200px] text-center rounded-lg text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
             >
               <option value="">Price</option>
               <option value="asc">Precio Asc.</option>
