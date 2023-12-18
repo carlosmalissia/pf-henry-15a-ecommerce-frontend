@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import styles from "./product.module.css";
-import Cards from "../Cards/Cards";
 import Searchbar from "../searchbar/searchbar";
+import Cards from "../Cards/Cards";
 import { useAppSelector, useAppDispatch } from "@/redux/hooks";
 import axios from 'axios'
 import {
