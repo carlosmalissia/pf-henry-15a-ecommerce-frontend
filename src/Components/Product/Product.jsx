@@ -4,20 +4,19 @@ import styles from "./product.module.css";
 import Cards from "../Cards/Cards";
 import Searchbar from "../searchbar/searchbar";
 import { useAppSelector, useAppDispatch } from "@/redux/hooks";
-import axios from 'axios'
+import axios from "axios";
 import {
   useGetProductByPageQuery,
   useGetProductByTitleQuery,
   useGetProductByFilterAndPageQuery,
 } from "@/redux/services/productApi";
 import { useDispatch } from "react-redux";
-import { pageone } from '@/redux/features/countPageSlice'
+import { pageone } from "@/redux/features/countPageSlice";
 
 export default function Product() {
   const actualPage = useAppSelector((state) => state.countPageReducer.page);
   const pageSize = useAppSelector((state) => state.countPageReducer.pageSize);
-  const dispatch = useAppDispatch()
-
+  const dispatch = useAppDispatch();
 
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -30,7 +29,7 @@ export default function Product() {
     {
       productTitle: searchTerm,
       pageSize: pageSize,
-      actualPage: actualPage
+      actualPage: actualPage,
     },
     {
       skip: searchTerm.length === 0,
@@ -50,8 +49,8 @@ export default function Product() {
   const [select, setSelect] = useState({
     category: "",
     price: "",
-    rating: ""
-  })
+    rating: "",
+  });
   //trayendo los select seleccionados
   const handleChange = (e) => {
     let newState = {
@@ -62,39 +61,20 @@ export default function Product() {
     setSelect(newState);
   };
 
-  const category = select.category
-  const price = select.price
-  const rating = select.rating
+  const category = select.category;
+  const price = select.price;
+  const rating = select.rating;
   /*Peticion pe productos al back */
   // console.log("categoria: " + select.category, " precio: " + select.price, " rating: " + select.rating);
   const getProduct = async () => {
     try {
-      const response = await axios.post(`https://pf-15a.up.railway.app/api/filter?itemsperpage=${pageSize}&actualpage=${actualPage}`,
-        {
-          filters: [
-            {
-              filter: "category",
-              type: category
-            },
-            {
-              filter: "price",
-              order: price
-            },
-            {
-              filter: "rating",
-              order: rating
-            }
-          ]
-        }
-      );
+      const response = await axios.get(`https://pf-15a.up.railway.app/api/filter?itemsperpage=${pageSize}&actualpage=${actualPage}&category=${category}`);
       // console.log(response.data)
-      setProduct(response.data)
-    }
-
-    catch (error) {
+      setProduct(response.data);
+    } catch (error) {
       throw new Error(error);
     }
-  }
+  };
   useEffect(() => {
     getProduct();
     // console.log(product)
@@ -102,7 +82,7 @@ export default function Product() {
   // console.log(select.category, select.price, select.rating);
 
   const handlesearchName = (e) => {
-    dispatch(pageone())
+    dispatch(pageone());
     e.preventDefault();
     setSearchTerm(e.target.value);
   };
@@ -174,9 +154,7 @@ export default function Product() {
             className={`${styles.explore__content} ${styles.contaimer} ${styles.grid}`}
           >
             <div className="flex justify-center gap-16 items-center my-6">
-
               <Searchbar handlesearchName={handlesearchName} />
-
             </div>
           </div>
           <div className="">
