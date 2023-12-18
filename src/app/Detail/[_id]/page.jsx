@@ -34,9 +34,12 @@ export default function DetailID({ params }) {
 
   const handleQuantityChange = (e) => {
     const newQuantity = parseInt(e.target.value, 10);
-    setQuantity(newQuantity);
+    if (newQuantity > productById.stock) {
+      setQuantity(productById.stock); 
+    } else {
+      setQuantity(newQuantity);
+    }
   };
-
   
 
   // Favoritos
@@ -75,7 +78,9 @@ export default function DetailID({ params }) {
       title: productById.title,
       price: productById.price,
       quantity: quantity,
-      subtotal: productById.price * quantity
+      subtotal: productById.price * quantity,
+      image: productById.image,
+      stock: productById.stock
     };
     
     dispatch(addItem(productData));

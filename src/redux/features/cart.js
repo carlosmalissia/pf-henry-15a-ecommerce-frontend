@@ -1,5 +1,18 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+
+
+const calculateTotal = (cartItems) => {
+  let total = 0;
+  cartItems.forEach((item) => {
+    total += item.subtotal;
+  });
+  return total;
+};
+
+
+
+
 const cartSlice = createSlice({
   name: "cart",
   initialState: {
@@ -32,26 +45,54 @@ const cartSlice = createSlice({
       };
 
       localStorage.setItem("cartData", JSON.stringify(cartData));
-
-      console.log(
-        "Contenido final del carrito: ",
-        JSON.stringify(state.cartItems)
-      );
-      console.log("Total: ", total);
-      console.log("Datos del carrito guardados en localStorage: ",localStorage.getItem("cartData"));
     },
     removeItem: (state, action) => {
       const _id = action.payload._id;
       state.cartItems = state.cartItems.filter((item) => item._id !== _id);
+    
+      // Actualizar el localStorage después de eliminar un elemento del carrito
+      const cartData = {
+        cartItems: state.cartItems,
+        total: calculateTotal(state.cartItems),
+      };
+      localStorage.setItem("cartData", JSON.stringify(cartData));
     },
     getCartData: (state, action) => {
-      const cartData = JSON.parse(localStorage.getItem("cartData"));
-      if (cartData) {
-        state.cartItems = cartData.cartItems;
+      // Solo cargar datos si el carrito está vacío
+      if (state.cartItems.length === 0) {
+        const cartData = JSON.parse(localStorage.getItem("cartData"));
+        if (cartData) {
+          state.cartItems = cartData.cartItems;
+        }
       }
+    },
+    updateQuantity: (state, action) => {
+      const { itemId, newQuantity } = action.payload;
+
+      const itemToUpdate = state.cartItems.find((item) => item._id === itemId);
+
+      if (itemToUpdate) {
+        // Actualizar la cantidad y el subtotal
+        itemToUpdate.quantity = newQuantity;
+        itemToUpdate.subtotal = itemToUpdate.price * newQuantity;
+      }
+
+      // Actualizar el total y guardar en localStorage
+      let total = 0;
+      state.cartItems.forEach((item) => {
+        total += item.subtotal;
+      });
+
+      const cartData = {
+        cartItems: state.cartItems,
+        total: total,
+      };
+
+      localStorage.setItem("cartData", JSON.stringify(cartData));
     },
   },
 });
 
-export const { addItem, removeItem, getCartData } = cartSlice.actions;
+export const { addItem, removeItem, getCartData, updateQuantity } =
+  cartSlice.actions;
 export default cartSlice.reducer;
