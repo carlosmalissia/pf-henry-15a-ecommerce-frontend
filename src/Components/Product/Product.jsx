@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import styles from "./product.module.css";
-import Cards from "../Cards/Cards";
 import Searchbar from "../searchbar/searchbar";
+import Cards from "../Cards/Cards";
 import { useAppSelector, useAppDispatch } from "@/redux/hooks";
 import axios from "axios";
 import {
@@ -150,18 +150,18 @@ export default function Product() {
               <option value="R1">De 0-200</option>
               <option value="R2">De 200-500</option>
               <option value="R3">Más de 500</option>
-            </select>
+            </select>*/}
 
             <select
               name="rating"
               id=""
               onChange={handleChange}
-              className="bg-gray-300 border-solid border border-gray-300  text-gray-300 text-sm text-center rounded-lg focus:ring-gray-500 focus:border-gray-500 block  p-2.5 dark:bg-black-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-gray-500 dark:focus:border-gray-500  w-[200px]"
+              className="block p-2 m-3 w-[200px] text-center rounded-lg text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
             >
               <option value="">Rating</option>
               <option value="asc">Ranking Asc.</option>
               <option value="des">Ranking Desc.</option>
-            </select> */}
+            </select>
           </div>
         </div>
         <div className="w-3/4">
