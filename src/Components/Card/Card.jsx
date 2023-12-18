@@ -8,7 +8,7 @@ import { addItem } from '@/redux/features/cart'
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 
 
-export default function Card({ _id, title, price, image, category }) {
+export default function Card({ _id, title, price, image, category, stock }) {
   const [hovered, setHovered] = useState(false);
   const cartItems = useAppSelector((state) => state.cartReducer.cartItems);
   const dispatch = useAppDispatch()
@@ -19,7 +19,9 @@ export default function Card({ _id, title, price, image, category }) {
       title: title,
       price: price,
       quantity: 1,
-      subtotal: price * 1
+      subtotal: price * 1,
+      image: image,
+      stock: stock
     };
 
     dispatch(addItem(productData));
