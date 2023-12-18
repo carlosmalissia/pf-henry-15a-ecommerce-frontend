@@ -50,7 +50,9 @@ export default function Product() {
     category: "",
     price: "",
     rating: "",
-  });
+
+  })
+
   //trayendo los select seleccionados
   const handleChange = (e) => {
     let newState = {
@@ -61,16 +63,25 @@ export default function Product() {
     setSelect(newState);
   };
 
-  const category = select.category;
-  const price = select.price;
-  const rating = select.rating;
+
+  const category = select.category
+  const price = select.price
+  const rating = select.rating
+  const minprice = 100
+  const maxprice = 500
+
   /*Peticion pe productos al back */
   // console.log("categoria: " + select.category, " precio: " + select.price, " rating: " + select.rating);
   const getProduct = async () => {
     try {
 
       const response = await axios
-        .get(`https://pf-15a.up.railway.app/api/filter?itemsperpage=${pageSize}&actualpage=${actualPage}&category=${category}&price=${price}&rating=${rating}`);
+
+        .get(`https://pf-15a.up.railway.app/api/filter?itemsperpage=${pageSize}&actualpage=${actualPage}&category=${category}&price=${price}&rating=${rating}&minprice=${minprice}$maxprice=${maxprice}`);
+      // console.log(response.data)
+      setProduct(response.data)
+    }
+
 
       // console.log(response.data)
       setProduct(response.data);
@@ -103,12 +114,12 @@ export default function Product() {
       <div className="flex">
         <div className="border-solid border border-gray-300 w-1/4 mt-20">
           <h2 className="text-center text-xl ">Filtros</h2>
-          <div className="flex-col h-48 ml-14 mt-8">
+          <div className="flex-col h-48 ml-10 mt-8">
             <select
               name="category"
               id=""
               onChange={handleChange}
-              className="block p-2 m-4 w-[200px] text-center rounded-lg text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
+              className="block p-2 m-3 w-[200px] text-center rounded-lg text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
             >
               <option value="">Categorias</option>
               <option value="ropa hombre">Ropa de hombre</option>
@@ -120,11 +131,12 @@ export default function Product() {
               name="price"
               id=""
               onChange={handleChange}
-              className="block p-2 m-4 w-[200px] text-center rounded-lg text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
+              className="block p-2 m-3 w-[200px] text-center rounded-lg text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
             >
               <option value="">Price</option>
               <option value="asc">Precio Asc.</option>
               <option value="des">Precio Desc.</option>
+              <option value="range">Rango de precio</option>
             </select>
 
             {/* <select
