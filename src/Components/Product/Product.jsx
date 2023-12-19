@@ -74,21 +74,17 @@ export default function Product() {
   // console.log("categoria: " + select.category, " precio: " + select.price, " rating: " + select.rating);
   const getProduct = async () => {
     try {
-
-      const response = await axios
-
-        .get(`https://pf-15a.up.railway.app/api/filter?itemsperpage=${pageSize}&actualpage=${actualPage}&category=${category}&price=${price}&rating=${rating}&minprice=${minprice}$maxprice=${maxprice}`);
-      // console.log(response.data)
-      setProduct(response.data)
-    }
-
-
-      // console.log(response.data)
+      const response = await axios.get(
+        `https://pf-15a.up.railway.app/api/filter?itemsperpage=${pageSize}&actualpage=${actualPage}&category=${category}&price=${price}&rating=${rating}&minprice=${minprice}&maxprice=${maxprice}`
+      );
       setProduct(response.data);
     } catch (error) {
       throw new Error(error);
     }
   };
+
+  
+
   useEffect(() => {
     getProduct();
     // console.log(product)
@@ -162,6 +158,9 @@ export default function Product() {
               <option value="asc">Ranking Asc.</option>
               <option value="des">Ranking Desc.</option>
             </select>
+
+            
+
           </div>
         </div>
         <div className="w-3/4">
