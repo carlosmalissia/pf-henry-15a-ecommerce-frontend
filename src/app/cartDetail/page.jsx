@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getCartData, removeItem, updateQuantity } from "@/redux/features/cart";
 import { useAppDispatch } from "@/redux/hooks";
+import Link from "next/link";
 
 const CartDetailPage = () => {
   const dispatch = useAppDispatch();
@@ -110,12 +111,14 @@ const CartDetailPage = () => {
                     </span>
                   </p>
                   <br />
+                  <Link href="/Checkout">
                   <button
                     className="bg-bgbotones text-white text-base py-2 px-10 rounded-lg mx-2 
-                flex justify-center items-center text-center whitespace-nowrap hover:bg-bgred hover:text-white"
-                  >
+                    flex justify-center items-center text-center whitespace-nowrap hover:bg-bgred hover:text-white"
+                    >
                     Finalizar Compra
                   </button>
+                    </Link>
                 </div>
               </div>
             </fieldset>
