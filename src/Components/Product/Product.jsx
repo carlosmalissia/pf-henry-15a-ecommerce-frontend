@@ -100,6 +100,7 @@ export default function Product() {
   const getProduct = async () => {
     try {
 
+
       const response = await axios
         .get(`https://pf-15a.up.railway.app/api/filter?itemsperpage=${pageSize}&actualpage=${actualPage}&category=${category}&rating=${rating}&price=${price}&minprice=${minprice}&maxprice=${maxprice}`);
       // console.log(response.data)
@@ -110,6 +111,7 @@ export default function Product() {
       throw new Error(error);
     }
   }
+
   useEffect(() => {
     getProduct();
     // console.log(product)
@@ -254,10 +256,12 @@ export default function Product() {
                     </div>
                   </nav>
 
+
                 </div>
 
               </div>
             )}
+
           </div>
         </div>
         <div className="w-3/4">
