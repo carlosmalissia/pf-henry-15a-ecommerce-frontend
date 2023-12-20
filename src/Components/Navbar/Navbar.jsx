@@ -34,6 +34,9 @@ const admin = <FontAwesomeIcon icon={faUserShield} />;
 const cart = <FontAwesomeIcon icon={faCartShopping} />;
 
 function NavBar() {
+
+  
+  
   /* const pathname = usePathname();
   if (pathname === "/AdminDashboard") return; */
   useEffect(() => {
@@ -151,10 +154,10 @@ function NavBar() {
             </Link>
 
             {/* este es mi login */}
-            <li className={styles.nav__item}>
-              <Link href="/Register" className={styles.nav__link}>
+            <li className={styles.nav__link}>
+              
                 <Ingresar />
-              </Link>
+              
             </li>
 
             <li className={styles.nav__item}>
