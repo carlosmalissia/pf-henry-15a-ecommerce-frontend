@@ -42,6 +42,12 @@ export const userApi = createApi({
             }),
             invalidatesTags: ['Users'] // crea un usuario  
         }),
+        logoutUser: builder.mutation({
+            query: () => ({
+                url: `/auth/signout`, // URL del endpoint de cerrar sesión
+                method: 'POST',
+            }),
+        }),
     })
 })
 
@@ -51,5 +57,6 @@ export const {
    useCreateUserMutation,
    useUpdateUserMutation,
    useLoginUserMutation,
+   useLogoutUserMutation,
 
 } = userApi
