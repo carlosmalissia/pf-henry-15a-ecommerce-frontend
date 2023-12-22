@@ -45,7 +45,7 @@ export const userApi = createApi({
         logoutUser: builder.mutation({
             query: () => ({
                 url: `/auth/signout`, // URL del endpoint de cerrar sesión
-                method: 'POST',
+                method: 'GET',
             }),
         }),
     })
