@@ -12,7 +12,7 @@ import {
 } from "@/redux/services/productApi";
 import { useDispatch } from "react-redux";
 import { pageone } from "@/redux/features/countPageSlice";
-
+import { getlogindata } from "@/redux/features/userSlice";
 export default function Product() {
   const actualPage = useAppSelector((state) => state.countPageReducer.page);
   const pageSize = useAppSelector((state) => state.countPageReducer.pageSize);
@@ -113,6 +113,7 @@ export default function Product() {
   }
 
   useEffect(() => {
+    
     getProduct();
     // console.log(product)
   }, [actualPage, select, selectRange]);
@@ -125,8 +126,7 @@ export default function Product() {
   };
 
   useEffect(() => {
-    // Cuando cambia actualPage, se vuelve a cargar la página actual
-    // Puedes realizar otras acciones aquí si es necesario
+
   }, []);
 
   // console.log(searchData?.pageSize , searchData?.actualPage)

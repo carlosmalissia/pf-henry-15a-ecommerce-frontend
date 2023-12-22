@@ -6,11 +6,20 @@ import Link from "next/link";
 import { MdOutlineShoppingCart } from "react-icons/md";
 import { addItem } from "@/redux/features/cart";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import {getlogindata} from "@/redux/features/userSlice"
+import { useCartShoppingQuery } from "@/redux/services/usersApi";
 
 export default function Card({ _id, title, price, image, category, stock }) {
   const [hovered, setHovered] = useState(false);
   const cartItems = useAppSelector((state) => state.cartReducer.cartItems);
+  const userId = useAppSelector((state) => state.loginReducer.user);
   const dispatch = useAppDispatch();
+
+  console.log("user id ", userId?._id);
+  const { data: cartData, error: cartError } = useCartShoppingQuery({
+      userID: userId?._id,
+      _id: _id,
+  });
 
   const handleAddToCart = () => {
     const productData = {
@@ -27,7 +36,7 @@ export default function Card({ _id, title, price, image, category, stock }) {
   };
 
   useEffect(() => {
-    console.log("Contenido del carrito:", cartItems);
+    dispatch(getlogindata());
   }, [cartItems]);
 
   return (

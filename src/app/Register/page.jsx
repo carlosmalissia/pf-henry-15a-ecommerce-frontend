@@ -134,7 +134,7 @@ const Register = () => {
           const { user } = loginResponse.data;
           const userName = user.name;
           setWelcomeMessageLogin(`¡Hola de nuevo  ${userName}!`);
-          console.log("sesion exitosa:", loginResponse);
+          
           // Puedes hacer más cosas aquí si es necesario
         } else {
           console.error(

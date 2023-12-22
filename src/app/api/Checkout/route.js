@@ -7,6 +7,7 @@ const clientSecret = process.env.PAYPAL_CLIENT_SECRET;
 const environment = new paypal.core.SandboxEnvironment(clientId, clientSecret);
 const client = new paypal.core.PayPalHttpClient(environment);
 
+
 export async function POST(req, res) {
   //const cartData = await req.json()
   //console.log(cartData)
@@ -26,6 +27,7 @@ export async function POST(req, res) {
               value: "200"
             }
           }
+
         },
 
         items: [
@@ -61,10 +63,16 @@ export async function POST(req, res) {
 
 function calculateTotal(cartData) {
   let total = 0;
-  for (const item of cartData) {
-    total += item.subtotal;
-  }
-  console.log("Total Calculado:", total.toFixed(2));
-  return total.toFixed(2);
-}
 
+  // Verifica si hay una propiedad 'cartData' en cartData
+  if (cartData && Array.isArray(cartData)) {
+    for (const item of cartData) {
+      total += item.subtotal;
+    }
+    console.log("Total Calculado:", total.toFixed(2));
+    return total.toFixed(2);
+  } else {
+    console.error("No se pudo encontrar la propiedad 'cartData' en cartData");
+    return "0.00";
+  }
+}
