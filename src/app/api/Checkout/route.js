@@ -9,33 +9,33 @@ const client = new paypal.core.PayPalHttpClient(environment);
 
 export async function POST(req) {
   try {
-    // Obtener la información del carrito desde req.body
-    const cartData = req.body.cartData;
+
+    
+    console.log("Request Body:", req.body);
+    const cartData = await req.json();  
     console.log("Cart Data:", cartData);
 
     // Aquí debes construir la lógica para crear una orden de PayPal con múltiples artículos
     const request = new paypal.orders.OrdersCreateRequest();
     request.prefer("return=representation");
-    
+
     request.requestBody({
       intent: "CAPTURE",
       purchase_units: [
         {
           amount: {
             currency_code: "USD",
-            value: calculateTotal(cartData), // Usar el total calculado del carrito
+            value: calculateTotal(cartData.cartData),
           },
-          items: cartData.map((item) => {
-            return {
-              name: item.title,
-              description: item.description,
-              unit_amount: {
-                currency_code: "USD",
-                value: item.price.toFixed(2),
-              },
-              quantity: item.quantity.toString(),
-            };
-          }),
+          items: Array.isArray(cartData.cartData) ? cartData.cartData.map((item) => ({
+            name: item.title,
+            description: item.description,
+            unit_amount: {
+              currency_code: "USD",
+              value: item.price.toFixed(2),
+            },
+            quantity: item.quantity.toString(),
+          })) : [],
         },
       ],
     });
@@ -56,10 +56,16 @@ export async function POST(req) {
 
 function calculateTotal(cartData) {
   let total = 0;
-  for (const item of cartData) {
-    total += item.subtotal;
-  }
-  console.log("Total Calculado:", total.toFixed(2));
-  return total.toFixed(2);
-}
 
+  // Verifica si hay una propiedad 'cartData' en cartData
+  if (cartData && Array.isArray(cartData)) {
+    for (const item of cartData) {
+      total += item.subtotal;
+    }
+    console.log("Total Calculado:", total.toFixed(2));
+    return total.toFixed(2);
+  } else {
+    console.error("No se pudo encontrar la propiedad 'cartData' en cartData");
+    return "0.00";
+  }
+}
