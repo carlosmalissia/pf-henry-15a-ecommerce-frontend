@@ -3,7 +3,7 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getCartData } from "@/redux/features/cart";
-
+import { getlogindata } from "@/redux/features/userSlice";
 import styles from "./page.module.css";
 import "remixicon/fonts/remixicon.css";
 
@@ -12,7 +12,7 @@ import Favorites from "@/Components/Favorites/Favorites";
 
 export default function Home() {
   const dispatch = useDispatch();
-
+  const userData = useSelector((state) => state.loginReducer.user);
   const cartData = useSelector((state) => state.cartReducer.cartItems);
 
   /*=============== SHOW SCROLL UP ===============*/
@@ -27,8 +27,8 @@ export default function Home() {
     };
     window.addEventListener("scroll", scrollUp);
 
-    // Cargar datos del carrito desde localStorage
     dispatch(getCartData());
+    dispatch(getlogindata());
   }, []);
 
   return (
