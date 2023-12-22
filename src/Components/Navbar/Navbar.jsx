@@ -143,7 +143,7 @@ function NavBar() {
           <ul className={styles.nav__list}>
             <li className={styles.nav__item}>
               <a
-                href="/#home"
+                href="/#product"
                 className={`${styles.nav__link} ${styles.active_link}`}
               >
                 {home} Inicio
@@ -169,7 +169,7 @@ function NavBar() {
             {/* este es mi login */}
             <li className={styles.nav__link}>
               {userName ? (
-                   <BotonPerfil/>
+                <BotonPerfil />
               ) : (
                 <Ingresar />
               )}
