@@ -4,19 +4,58 @@ import { useSelector } from "react-redux";
 import { getCartData } from "@/redux/features/cart";
 import { useAppDispatch } from "@/redux/hooks";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+import axios from 'axios'
 
-const page = () => {
+const Page = () => {
   const cartItems = useSelector((state) => state.cartReducer.cartItems);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
+    // Llama a getCartData al cargar el componente para asegurarte de que cartItems se haya actualizado
     dispatch(getCartData());
-  });
+  }, [dispatch]);
 
   const count = cartItems.reduce((total, item) => total + item.quantity, 0);
 
   const calculateTotal = () => {
-    return cartItems.reduce((acc, item) => acc + item.subtotal, 0).toFixed(2);
+    const total = cartItems.reduce((acc, item) => acc + item.subtotal, 0).toFixed(2);
+    return total
+  };
+  const totalPay = calculateTotal()
+  console.log("CartItems:", cartItems);
+
+  const handleCreateOrder = async () => {
+    try {
+      // Asegúrate de que cartItems se haya actualizado antes de realizar la solicitud
+      await dispatch(getCartData());
+
+      const response = await fetch("/api/Checkout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ cartData: cartItems }),
+      });
+
+      if (response.ok) {
+
+        const orderData = await response.json();
+        console.log("Respuesta del backend:", orderData);
+        return orderData.cartData.id;
+
+      } else {
+        const errorText = await response.text();
+        console.error(
+          "Error en la solicitud al backend:",
+          response.status,
+          errorText
+        );
+        throw new Error(`Error en la solicitud al backend: ${response.status}`);
+      }
+    } catch (error) {
+      console.error("Error al procesar la respuesta del backend:", error);
+      // Manejar el error y posiblemente mostrar un mensaje al usuario
+    }
   };
 
   return (
@@ -94,40 +133,36 @@ const page = () => {
                           shape: "rect",
                           height: 40,
                         }}
-                        createOrder={async () => {
-                          try {
-                            const response = await fetch("/api/Checkout", {
-                              method: "POST",
-                              headers: {
-                                "Content-Type": "application/json",
+                        createOrder={(data, actions) => {
+                          return actions.order.create({
+                            purchase_units: [
+                              {
+                                amount: {
+                                  currency_code: "USD",
+                                  value: totalPay,
+                                  breakdown: {
+                                    item_total: {
+                                      currency_code: "USD",
+                                      value: totalPay
+                                    }
+                                  }
+                                },
+                                items: cartItems.map((item) => ({
+                                  name: item.title,
+                                  description: item.description,
+                                  unit_amount: {
+                                    currency_code: "USD",
+                                    value: item.price.toFixed(2),
+                                  },
+                                  quantity: item.quantity.toString(),
+                                }))
                               },
-                              body: JSON.stringify({ cartData: cartItems }),
-                            });
-
-                            if (response.ok) {
-                              const orderData = await response.json();
-                              console.log("Respuesta del backend:", orderData);
-
-                              // Asegúrate de devolver el ID del pedido correctamente
-                              return orderData.id; // Esto debería ser el ID correcto del pedido
-                            } else {
-                              const errorText = await response.text();
-                              console.error(
-                                "Error en la solicitud al backend:",
-                                response.status,
-                                errorText
-                              );
-                              throw new Error(
-                                `Error en la solicitud al backend: ${response.status}`
-                              );
-                            }
-                          } catch (error) {
-                            console.error(
-                              "Error al procesar la respuesta del backend:",
-                              error
-                            );
-                            // Manejar el error y posiblemente mostrar un mensaje al usuario
-                          }
+                            ]
+                          })
+                        }}
+                        onApprove={async (data, actions) => {
+                          const order = await actions.order?.capture()
+                          console.log("order: ", order);
                         }}
                       />
                     </PayPalScriptProvider>
@@ -144,4 +179,6 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
+
+/* createOrder={handleCreateOrder} */
