@@ -5,7 +5,6 @@ import { faEnvelope, faUser, faLock } from '@fortawesome/free-solid-svg-icons';
 import { useLoginUserMutation } from '@/redux/services/usersApi';
 import { validateLoginForm } from '../../app/Register/formValidation';
 import { FaGoogle } from "react-icons/fa";
-import { useAppSelector } from '@/redux/hooks';
 import { useDispatch } from 'react-redux';
 import {loginUser} from "@/redux/features/userSlice"
 
@@ -15,10 +14,6 @@ const userIcon = <FontAwesomeIcon icon={faUser} />;
 const lockIcon = <FontAwesomeIcon icon={faLock} />;
 
 const LoginForm = () => {
-  const loginState= useAppSelector((state)=>{
-    state.loginReducer.user
-  })
-  console.log("hola", loginState);
   const dispatch = useDispatch()
   const [formErrors, setFormErrors] = useState({});
   const [login] = useLoginUserMutation();

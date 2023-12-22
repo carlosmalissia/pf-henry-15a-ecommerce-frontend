@@ -1,6 +1,5 @@
 "use client";
 import React, { useState } from "react";
-
 //componentes
 import {
   WelcomeMessage,
@@ -12,6 +11,8 @@ import { validateRegisterForm, validateLoginForm } from "./formValidation";
 //redux
 import { useCreateUserMutation } from "@/redux/services/usersApi";
 import { useLoginUserMutation } from "@/redux/services/usersApi";
+import {loginUser} from "@/redux/features/userSlice"
+import { useDispatch } from 'react-redux';
 //iconos
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FaGoogle } from "react-icons/fa";
@@ -23,10 +24,11 @@ const lockIcon = <FontAwesomeIcon icon={faLock} />;
 const Register = () => {
   /*   const [authenticated, setAuthenticated] = useState(false); */
 
+  const dispatch = useDispatch()
   //estado para la creacion de usuarios
   const [newUser] = useCreateUserMutation();
   //estado para el login
-  const [loginUser] = useLoginUserMutation();
+  const [login] = useLoginUserMutation();
   //estado para las validaciones
   const [formErrors, setFormErrors] = useState({});
 
@@ -127,13 +129,14 @@ const Register = () => {
       // no entra al try , verificar el validate form
       // Lógica de inicio de sesión
       try {
-        const loginResponse = await loginUser(loginFormData);
+        const loginResponse = await login(loginFormData);
 
         if (loginResponse?.data?.token) {
           // La autenticación fue exitosa
           const { user } = loginResponse.data;
           const userName = user.name;
           setWelcomeMessageLogin(`¡Hola de nuevo  ${userName}!`);
+          dispatch(loginUser(loginResponse.data))
           
           // Puedes hacer más cosas aquí si es necesario
         } else {
