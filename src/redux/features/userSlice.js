@@ -6,17 +6,18 @@ const authSlice = createSlice({
   initialState: {
     user: null,
     token: null,
-    // Otros campos de sesión que desees almacenar
   },
   reducers: {
     getlogindata: (state) => {
-        if (!state.user) {
-            const userData = JSON.parse(localStorage.getItem("user"));
-            if (userData) {
+      if (state.user) {
+          const userDataString = localStorage.getItem("user");
+          console.log("userDataString", userDataString);
+          const userData = JSON.parse(userDataString);
+          if (userData) {
               state.user = userData.user;
-            }
-        }
-    },
+          }
+      }
+  },
     loginUser: (state, action) => {
         console.log(action.payload); 
       // Almacena la información del usuario y el token en el estado
