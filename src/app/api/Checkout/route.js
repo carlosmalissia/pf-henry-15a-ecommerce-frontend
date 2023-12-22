@@ -7,51 +7,58 @@ const clientSecret = process.env.PAYPAL_CLIENT_SECRET;
 const environment = new paypal.core.SandboxEnvironment(clientId, clientSecret);
 const client = new paypal.core.PayPalHttpClient(environment);
 
-export async function POST(req) {
-  try {
 
-    
-    console.log("Request Body:", req.body);
-    const cartData = await req.json();  
-    console.log("Cart Data:", cartData);
+export async function POST(req, res) {
+  //const cartData = await req.json()
+  //console.log(cartData)
+  const request = new paypal.orders.OrdersCreateRequest();
+  //request.prefer("return=representation");
 
-    // Aquí debes construir la lógica para crear una orden de PayPal con múltiples artículos
-    const request = new paypal.orders.OrdersCreateRequest();
-    request.prefer("return=representation");
+  request.requestBody({
+    intent: "CAPTURE",
+    purchase_units: [
+      {
+        amount: {
+          currency_code: "USD",
+          value: "200",
+          breakdown: {
+            item_total: {
+              currency_code: "USD",
+              value: "200"
+            }
+          }
 
-    request.requestBody({
-      intent: "CAPTURE",
-      purchase_units: [
-        {
-          amount: {
-            currency_code: "USD",
-            value: calculateTotal(cartData.cartData),
-          },
-          items: Array.isArray(cartData.cartData) ? cartData.cartData.map((item) => ({
-            name: item.title,
-            description: item.description,
+        },
+
+        items: [
+          {
+            name: "remera",
+            description: "pilcha",
+            quantity: "1",
             unit_amount: {
               currency_code: "USD",
-              value: item.price.toFixed(2),
-            },
-            quantity: item.quantity.toString(),
-          })) : [],
-        },
-      ],
-    });
+              value: "150"
+            }
+          },
+          {
+            name: "remera",
+            description: "pilcha",
+            quantity: "1",
+            unit_amount: {
+              currency_code: "USD",
+              value: "50"
+            }
+          }
 
-    console.log("Request to PayPal:", request);
+        ]
+      }
 
-    const response = await client.execute(request);
-    console.log("Response from PayPal:", response.result);
+    ]
+  })
+  const response = await client.execute(request)
+  console.log(response);
+  return NextResponse.json({ id: response.result.id });
 
-  
-    return res.json({ id: response.result.id });
-
-  } catch (error) {
-    console.error(error);
-    return NextResponse.error({ status: 500, body: 'Error en el proceso de pago' });
-  }
 }
 
 function calculateTotal(cartData) {

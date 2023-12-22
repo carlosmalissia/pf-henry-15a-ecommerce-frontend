@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { getCartData } from "@/redux/features/cart";
 import { useAppDispatch } from "@/redux/hooks";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+import axios from 'axios'
 
 const Page = () => {
   const cartItems = useSelector((state) => state.cartReducer.cartItems);
@@ -17,9 +18,10 @@ const Page = () => {
   const count = cartItems.reduce((total, item) => total + item.quantity, 0);
 
   const calculateTotal = () => {
-    return cartItems.reduce((acc, item) => acc + item.subtotal, 0).toFixed(2);
+    const total = cartItems.reduce((acc, item) => acc + item.subtotal, 0).toFixed(2);
+    return total
   };
-
+  const totalPay = calculateTotal()
   console.log("CartItems:", cartItems);
 
   const handleCreateOrder = async () => {
@@ -40,7 +42,7 @@ const Page = () => {
         const orderData = await response.json();
         console.log("Respuesta del backend:", orderData);
         return orderData.cartData.id;
-        
+
       } else {
         const errorText = await response.text();
         console.error(
@@ -131,7 +133,37 @@ const Page = () => {
                           shape: "rect",
                           height: 40,
                         }}
-                        createOrder={handleCreateOrder}
+                        createOrder={(data, actions) => {
+                          return actions.order.create({
+                            purchase_units: [
+                              {
+                                amount: {
+                                  currency_code: "USD",
+                                  value: totalPay,
+                                  breakdown: {
+                                    item_total: {
+                                      currency_code: "USD",
+                                      value: totalPay
+                                    }
+                                  }
+                                },
+                                items: cartItems.map((item) => ({
+                                  name: item.title,
+                                  description: item.description,
+                                  unit_amount: {
+                                    currency_code: "USD",
+                                    value: item.price.toFixed(2),
+                                  },
+                                  quantity: item.quantity.toString(),
+                                }))
+                              },
+                            ]
+                          })
+                        }}
+                        onApprove={async (data, actions) => {
+                          const order = await actions.order?.capture()
+                          console.log("order: ", order);
+                        }}
                       />
                     </PayPalScriptProvider>
                   </div>
@@ -146,5 +178,3 @@ const Page = () => {
     </div>
   );
 };
-
-export default Page;
