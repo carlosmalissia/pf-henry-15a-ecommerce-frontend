@@ -55,6 +55,7 @@ export default function Product() {
 
   //trayendo los select seleccionados
   const handleChange = (e) => {
+    dispatch(pageone());
     let newState = {
       ...select,
       [e.target.name]: e.target.value,
@@ -69,6 +70,7 @@ export default function Product() {
 
   })
   const handleChangeRange = (e) => {
+    dispatch(pageone());
     if (e.target.value === "min") {
       setSelectRange({
         minprice: 0,
@@ -125,9 +127,7 @@ export default function Product() {
     setSearchTerm(e.target.value);
   };
 
-  useEffect(() => {
 
-  }, []);
 
   // console.log(searchData?.pageSize , searchData?.actualPage)
 
