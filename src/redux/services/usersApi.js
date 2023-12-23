@@ -18,6 +18,15 @@ export const userApi = createApi({
             }),
           }),
         
+        loginUserGoogle: builder.mutation({
+        query: ({ token }) => ({
+            url: `/auth/signin/POST`, // URL del endpoint de inicio de sesión
+            method: 'POST',
+            body: {
+                token,
+            },
+        }),
+        }),
 
         getAllUsers: builder.query({
             query: () => '/api/users',
