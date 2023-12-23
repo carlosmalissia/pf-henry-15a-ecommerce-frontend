@@ -7,6 +7,9 @@ import { faEnvelope, faUser, faLock } from '@fortawesome/free-solid-svg-icons';
 import { useLoginUserMutation } from '@/redux/services/usersApi';
 import { validateLoginForm } from '../../app/Register/formValidation';
 import { FaGoogle } from "react-icons/fa";
+import { useDispatch } from 'react-redux';
+import {loginUser} from "@/redux/features/userSlice"
+
 
 import { signIn, signOut, useSession } from "next-auth/react";
 
@@ -16,8 +19,9 @@ const userIcon = <FontAwesomeIcon icon={faUser} />;
 const lockIcon = <FontAwesomeIcon icon={faLock} />;
 
 const LoginForm = () => {
+  const dispatch = useDispatch()
   const [formErrors, setFormErrors] = useState({});
-  const [loginUser] = useLoginUserMutation();
+  const [login] = useLoginUserMutation();
   const [loginSuccess, setLoginSuccess] = useState(false);
 
   const [loginFormData, setLoginFormData] = useState({
@@ -46,10 +50,13 @@ const LoginForm = () => {
 
     if (validateForm()) {
       try {
-        const loginResponse = await loginUser(loginFormData);
+        const loginResponse = await login(loginFormData);
         if (loginResponse?.data?.token) {
-          console.log('sesión exitosa:', loginResponse);
+         
           setLoginSuccess(true);
+          dispatch(loginUser(loginResponse.data))
+          
+
         } else {
           console.error('Error en el inicio de sesión:', loginResponse?.data?.error);
         }

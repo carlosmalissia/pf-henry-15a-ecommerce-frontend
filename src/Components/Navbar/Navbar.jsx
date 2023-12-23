@@ -24,7 +24,9 @@ import {
   faCartShopping,
 } from '@fortawesome/free-solid-svg-icons';
 import { useAppSelector } from "@/redux/hooks";
-
+import { getlogindata } from "@/redux/features/userSlice";
+import { useDispatch } from "react-redux";
+import BotonPerfil from "../BotonPerfil/BotonPerfil";
 
 const home = <FontAwesomeIcon icon={faHome} />;
 const favorite = <FontAwesomeIcon icon={faHeart} />;
@@ -35,11 +37,21 @@ const cart = <FontAwesomeIcon icon={faCartShopping} />;
 
 function NavBar() {
 
-  
-  
+
+
+
+  const userData = useAppSelector((state) => state.loginReducer.user);
+  console.log("userData", userData);
+  const userName = userData?.name;
+  const dispatch = useDispatch();
+
+
   /* const pathname = usePathname();
   if (pathname === "/AdminDashboard") return; */
   useEffect(() => {
+
+
+
     /*=============== SHOW MENU ===============*/
     const navMenu = document.getElementById("nav-menu"),
       navContainer = document.getElementById("header"),
@@ -116,6 +128,7 @@ function NavBar() {
   useEffect(() => {
     const count = cartItems.reduce((total, item) => total + item.quantity, 0);
     setCartItemsCount(count);
+    dispatch(getlogindata());
   }, [cartItems]);
 
 
@@ -150,14 +163,16 @@ function NavBar() {
               </Link>
             </li>
             <Link href="/about" className={styles.nav__link}>
-              {user} Quiénes somos
+              {user} Quienes somos
             </Link>
 
             {/* este es mi login */}
             <li className={styles.nav__link}>
-              
+              {userName ? (
+                   <BotonPerfil/>
+              ) : (
                 <Ingresar />
-              
+              )}
             </li>
 
             <li className={styles.nav__item}>
