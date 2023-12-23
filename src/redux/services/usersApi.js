@@ -59,8 +59,8 @@ export const userApi = createApi({
         }),
         cartShopping: builder.query({
             query: ({ userID, _id }) => {
-                console.log("userID:", userID);
-                console.log("_id:", _id);
+                console.log("este es el userID:", userID);
+                console.log("es el porducto _id:", _id);
         
                 return {
                     url: `/api/users/${userID}/shoppingCart`,

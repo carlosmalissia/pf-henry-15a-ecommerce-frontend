@@ -9,6 +9,7 @@ import { useGetProductByIdQuery } from "@/redux/services/productApi";
 import { useDispatch } from 'react-redux';
 import {addItem} from '@/redux/features/cart'
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { useCartShoppingQuery } from "@/redux/services/usersApi";
 
 
 export default function DetailID({ params }) {
@@ -16,6 +17,15 @@ export default function DetailID({ params }) {
   
   const cartItems = useAppSelector((state) => state.cartReducer.cartItems);
   const dispatch = useAppDispatch()
+  const userId = useAppSelector((state) => state.loginReducer.user);
+
+  console.log("user id ", userId?._id);
+
+
+  const { data: cartData, error: cartError } = useCartShoppingQuery({
+      userID: userId?._id,
+      _id: _id,
+  });
 
   const { data: productById, error, isLoading, isFetching } = useGetProductByIdQuery(
     _id

@@ -31,7 +31,6 @@ const authSlice = createSlice({
       // Almacena también en el localStorage
       localStorage.setItem('user', JSON.stringify(action.payload.user));
       localStorage.setItem('token', action.payload.token);
-
     },
     logoutUser: (state) => {
       // Limpia la información del usuario y el token del estado
@@ -46,4 +45,6 @@ const authSlice = createSlice({
 });
 
 export const { loginUser, logoutUser, getlogindata } = authSlice.actions;
+
 export default authSlice.reducer;
+
