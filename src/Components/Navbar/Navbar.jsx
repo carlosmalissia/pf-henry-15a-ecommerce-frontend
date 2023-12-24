@@ -24,7 +24,9 @@ import {
   faCartShopping,
 } from '@fortawesome/free-solid-svg-icons';
 import { useAppSelector } from "@/redux/hooks";
-
+import { getlogindata } from "@/redux/features/userSlice";
+import { useDispatch } from "react-redux";
+import BotonPerfil from "../BotonPerfil/BotonPerfil";
 
 const home = <FontAwesomeIcon icon={faHome} />;
 const favorite = <FontAwesomeIcon icon={faHeart} />;
@@ -35,11 +37,21 @@ const cart = <FontAwesomeIcon icon={faCartShopping} />;
 
 function NavBar() {
 
-  
-  
+
+
+
+  const userData = useAppSelector((state) => state.loginReducer.user);
+  console.log("userData", userData);
+  const userName = userData?.name;
+  const dispatch = useDispatch();
+
+
   /* const pathname = usePathname();
   if (pathname === "/AdminDashboard") return; */
   useEffect(() => {
+
+
+
     /*=============== SHOW MENU ===============*/
     const navMenu = document.getElementById("nav-menu"),
       navContainer = document.getElementById("header"),
@@ -116,6 +128,7 @@ function NavBar() {
   useEffect(() => {
     const count = cartItems.reduce((total, item) => total + item.quantity, 0);
     setCartItemsCount(count);
+    dispatch(getlogindata());
   }, [cartItems]);
 
 
@@ -130,37 +143,52 @@ function NavBar() {
           <ul className={styles.nav__list}>
             <li className={styles.nav__item}>
               <a
-                href="/#home"
+                href="/#product"
                 className={`${styles.nav__link} ${styles.active_link}`}
+
               >
                 {home} Inicio
               </a>
             </li>
 
             <li className={styles.nav__item}>
-              <a href="/#favorites" className={styles.nav__link}>
+              <a href="/#favorites"
+                className={styles.nav__link}
+
+              >
                 {favorite} Favoritos
               </a>
             </li>
             <li className={styles.nav__item}>
               {/* <a href="/#product" className="nav__link relative text-title-color text-second-font font-medium hover:text-title-color-hover hover:after-width-70 active:after-width-70"> */}
 
-              <Link href="/#product" className={styles.nav__link}>
+              <Link href="/#product"
+                className={styles.nav__link}
+
+              >
                 {productos} Productos
               </Link>
             </li>
-            <Link href="/about" className={styles.nav__link}>
-              {user} Quiénes somos
+            <Link href="/about" className={styles.nav__link}
+
+            >
+              {user} Quienes somos
             </Link>
 
             {/* este es mi login */}
-            <li className={styles.nav__link}>
-              
+            <li className={styles.nav__link}
+
+            >
+              {userName ? (
+                <BotonPerfil />
+              ) : (
                 <Ingresar />
-              
+              )}
             </li>
 
-            <li className={styles.nav__item}>
+            <li className={styles.nav__item}
+
+            >
               <Link href="/AdminDashboard" className={styles.nav__link}>
                 {admin} Admin
               </Link>

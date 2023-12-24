@@ -100,18 +100,25 @@ import LoginForm from '../LoginForm/LoginForm'; // Importar el nuevo componente 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 
+import { useSession } from "next-auth/react";
+
 
 const userIcon = <FontAwesomeIcon icon={faUser} />;
 
 // Nuevo componente para el botón de ingresar
 const IngresarButton = ({ onMouseEnter, onMouseLeave }) => {
+  const {data, status} = useSession();
+
   return (
     <button
       className='text-gray-600 font-medium'
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
-      {userIcon} Ingresar
+      { status==='unauthenticated' ? 
+        <span className=''>{userIcon} Ingresar</span> :
+        <span className='flex'><img src={data?.user.image} width={25} height={25} className='rounded-full w-5 h-5'/><p>{data?.user.name}</p></span>
+      }
     </button>
   );
 };

@@ -6,11 +6,20 @@ import Link from "next/link";
 import { MdOutlineShoppingCart } from "react-icons/md";
 import { addItem } from "@/redux/features/cart";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { getlogindata } from "@/redux/features/userSlice"
+import { useCartShoppingQuery } from "@/redux/services/usersApi";
 
 export default function Card({ _id, title, price, image, category, stock }) {
   const [hovered, setHovered] = useState(false);
   const cartItems = useAppSelector((state) => state.cartReducer.cartItems);
+  const userId = useAppSelector((state) => state.loginReducer.user);
   const dispatch = useAppDispatch();
+
+  console.log("user id ", userId?._id);
+  const { data: cartData, error: cartError } = useCartShoppingQuery({
+    userID: userId?._id,
+    _id: _id,
+  });
 
   const handleAddToCart = () => {
     const productData = {
@@ -27,12 +36,12 @@ export default function Card({ _id, title, price, image, category, stock }) {
   };
 
   useEffect(() => {
-    console.log("Contenido del carrito:", cartItems);
+    dispatch(getlogindata());
   }, [cartItems]);
 
   return (
     <div
-      className={`bg-white-500 w-full border border-gray-300 rounded-md p-2 relative flex flex-col`}
+      className={`bg-white-500 w-full border border-gray-300 rounded-md p-2 relative flex flex-col shadow-md`}
     >
       <Link href={`/Detail/${_id}`} className="flex-1">
         <div className="flex flex-col items-center h-auto w-auto m-5">
@@ -66,9 +75,8 @@ export default function Card({ _id, title, price, image, category, stock }) {
         <button
           onClick={handleAddToCart}
           className={`relative text-sm py-2 px-6 text-center text-white border border-bg-bgred overflow-hidden transition-all ease-in-out before:absolute before:bg-bgred before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:-z-10 before:transition-all before:duration-300 before:w-full before:h-0 hover:before:h-full hover:text-white
-              bg-bgbotones p-2 rounded-lg mx-auto flex justify-center items-center  duration-300  transform ${
-                hovered ? " hover:text-white " : ""
-              } w-32 whitespace-nowrap`}
+              bg-bgbotones p-2 rounded-lg mx-auto flex justify-center items-center  duration-300  transform ${hovered ? " hover:text-white " : ""
+            } w-32 whitespace-nowrap`}
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}
         >
