@@ -145,29 +145,40 @@ function NavBar() {
               <a
                 href="/#product"
                 className={`${styles.nav__link} ${styles.active_link}`}
+
               >
                 {home} Inicio
               </a>
             </li>
 
             <li className={styles.nav__item}>
-              <a href="/#favorites" className={styles.nav__link}>
+              <a href="/#favorites"
+                className={styles.nav__link}
+
+              >
                 {favorite} Favoritos
               </a>
             </li>
             <li className={styles.nav__item}>
               {/* <a href="/#product" className="nav__link relative text-title-color text-second-font font-medium hover:text-title-color-hover hover:after-width-70 active:after-width-70"> */}
 
-              <Link href="/#product" className={styles.nav__link}>
+              <Link href="/#product"
+                className={styles.nav__link}
+
+              >
                 {productos} Productos
               </Link>
             </li>
-            <Link href="/about" className={styles.nav__link}>
+            <Link href="/about" className={styles.nav__link}
+
+            >
               {user} Quienes somos
             </Link>
 
             {/* este es mi login */}
-            <li className={styles.nav__link}>
+            <li className={styles.nav__link}
+
+            >
               {userName ? (
                 <BotonPerfil />
               ) : (
@@ -175,7 +186,9 @@ function NavBar() {
               )}
             </li>
 
-            <li className={styles.nav__item}>
+            <li className={styles.nav__item}
+
+            >
               <Link href="/AdminDashboard" className={styles.nav__link}>
                 {admin} Admin
               </Link>

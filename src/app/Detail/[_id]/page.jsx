@@ -7,14 +7,14 @@ import { MdOutlineShoppingCart } from "react-icons/md";
 import { BsHeart, BsHeartFill } from "react-icons/bs";
 import { useGetProductByIdQuery } from "@/redux/services/productApi";
 import { useDispatch } from 'react-redux';
-import {addItem} from '@/redux/features/cart'
+import { addItem } from '@/redux/features/cart'
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { useCartShoppingQuery } from "@/redux/services/usersApi";
 
 
 export default function DetailID({ params }) {
   const { _id } = params;
-  
+
   const cartItems = useAppSelector((state) => state.cartReducer.cartItems);
   const dispatch = useAppDispatch()
   const userId = useAppSelector((state) => state.loginReducer.user);
@@ -31,7 +31,7 @@ export default function DetailID({ params }) {
     _id
   );
 
-    // console.log(productById);
+  // console.log(productById);
 
 
   const [hoveredCarButon, setHoveredCarButon] = useState(false);
@@ -40,17 +40,17 @@ export default function DetailID({ params }) {
   useEffect(() => { }, [_id]);
   useEffect(() => {
     console.log("Contenido del carrito:", cartItems);
-  },[cartItems]);
+  }, [cartItems]);
 
   const handleQuantityChange = (e) => {
     const newQuantity = parseInt(e.target.value, 10);
     if (newQuantity > productById.stock) {
-      setQuantity(productById.stock); 
+      setQuantity(productById.stock);
     } else {
       setQuantity(newQuantity);
     }
   };
-  
+
 
   // Favoritos
   const [isFavorite, setIsFavorite] = useState(false);
@@ -92,15 +92,15 @@ export default function DetailID({ params }) {
       image: productById.image,
       stock: productById.stock
     };
-    
+
     dispatch(addItem(productData));
   };
 
-  
+
 
   return (
     <div>
-      <div className="bg-bggris2 relative pt-10 mx-auto min-w-[20rem] w-[80%] flex flex-col md:flex-row mt-40 mb-10">
+      <div className="bg-bggris2 relative pt-10 mx-auto min-w-[20rem] w-[80%] flex flex-col md:flex-row mt-40 mb-10 shadow-md">
         {/* Imagen a la izquierda en pantallas grandes */}
         <div className="bg-white border-solid border-2 border-primary cursor-grab w-[40%] mb-5 mr-10 relative overflow-hidden flex items-center justify-center ml-10">
           <Image
@@ -110,7 +110,7 @@ export default function DetailID({ params }) {
             height={300}
             priority={true}
             className="border-none object-contain w-[400px] h-[300px] transition-transform transform hover:scale-110"
-         />
+          />
 
         </div>
 
@@ -150,7 +150,7 @@ export default function DetailID({ params }) {
           <br />
           <h2 className="text-start text-sm text-bggris">
 
-            Categoria: {productById.category.name} 
+            Categoria: {productById.category.name}
 
           </h2>
           <br />
