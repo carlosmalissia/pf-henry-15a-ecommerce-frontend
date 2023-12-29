@@ -11,6 +11,9 @@ import {
   useCartShoppingQuery,
   useShoppingCartupdateUserMutation,
 } from "@/redux/services/usersApi";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 export default function Card({ _id, title, price, image, category, stock }) {
   const [hovered, setHovered] = useState(false);
@@ -18,33 +21,37 @@ export default function Card({ _id, title, price, image, category, stock }) {
   const userId = useAppSelector((state) => state.loginReducer.user);
   const userToken = useAppSelector((state) => state.loginReducer.token);
   const dispatch = useAppDispatch();
-
+  
+  const [showLoginMessage, setShowLoginMessage] = useState(false);
+  
+  
   const { data: cartData, error: cartError } = useCartShoppingQuery({
-      userID: userId?._id,
+    userID: userId?._id,
       _id: _id,
   });
 
+
+ let cartItemsId = cartItems.map((product) => product._id)
+
   const [updateCart] = useShoppingCartupdateUserMutation();
-
-const handleUpdateCart = async () => {
-  try {
-    if (userId && userId?._id) {
-      const userID = userId?._id;
-      const token = userToken;
-      const shoppinCart = cartItems;
-
-      console.log("Información a enviar al servidor:", {
-        shoppinCart,
+  
+  const handleUpdateCart = async () => {
+    try {
+      if (userId && userId?._id) {
+        const userID = userId?._id;
+        const token = userToken;
+        const shoppingCart = cartItemsId;
+        
+        console.log("Información a enviar al servidor:", {
+        shoppingCart,
         userID,
         token,
       });
-
-      console.log("userID:", userID);
-
+      
       const { data, error } = await updateCart({
-        shoppinCart,
         userID,
         token,
+        shoppingCart
       });
 
       if (error) {
@@ -60,7 +67,26 @@ const handleUpdateCart = async () => {
   }
 };
 
+
   const handleAddToCart = () => {
+    
+    if (!userId) {
+      setShowLoginMessage(true);
+      
+      toast.error(
+        <>
+          Por favor, <Link href="/Register" className="underline font-bold" >Inicia sesión o crea una cuenta</Link>  para agregar productos al carrito.
+        </>,
+        { autoClose: 3000 }
+      );
+
+      setTimeout(() => {
+        setShowLoginMessage(false);
+      }, 3000); 
+      return;
+    }
+
+
     const productData = {
       _id: _id,
       title: title,
@@ -126,6 +152,8 @@ const handleUpdateCart = async () => {
             "Agregar al carrito"
           )}
         </button>
+           {/* Mostrar mensaje de inicio de sesión si es necesario */}
+        <ToastContainer />
       </div>
     </div>
   );
