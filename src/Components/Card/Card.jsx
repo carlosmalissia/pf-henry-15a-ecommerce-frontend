@@ -6,20 +6,62 @@ import Link from "next/link";
 import { MdOutlineShoppingCart } from "react-icons/md";
 import { addItem } from "@/redux/features/cart";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { getlogindata } from "@/redux/features/userSlice"
-import { useCartShoppingQuery } from "@/redux/services/usersApi";
+
+import { getlogindata } from "@/redux/features/userSlice";
+import {
+  useCartShoppingQuery,
+  useShoppingCartupdateUserMutation,
+} from "@/redux/services/usersApi";
+
+
 
 export default function Card({ _id, title, price, image, category, stock }) {
   const [hovered, setHovered] = useState(false);
   const cartItems = useAppSelector((state) => state.cartReducer.cartItems);
   const userId = useAppSelector((state) => state.loginReducer.user);
+  const userToken = useAppSelector((state) => state.loginReducer.token);
   const dispatch = useAppDispatch();
 
-  console.log("user id ", userId?._id);
   const { data: cartData, error: cartError } = useCartShoppingQuery({
     userID: userId?._id,
     _id: _id,
   });
+
+  const [updateCart] = useShoppingCartupdateUserMutation();
+
+const handleUpdateCart = async () => {
+  try {
+    if (userId && userId?._id) {
+      const userID = userId?._id;
+      const token = userToken;
+      const shoppinCart = cartItems;
+
+      console.log("Información a enviar al servidor:", {
+        shoppinCart,
+        userID,
+        token,
+      });
+
+      console.log("userID:", userID);
+
+      const { data, error } = await updateCart({
+        shoppinCart,
+        userID,
+        token,
+      });
+
+      if (error) {
+        console.error("Error al actualizar el carrito:", error);
+      } else {
+        console.log("Carrito actualizado con éxito:", data);
+      }
+    } else {
+      console.error("userID o userID._id es undefined");
+    }
+  } catch (error) {
+    console.error("Error general al actualizar el carrito:", error);
+  }
+};
 
   const handleAddToCart = () => {
     const productData = {
@@ -33,6 +75,7 @@ export default function Card({ _id, title, price, image, category, stock }) {
     };
 
     dispatch(addItem(productData));
+    handleUpdateCart();
   };
 
   useEffect(() => {

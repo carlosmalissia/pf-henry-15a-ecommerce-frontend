@@ -18,15 +18,6 @@ export const userApi = createApi({
             }),
           }),
         
-        loginUserGoogle: builder.mutation({
-        query: ({ token }) => ({
-            url: `/auth/signin/POST`, // URL del endpoint de inicio de sesión
-            method: 'POST',
-            body: {
-                token,
-            },
-        }),
-        }),
 
         getAllUsers: builder.query({
             query: () => '/api/users',
@@ -54,13 +45,13 @@ export const userApi = createApi({
         logoutUser: builder.mutation({
             query: () => ({
                 url: `/auth/signout`, // URL del endpoint de cerrar sesión
-                method: 'GET',
+                method: 'POST',
             }),
         }),
         cartShopping: builder.query({
             query: ({ userID, _id }) => {
-                console.log("este es el userID:", userID);
-                console.log("es el porducto _id:", _id);
+                // console.log("este es el userID:", userID);
+                // console.log("es el porducto _id:", _id);
         
                 return {
                     url: `/api/users/${userID}/shoppingCart`,
@@ -69,8 +60,20 @@ export const userApi = createApi({
                 };
             },
             invalidatesTags: ['Users']
-        })
-
+        }),
+        shoppingCartupdateUser: builder.mutation({
+            query: (shoppinCart, userID, token) => ({
+              url: `/api/users/${userID}`,
+              method: 'PUT',
+              headers: (headers) => ({
+                ...headers,
+                'Authorization': `Bearer ${token}`,  
+              }),
+              body: shoppinCart,
+            }),
+            invalidatesTags: ['Users'], 
+          })
+          
     })
 })
 
@@ -81,6 +84,7 @@ export const {
    useUpdateUserMutation,
    useLoginUserMutation,
    useLogoutUserMutation,
-   useCartShoppingQuery
+   useCartShoppingQuery,
+   useShoppingCartupdateUserMutation
 
 } = userApi

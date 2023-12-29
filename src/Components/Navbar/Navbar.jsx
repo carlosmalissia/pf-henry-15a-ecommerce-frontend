@@ -41,7 +41,7 @@ function NavBar() {
 
 
   const userData = useAppSelector((state) => state.loginReducer.user);
-  console.log("userData", userData);
+  // console.log("userData", userData);
   const userName = userData?.name;
   const dispatch = useDispatch();
 
