@@ -6,13 +6,15 @@ import Link from "next/link";
 import { MdOutlineShoppingCart } from "react-icons/md";
 import { addItem } from "@/redux/features/cart";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import {  getlogindata  } from "@/redux/features/userSlice";
+import { getlogindata } from "@/redux/features/userSlice";
 import {
   useCartShoppingQuery,
   useShoppingCartupdateUserMutation,
 } from "@/redux/services/usersApi";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
+
 
 
 export default function Card({ _id, title, price, image, category, stock }) {
