@@ -6,22 +6,100 @@ import Link from "next/link";
 import { MdOutlineShoppingCart } from "react-icons/md";
 import { addItem } from "@/redux/features/cart";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { getlogindata } from "@/redux/features/userSlice"
-import { useCartShoppingQuery } from "@/redux/services/usersApi";
+import { getlogindata } from "@/redux/features/userSlice";
+import {
+  useCartShoppingQuery,
+  useShoppingCartupdateUserMutation,
+} from "@/redux/services/usersApi";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
+
 
 export default function Card({ _id, title, price, image, category, stock }) {
   const [hovered, setHovered] = useState(false);
   const cartItems = useAppSelector((state) => state.cartReducer.cartItems);
   const userId = useAppSelector((state) => state.loginReducer.user);
+  const userToken = useAppSelector((state) => state.loginReducer.token);
   const dispatch = useAppDispatch();
 
-  console.log("user id ", userId?._id);
+
+  const [showLoginMessage, setShowLoginMessage] = useState(false);
+
+
+
   const { data: cartData, error: cartError } = useCartShoppingQuery({
     userID: userId?._id,
-    _id: _id,
+      _id: _id,
   });
 
+
+
+  let cartItemsId = cartItems.map((product) => product._id)
+
+  const [updateCart] = useShoppingCartupdateUserMutation();
+
+
+  const handleUpdateCart = async () => {
+    try {
+      if (userId && userId?._id) {
+        const userID = userId?._id;
+        const token = userToken;
+        const shoppingCart = cartItemsId;
+
+
+        console.log("Información a enviar al servidor:", {
+          shoppingCart,
+          userID,
+          token,
+        });
+
+        const { data, error } = await updateCart({
+          userID,
+          token,
+          shoppingCart
+        });
+
+        if (error) {
+          console.error("Error al actualizar el carrito:", error);
+        } else {
+          console.log("Carrito actualizado con éxito:", data);
+        }
+
+      } else {
+        console.error("userID o userID._id es undefined");
+      }
+    } catch (error) {
+      console.error("Error general al actualizar el carrito:", error);
+    }
+  };
+
+
+
   const handleAddToCart = () => {
+
+
+    if (!userId) {
+      setShowLoginMessage(true);
+
+
+      toast.error(
+        <>
+          Por favor, <Link href="/Register" className="underline font-bold" >Inicia sesión o crea una cuenta</Link>  para agregar productos al carrito.
+        </>,
+        { autoClose: 3000 }
+      );
+
+      setTimeout(() => {
+        setShowLoginMessage(false);
+
+      }, 3000);
+
+      return;
+    }
+
+
     const productData = {
       _id: _id,
       title: title,
@@ -33,6 +111,7 @@ export default function Card({ _id, title, price, image, category, stock }) {
     };
 
     dispatch(addItem(productData));
+    handleUpdateCart();
   };
 
   useEffect(() => {
@@ -86,6 +165,10 @@ export default function Card({ _id, title, price, image, category, stock }) {
             "Agregar al carrito"
           )}
         </button>
+
+        {/* Mostrar mensaje de inicio de sesión si es necesario */}
+
+        <ToastContainer />
       </div>
     </div>
   );

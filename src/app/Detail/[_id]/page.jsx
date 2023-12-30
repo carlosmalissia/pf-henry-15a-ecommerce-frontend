@@ -9,7 +9,7 @@ import { useGetProductByIdQuery } from "@/redux/services/productApi";
 import { useDispatch } from 'react-redux';
 import { addItem } from '@/redux/features/cart'
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { useCartShoppingQuery } from "@/redux/services/usersApi";
+import { useCartShoppingQuery, useLazyCartShoppingQuery} from "@/redux/services/usersApi";
 
 
 export default function DetailID({ params }) {

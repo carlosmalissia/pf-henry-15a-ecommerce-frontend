@@ -41,7 +41,7 @@ function NavBar() {
 
 
   const userData = useAppSelector((state) => state.loginReducer.user);
-  console.log("userData", userData);
+  // console.log("userData", userData);
   const userName = userData?.name;
   const dispatch = useDispatch();
 
@@ -136,7 +136,7 @@ function NavBar() {
   return (
     <header className={styles.header} id="header">
       <nav className={`${styles.nav} ${styles.container}`}>
-        <a href="/#" className="text-2xl">
+        <a href="/#" className="text-2xl max-sm:ml-28">
           Henrucci
         </a>
         <div className={styles.nav__menu} id="nav-menu">
