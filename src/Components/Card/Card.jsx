@@ -24,18 +24,22 @@ export default function Card({ _id, title, price, image, category, stock }) {
   const userToken = useAppSelector((state) => state.loginReducer.token);
   const dispatch = useAppDispatch();
 
+
   const [showLoginMessage, setShowLoginMessage] = useState(false);
+
 
 
   const { data: cartData, error: cartError } = useCartShoppingQuery({
     userID: userId?._id,
-    _id: _id,
+      _id: _id,
   });
+
 
 
   let cartItemsId = cartItems.map((product) => product._id)
 
   const [updateCart] = useShoppingCartupdateUserMutation();
+
 
   const handleUpdateCart = async () => {
     try {
@@ -43,6 +47,7 @@ export default function Card({ _id, title, price, image, category, stock }) {
         const userID = userId?._id;
         const token = userToken;
         const shoppingCart = cartItemsId;
+
 
         console.log("Información a enviar al servidor:", {
           shoppingCart,
@@ -61,6 +66,7 @@ export default function Card({ _id, title, price, image, category, stock }) {
         } else {
           console.log("Carrito actualizado con éxito:", data);
         }
+
       } else {
         console.error("userID o userID._id es undefined");
       }
@@ -70,10 +76,13 @@ export default function Card({ _id, title, price, image, category, stock }) {
   };
 
 
+
   const handleAddToCart = () => {
+
 
     if (!userId) {
       setShowLoginMessage(true);
+
 
       toast.error(
         <>
@@ -84,7 +93,9 @@ export default function Card({ _id, title, price, image, category, stock }) {
 
       setTimeout(() => {
         setShowLoginMessage(false);
+
       }, 3000);
+
       return;
     }
 
@@ -154,7 +165,9 @@ export default function Card({ _id, title, price, image, category, stock }) {
             "Agregar al carrito"
           )}
         </button>
+
         {/* Mostrar mensaje de inicio de sesión si es necesario */}
+
         <ToastContainer />
       </div>
     </div>
