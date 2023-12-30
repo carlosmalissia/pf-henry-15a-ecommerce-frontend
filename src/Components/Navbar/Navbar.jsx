@@ -136,7 +136,7 @@ function NavBar() {
   return (
     <header className={styles.header} id="header">
       <nav className={`${styles.nav} ${styles.container}`}>
-        <a href="/#" className="text-2xl">
+        <a href="/#" className="text-2xl max-sm:ml-28">
           Henrucci
         </a>
         <div className={styles.nav__menu} id="nav-menu">
