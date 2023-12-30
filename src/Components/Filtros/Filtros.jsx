@@ -10,7 +10,7 @@ export default function Filtros({ handleChange, handleChangeRange, select, selec
   }, [select]);
   return (
     <>
-      <div className={`${show ? "hidden" : "bg-gray text-black fixed top-28 mt-10 shadow-md lg:hidden"}`} onClick={() => setShow(true)}>
+      <div className={`${show ? "hidden" : "bg-gray text-black fixed top-20 mt-10 shadow-md lg:hidden"}`} onClick={() => setShow(true)}>
         <button className="mt-2 text-black" >
           Filtros
 
