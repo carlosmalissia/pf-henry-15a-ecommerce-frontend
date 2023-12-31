@@ -95,12 +95,14 @@ export default Ingresar; */
 
 
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import LoginForm from '../LoginForm/LoginForm'; // Importar el nuevo componente LoginForm
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 
 import { useSession } from "next-auth/react";
+import { useDispatch } from 'react-redux';
+import { loginUser } from '@/redux/features/userSlice';
 
 
 const userIcon = <FontAwesomeIcon icon={faUser} />;
@@ -108,6 +110,15 @@ const userIcon = <FontAwesomeIcon icon={faUser} />;
 // Nuevo componente para el botón de ingresar
 const IngresarButton = ({ onMouseEnter, onMouseLeave }) => {
   const {data, status} = useSession();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    // console.log("status",status);
+    // console.log("DATA",data);
+    if (status === 'authenticated') {
+      dispatch(loginUser(data));
+    }
+  }, [status]);
 
   return (
     <button
@@ -117,7 +128,7 @@ const IngresarButton = ({ onMouseEnter, onMouseLeave }) => {
     >
       { status==='unauthenticated' ? 
         <span className=''>{userIcon} Ingresar</span> :
-        <span className='flex'><img src={data?.user.image} width={25} height={25} className='rounded-full w-5 h-5'/><p>{data?.user.name}</p></span>
+        <span className='flex'><img src={data?.user.image} width={25} height={25} className='rounded-full w-5 h-5'/><p>Hola {data?.user.name}</p></span>
       }
     </button>
   );

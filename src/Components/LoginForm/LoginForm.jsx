@@ -1,17 +1,19 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEnvelope, faUser, faLock } from '@fortawesome/free-solid-svg-icons';
+import { faEnvelope, faUser, faLock, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import { useLoginUserMutation } from '@/redux/services/usersApi';
 import { validateLoginForm } from '../../app/Register/formValidation';
 import { FaGoogle } from "react-icons/fa";
 import { useDispatch } from 'react-redux';
-import {loginUser} from "@/redux/features/userSlice"
-
+import {loginUser, logoutUser} from "@/redux/features/userSlice"
+import styles from "../Navbar/navbar.module.css"
 
 import { signIn, signOut, useSession } from "next-auth/react";
+import axios from 'axios';
+//import { useCookies } from 'next-client-cookies';
 
 
 const envelopeIcon = <FontAwesomeIcon icon={faEnvelope} />;
@@ -19,7 +21,7 @@ const userIcon = <FontAwesomeIcon icon={faUser} />;
 const lockIcon = <FontAwesomeIcon icon={faLock} />;
 
 const LoginForm = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [formErrors, setFormErrors] = useState({});
   const [login] = useLoginUserMutation();
   const [loginSuccess, setLoginSuccess] = useState(false);
@@ -52,7 +54,7 @@ const LoginForm = () => {
       try {
         const loginResponse = await login(loginFormData);
         if (loginResponse?.data?.token) {
-         
+          
           setLoginSuccess(true);
           dispatch(loginUser(loginResponse.data))
           
@@ -76,14 +78,28 @@ const LoginForm = () => {
   return (
     <div>
       {status === 'authenticated' ? (
-        <div className='bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full h-auto max-w-md mx-auto'>
-        <button
-          type='button'
-          onClick={()=> signOut()}
-          className='w-64 bg-teal-500 hover:bg-red-500 text-white px-4 py-2 rounded focus:outline-none focus:border-teal-300 duration-200 mt-2'
-        >
-          {userIcon} Cerrar sesion
-        </button>
+        <div className='bg-white shadow-md rounded p-8 mb-4 w-full max-w-md mx-auto'>
+          <div className='flex flex-col items-start'>
+            <Link href='/perfil' passHref className={styles.nav__link}>
+                
+                Mi Perfil
+            
+            </Link>
+            <button
+              type='button'
+              onClick={()=> {
+                //alert(document.cookie);
+                const now = new Date();
+                document.cookie = `tg=; expires=${now};`;
+                dispatch(logoutUser());
+                signOut();
+              }}
+              className='bg-red-500 text-white px-4 py-2 rounded flex items-center hover:bg-red-600 text-sm mt-6 transition-all duration-300 ease-in-out'
+            >
+              <FontAwesomeIcon icon={faSignOutAlt} className='mr-2' />
+              Cerrar sesion
+            </button>
+          </div>
         </div>
       ) : (
       <form className='bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full h-auto max-w-md mx-auto' onSubmit={handleLoginSubmit}>
@@ -129,7 +145,9 @@ const LoginForm = () => {
   
         <button
           type='button'
-          onClick={()=> signIn('google')}
+          onClick={async ()=> {
+            signIn('google');
+          }}
           className='flex items-center justify-center w-full h-8 bg-red-500 hover:bg-red-800 text-white px-4 py-2 rounded focus:outline-none focus:border-teal-300 duration-200 mt-2'
         >
           <FaGoogle className="mr-2" />
