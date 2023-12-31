@@ -63,15 +63,17 @@ export const userApi = createApi({
       invalidatesTags: ["Users"],
     }),
     shoppingCartupdateUser: builder.mutation({
-      query: ({shoppingCart,userID, token }) => ({
-        url: `/api/users/${userID}`,
-        method: "PUT",
-        headers: (headers) => ({
-          ...headers,
-          Authorization: `Bearer ${token}`,
-        }),
-        body: { shoppingCart: shoppingCart }, 
-      }),
+      query: ({ shoppingCart, userID, token }) => {
+        const config = {
+          url: `/api/users/${userID}`,
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: { shoppingCart: shoppingCart },
+        };
+        return config;
+      },
       invalidatesTags: ["Users"],
     }),
   }),

@@ -9,8 +9,10 @@ import { useGetProductByIdQuery } from "@/redux/services/productApi";
 import { useDispatch } from 'react-redux';
 import { addItem } from '@/redux/features/cart'
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { useCartShoppingQuery, useLazyCartShoppingQuery} from "@/redux/services/usersApi";
-
+import { useCartShoppingQuery, useShoppingCartupdateUserMutation} from "@/redux/services/usersApi";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Link from "next/link";
 
 export default function DetailID({ params }) {
   const { _id } = params;
@@ -18,10 +20,10 @@ export default function DetailID({ params }) {
   const cartItems = useAppSelector((state) => state.cartReducer.cartItems);
   const dispatch = useAppDispatch()
   const userId = useAppSelector((state) => state.loginReducer.user);
-
-  console.log("user id ", userId?._id);
-
-
+  const userToken = useAppSelector((state) => state.loginReducer.token);
+  let cartItemsId = cartItems.map((product) => product._id)
+  const [showLoginMessage, setShowLoginMessage] = useState(false);
+  
   const { data: cartData, error: cartError } = useCartShoppingQuery({
       userID: userId?._id,
       _id: _id,
@@ -30,17 +32,58 @@ export default function DetailID({ params }) {
   const { data: productById, error, isLoading, isFetching } = useGetProductByIdQuery(
     _id
   );
+  
 
-  // console.log(productById);
+  
+  useEffect(() => { }, [_id]);
+  
+  
+  const [updateCart] = useShoppingCartupdateUserMutation();
+    
+ const handleUpdateCart = async () => {
+  try {
+    if (userId && userId?._id && userToken) {
+      const userID = userId?._id;
+      const token = userToken;
+      const shoppingCart = cartItemsId;
+
+      const config = {
+       shoppingCart,
+       userID,
+       token,
+     };
+     
+     const { data, error } = await updateCart(config);
+
+      if (error) {
+        console.error("Error al actualizar el carrito:", error);
+      } else {
+        console.log("Carrito actualizado con éxito:", data);
+        // Puedes mostrar un mensaje de éxito aquí si es necesario
+      }
+    } else {
+      console.error("userID, userID._id o userToken es undefined");
+    }
+  } catch (error) {
+    console.error("Error general al actualizar el carrito:", error);
+  }
+};
+
+ 
+useEffect(() => {
+ handleUpdateCart();
+ console.log("Contenido del carrito:", cartItems);
+}, [cartItems]);
 
 
+
+  
   const [hoveredCarButon, setHoveredCarButon] = useState(false);
   const [quantity, setQuantity] = useState(1);
 
-  useEffect(() => { }, [_id]);
-  useEffect(() => {
-    console.log("Contenido del carrito:", cartItems);
-  }, [cartItems]);
+
+  
+  
 
   const handleQuantityChange = (e) => {
     const newQuantity = parseInt(e.target.value, 10);
@@ -59,6 +102,16 @@ export default function DetailID({ params }) {
     console.log(`Agregar a favoritos: ${productById.title}`);
   };
 
+
+  if (isLoading || isFetching) return <p>Cargando...</p>;
+
+  if (error) {
+    console.error("Error al obtener el producto:", error);
+    return <p>Hubo un error al obtener el producto.</p>;
+  }
+
+
+
   // Colores de reviews
   function getRatingColorClass(rating) {
     if (rating === 1 || rating === 2) {
@@ -72,17 +125,27 @@ export default function DetailID({ params }) {
     }
   }
 
-  if (isLoading || isFetching) return <p>Cargando...</p>;
-
-  if (error) {
-    console.error("Error al obtener el producto:", error);
-    return <p>Hubo un error al obtener el producto.</p>;
-  }
-
-  //agregar productos al carrito
-
 
   const handleAddToCart = () => {
+
+    if (!userId) {
+      setShowLoginMessage(true);
+      
+      toast.info(
+        <>
+          Por favor, <Link href="/Register" className="underline font-bold" >Inicia sesión o crea una cuenta</Link>  para agregar productos al carrito.
+        </>,
+        { autoClose: 3000 }
+      );
+
+      setTimeout(() => {
+        setShowLoginMessage(false);
+      }, 5000); 
+      return;
+    }
+
+
+
     const productData = {
       _id: productById._id,
       title: productById.title,
@@ -94,9 +157,11 @@ export default function DetailID({ params }) {
     };
 
     dispatch(addItem(productData));
+    toast.success("Producto agregado al carrito.");
+    handleUpdateCart();
   };
 
-
+  
 
   return (
     <div>
@@ -187,6 +252,8 @@ export default function DetailID({ params }) {
                   )}
                 </span>
               </button>
+                {/* Mostrar mensaje de inicio de sesión si es necesario */}
+            <ToastContainer theme="colored"/>
             </div>
           </div>
         </div>
