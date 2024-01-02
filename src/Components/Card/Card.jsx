@@ -6,7 +6,7 @@ import Link from "next/link";
 import { MdOutlineShoppingCart } from "react-icons/md";
 import { addItem } from "@/redux/features/cart";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import {  getlogindata  } from "@/redux/features/userSlice";
+import { getlogindata } from "@/redux/features/userSlice";
 import {
   useCartShoppingQuery,
   useShoppingCartupdateUserMutation,
@@ -15,20 +15,25 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 
+
+
 export default function Card({ _id, title, price, image, category, stock }) {
   const [hovered, setHovered] = useState(false);
   const cartItems = useAppSelector((state) => state.cartReducer.cartItems);
   const userId = useAppSelector((state) => state.loginReducer.user);
   const userToken = useAppSelector((state) => state.loginReducer.token);
   const dispatch = useAppDispatch();
-  
+
+
   const [showLoginMessage, setShowLoginMessage] = useState(false);
-  
-  
+
+
+
   const { data: cartData, error: cartError } = useCartShoppingQuery({
     userID: userId?._id,
       _id: _id,
   });
+
 
  let cartItemsId = cartItems.map((product) => product._id)
 
@@ -63,12 +68,16 @@ export default function Card({ _id, title, price, image, category, stock }) {
    }
  };
 
+
   const handleAddToCart = () => {
-    
+
+
     if (!userId) {
       setShowLoginMessage(true);
+
       
       toast.info(
+
         <>
           Por favor, <Link href="/Register" className="underline font-bold" >Inicia sesión o crea una cuenta</Link>  para agregar productos al carrito.
         </>,
@@ -77,7 +86,9 @@ export default function Card({ _id, title, price, image, category, stock }) {
 
       setTimeout(() => {
         setShowLoginMessage(false);
+
       }, 5000); 
+
       return;
     }
 
@@ -149,8 +160,10 @@ export default function Card({ _id, title, price, image, category, stock }) {
             "Agregar al carrito"
           )}
         </button>
+
            {/* Mostrar mensaje de inicio de sesión si es necesario */}
         <ToastContainer theme="colored"/>
+
       </div>
     </div>
   );
