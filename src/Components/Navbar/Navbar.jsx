@@ -41,7 +41,7 @@ function NavBar() {
 
 
   const userData = useAppSelector((state) => state.loginReducer.user);
-  console.log("userData", userData);
+  // console.log("userData", userData);
   const userName = userData?.name;
   const dispatch = useDispatch();
 
@@ -136,7 +136,7 @@ function NavBar() {
   return (
     <header className={styles.header} id="header">
       <nav className={`${styles.nav} ${styles.container}`}>
-        <a href="/#" className="text-2xl">
+        <a href="/#" className="text-2xl max-sm:ml-20">
           Henrucci
         </a>
         <div className={styles.nav__menu} id="nav-menu">
@@ -145,29 +145,40 @@ function NavBar() {
               <a
                 href="/#product"
                 className={`${styles.nav__link} ${styles.active_link}`}
+
               >
                 {home} Inicio
               </a>
             </li>
 
             <li className={styles.nav__item}>
-              <a href="/#favorites" className={styles.nav__link}>
+              <a href="/#favorites"
+                className={styles.nav__link}
+
+              >
                 {favorite} Favoritos
               </a>
             </li>
             <li className={styles.nav__item}>
               {/* <a href="/#product" className="nav__link relative text-title-color text-second-font font-medium hover:text-title-color-hover hover:after-width-70 active:after-width-70"> */}
 
-              <Link href="/#product" className={styles.nav__link}>
+              <Link href="/#product"
+                className={styles.nav__link}
+
+              >
                 {productos} Productos
               </Link>
             </li>
-            <Link href="/about" className={styles.nav__link}>
+            <Link href="/about" className={styles.nav__link}
+
+            >
               {user} Quienes somos
             </Link>
 
             {/* este es mi login */}
-            <li className={styles.nav__link}>
+            <li className={styles.nav__link}
+
+            >
               {userName ? (
                 <BotonPerfil />
               ) : (
@@ -175,11 +186,6 @@ function NavBar() {
               )}
             </li>
 
-            <li className={styles.nav__item}>
-              <Link href="/AdminDashboard" className={styles.nav__link}>
-                {admin} Admin
-              </Link>
-            </li>
             <li className={styles.nav__item}>
               <Link href="/cartDetail" className={styles.nav__link}>
                 {cart} <span>{cartItemsCount}</span>
