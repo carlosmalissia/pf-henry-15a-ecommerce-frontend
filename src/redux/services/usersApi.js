@@ -5,7 +5,7 @@ export const userApi = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl: 'https://pf-15a.up.railway.app'
     }),
-    tagTypes: ['Users'],
+    tagTypes: ['Users', 'Reviews'],
     endpoints: (builder) => ({
         loginUser: builder.mutation({
             query: ({ loginEmail, loginPassword }) => ({
@@ -69,7 +69,26 @@ export const userApi = createApi({
                 };
             },
             invalidatesTags: ['Users']
-        })
+        }),
+        getAllReviews: builder.query({
+            query: () => '/api/review',
+            providesTags: ['Review'],
+            onSuccess: (data, variables, { dispatch, getState }) => {
+                const user = getState().auth.user;
+        
+                if (user) {
+                    const reviewsWithUser = data.map(review => ({ ...review, user }));
+                    dispatch(setAllReviews(reviewsWithUser));
+                } else {
+                    dispatch(setAllReviews(data));
+                }
+            },
+        }),
+        getUserReviews: builder.query({
+            query: (reviewId) => `/api/review/${reviewId}`,
+            providesTags: (result, error, reviewId) => [{ type: 'Review', id: reviewId }],
+            onSuccess: (data) => setUserReviews(data), // Puede que necesites definir setUserReviews aquí
+        }),
 
     })
 })
@@ -81,6 +100,8 @@ export const {
    useUpdateUserMutation,
    useLoginUserMutation,
    useLogoutUserMutation,
-   useCartShoppingQuery
+   useCartShoppingQuery,
+   useGetAllReviewsQuery,
+   useGetUserReviewsQuery
 
 } = userApi

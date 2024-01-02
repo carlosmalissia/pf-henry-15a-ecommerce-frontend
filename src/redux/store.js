@@ -5,6 +5,7 @@ import { productApi } from "./services/productApi";
 import { userApi } from "./services/usersApi";
 import { setupListeners} from '@reduxjs/toolkit/query';
 import loginReducer from './features/userSlice';
+import authReducer from './features/userSlice';
 
 export const store = configureStore({
     reducer: {
@@ -13,6 +14,7 @@ export const store = configureStore({
         [productApi.reducerPath]: productApi.reducer,
         [userApi.reducerPath]: userApi.reducer,
         loginReducer, 
+        auth: authReducer,
     },
     middleware: (getDefaultMiddleware) => 
         getDefaultMiddleware().concat([productApi.middleware, userApi.middleware ])
