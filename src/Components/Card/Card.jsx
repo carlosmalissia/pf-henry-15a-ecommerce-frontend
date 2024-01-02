@@ -35,46 +35,38 @@ export default function Card({ _id, title, price, image, category, stock }) {
   });
 
 
+ let cartItemsId = cartItems.map((product) => product._id)
 
-  let cartItemsId = cartItems.map((product) => product._id)
+ const [updateCart] = useShoppingCartupdateUserMutation();
 
-  const [updateCart] = useShoppingCartupdateUserMutation();
-
-
-  const handleUpdateCart = async () => {
-    try {
-      if (userId && userId?._id) {
-        const userID = userId?._id;
-        const token = userToken;
-        const shoppingCart = cartItemsId;
-
-
-        console.log("Información a enviar al servidor:", {
-          shoppingCart,
-          userID,
-          token,
-        });
-
-        const { data, error } = await updateCart({
-          userID,
-          token,
-          shoppingCart
-        });
-
-        if (error) {
-          console.error("Error al actualizar el carrito:", error);
-        } else {
-          console.log("Carrito actualizado con éxito:", data);
-        }
-
-      } else {
-        console.error("userID o userID._id es undefined");
-      }
-    } catch (error) {
-      console.error("Error general al actualizar el carrito:", error);
-    }
-  };
-
+ const handleUpdateCart = async () => {
+   try {
+     if (userId && userId?._id && userToken) {
+       const userID = userId?._id;
+       const token = userToken;
+       const shoppingCart = cartItemsId;
+ 
+       const config = {
+        shoppingCart,
+        userID,
+        token,
+      };
+      
+      const { data, error } = await updateCart(config);
+ 
+       if (error) {
+         console.error("Error al actualizar el carrito:", error);
+       } else {
+         console.log("Carrito actualizado con éxito:", data);
+         // Puedes mostrar un mensaje de éxito aquí si es necesario
+       }
+     } else {
+       console.error("userID, userID._id o userToken es undefined");
+     }
+   } catch (error) {
+     console.error("Error general al actualizar el carrito:", error);
+   }
+ };
 
 
   const handleAddToCart = () => {
@@ -83,8 +75,9 @@ export default function Card({ _id, title, price, image, category, stock }) {
     if (!userId) {
       setShowLoginMessage(true);
 
+      
+      toast.info(
 
-      toast.error(
         <>
           Por favor, <Link href="/Register" className="underline font-bold" >Inicia sesión o crea una cuenta</Link>  para agregar productos al carrito.
         </>,
@@ -94,7 +87,7 @@ export default function Card({ _id, title, price, image, category, stock }) {
       setTimeout(() => {
         setShowLoginMessage(false);
 
-      }, 3000);
+      }, 5000); 
 
       return;
     }
@@ -111,11 +104,13 @@ export default function Card({ _id, title, price, image, category, stock }) {
     };
 
     dispatch(addItem(productData));
+    toast.success("Producto agregado al carrito.");
     handleUpdateCart();
   };
 
   useEffect(() => {
     dispatch(getlogindata());
+    handleUpdateCart();
   }, [cartItems]);
 
   return (
@@ -166,9 +161,9 @@ export default function Card({ _id, title, price, image, category, stock }) {
           )}
         </button>
 
-        {/* Mostrar mensaje de inicio de sesión si es necesario */}
+           {/* Mostrar mensaje de inicio de sesión si es necesario */}
+        <ToastContainer theme="colored"/>
 
-        <ToastContainer />
       </div>
     </div>
   );

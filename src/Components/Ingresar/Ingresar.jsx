@@ -107,7 +107,7 @@ const userIcon = <FontAwesomeIcon icon={faUser} />;
 
 // Nuevo componente para el botón de ingresar
 const IngresarButton = ({ onMouseEnter, onMouseLeave }) => {
-  const {data, status} = useSession();
+  const { data, status } = useSession();
 
   return (
     <button
@@ -115,9 +115,9 @@ const IngresarButton = ({ onMouseEnter, onMouseLeave }) => {
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
-      { status==='unauthenticated' ? 
+      {status === 'unauthenticated' ?
         <span className=''>{userIcon} Ingresar</span> :
-        <span className='flex'><img src={data?.user.image} width={25} height={25} className='rounded-full w-5 h-5'/><p>{data?.user.name}</p></span>
+        <span className='flex'><img src={data?.user.image} width={25} height={25} className='rounded-full w-5 h-5' /><p>{data?.user.name}</p></span>
       }
     </button>
   );
@@ -141,7 +141,7 @@ const Ingresar = () => {
 
       {/* Muestra el formulario solo cuando se hace hover */}
       {isHovered && (
-        <div className='fixed flex justify-center items-center' onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+        <div className='fixed flex justify-center items-center right-2' onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
           <LoginForm />
         </div>
       )}
