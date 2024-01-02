@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import axios from 'axios';
 import Card from "../Card/Card";
+import { useGetAllProductQuery } from "@/redux/services/productApi";
 
 
 
@@ -13,7 +14,7 @@ export default function Popular() {
 
   const getProduct = async () => {
     try {
-      const response = await axios.get(`https://fakestoreapi.com/products`);
+      const response = await axios.get(`https://pf-15a.up.railway.app/api/product`);
       setProduct(response.data)
     }
     catch (error) {
@@ -24,15 +25,15 @@ export default function Popular() {
     getProduct();
 
   }, []);
-  /* const filter = attraction.sort((a, b) => {
-    if(a.ranking > b.ranking) {
-        return 1;
+  const filter = product.sort((a, b) => {
+    if (a.rating > b.rating) {
+      return 1;
     }
-    if(b.ranking > a.ranking) {
-        return -1;
+    if (b.rating > a.rating) {
+      return -1;
     }
     return 0;
-    }) */
+  })
 
   return (
     <>
@@ -42,16 +43,16 @@ export default function Popular() {
       <div
         className={`${styles.popular__container} ${styles.container} ${styles.grid}`}
       >
-        {product.slice(0, 3).map((e) => {
+        {filter.slice(0, 3).map((e) => {
           return (
             <Card className="border border-bgred rounded-md p-4"
-                key={e.id}
-                id={e.id}
-                image={e.image}
-                title={e.title}
-                price={e.price}
-                category={e.category}
-              />
+              key={e._id}
+              id={e._id}
+              image={e.image}
+              title={e.title}
+              price={e.price}
+              rating={e.rating}
+            />
           );
         })}
       </div>
