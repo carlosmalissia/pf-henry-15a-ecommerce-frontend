@@ -138,7 +138,7 @@ function NavBar() {
   return (
     <header className={styles.header} id="header">
       <nav className={`${styles.nav} ${styles.container}`}>
-        <a href="/#" className="text-2xl max-sm:ml-28">
+        <a href="/#" className="text-2xl max-sm:ml-20">
           Henrucci
         </a>
         <div className={styles.nav__menu} id="nav-menu">
@@ -186,13 +186,6 @@ function NavBar() {
               )}
             </li>
 
-            <li className={styles.nav__item}
-
-            >
-              <Link href="/AdminDashboard" className={styles.nav__link}>
-                {admin} Admin
-              </Link>
-            </li>
             <li className={styles.nav__item}>
               <Link href="/cartDetail" className={styles.nav__link}>
                 {cart} <span>{cartItemsCount}</span>
