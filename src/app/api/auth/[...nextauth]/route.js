@@ -69,49 +69,49 @@ const authOptions = {
         async jwt({ token, account, profile }) {
         // Persist the OAuth access_token and or the user id to the token right after signin
         //console.log(account);
-        console.log(profile);
+        //console.log(profile);
         if (profile) {
             const userdb = {
                 name: profile.given_name,
                 lastname: profile.family_name,
                 password: profile.sub,
                 email: profile.email
-            }
+            } 
             const resLogin = await axios.post('http://localhost:3001/auth/signin', userdb)
                     .then(
                         (login) => {
                             cookies().set('tg', login.data.token);
                             return login.data;
                         },
-                        (error) => {
-                            console.log("error axios", error.response);
+                        async (error) => {
+                            //console.log("error axios", error.response.data);
                             if (error.response.data.error === "User not found") {
-                                console.log('crear usuario');
-                                axios.post('http://localhost:3001/api/users', userdb)
+                                //console.log('crear usuario');
+                                return await axios.post('http://localhost:3001/api/users', userdb)
                                 .then(
-                                    (response) => {
-                                        console.log('crear',response.data);
-                                        axios.post('http://localhost:3001/auth/signin', userdb)
+                                    async (response) => {
+                                        //console.log('crear',response.data);
+                                        return await axios.post('http://localhost:3001/auth/signin', userdb)
                                         .then(
                                             (signin) =>{
-                                                console.log(signin.data);
+                                                //console.log(signin.data);
                                                 cookies().set('tg', signin.data.token);
                                                 return signin.data;
                                             },
-                                            (error) => false
+                                            (error) => {throw new Error("No es posible iniciar sesion con esta cuenta")}
                                         );
                                     },
                                     (error)=> {
-                                        console.log('error usuario', error);
+                                        //console.log('error usuario', error);
                                         return error.response;
                                     }
                                 )
                             }
-                            else return false;
+                            else { throw new Error("No es posible iniciar sesion con esta cuenta")};
                         }
                     );
+            console.log("resLogin", resLogin);
             if (resLogin) {
-                console.log("resLogin", resLogin);
                 token.accessToken = resLogin.token;
                 token.user = resLogin.user;
             }

@@ -9,7 +9,7 @@ export default function Home() {
                         Henrucci
                     </a>
                     <p className={styles.footer__link}>
-                        La moda y mejor calidad <br />
+                        La moda y la mejor calidad <br />
                         al alcance de un solo click.
                     </p>
                 </div>

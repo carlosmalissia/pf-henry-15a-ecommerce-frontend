@@ -10,7 +10,7 @@ const userIcon = <FontAwesomeIcon icon={faUser} />;
 // Nuevo componente para el botón de ingresar
 const ButtonWelcome = ({ onMouseEnter, onMouseLeave }) => {
     const userData = useAppSelector((state) => state.loginReducer.user);
-    console.log("userData", userData);
+    // console.log("userData", userData);
     const userName = userData?.name;
     return (
         <button
