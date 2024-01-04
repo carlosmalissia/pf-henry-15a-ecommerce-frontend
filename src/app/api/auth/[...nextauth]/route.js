@@ -67,17 +67,17 @@ const authOptions = {
         //     }
         // },
         async jwt({ token, account, profile }) {
-        // Persist the OAuth access_token and or the user id to the token right after signin
-        //console.log(account);
-        //console.log(profile);
-        if (profile) {
-            const userdb = {
-                name: profile.given_name,
-                lastname: profile.family_name,
-                password: profile.sub,
-                email: profile.email
-            } 
-            const resLogin = await axios.post('http://localhost:3001/auth/signin', userdb)
+            // Persist the OAuth access_token and or the user id to the token right after signin
+            //console.log(account);
+            //console.log(profile);
+            if (profile) {
+                const userdb = {
+                    name: profile.given_name,
+                    lastname: profile.family_name,
+                    password: profile.sub,
+                    email: profile.email
+                }
+                const resLogin = await axios.post('https://pf-15a.up.railway.app/auth/signin', userdb)
                     .then(
                         (login) => {
                             cookies().set('tg', login.data.token);
@@ -87,51 +87,51 @@ const authOptions = {
                             //console.log("error axios", error.response.data);
                             if (error.response.data.error === "User not found") {
                                 //console.log('crear usuario');
-                                return await axios.post('http://localhost:3001/api/users', userdb)
-                                .then(
-                                    async (response) => {
-                                        //console.log('crear',response.data);
-                                        return await axios.post('http://localhost:3001/auth/signin', userdb)
-                                        .then(
-                                            (signin) =>{
-                                                //console.log(signin.data);
-                                                cookies().set('tg', signin.data.token);
-                                                return signin.data;
-                                            },
-                                            (error) => {throw new Error("No es posible iniciar sesion con esta cuenta")}
-                                        );
-                                    },
-                                    (error)=> {
-                                        //console.log('error usuario', error);
-                                        return error.response;
-                                    }
-                                )
+                                return await axios.post('https://pf-15a.up.railway.app/api/users', userdb)
+                                    .then(
+                                        async (response) => {
+                                            //console.log('crear',response.data);
+                                            return await axios.post('https://pf-15a.up.railway.app/auth/signin', userdb)
+                                                .then(
+                                                    (signin) => {
+                                                        //console.log(signin.data);
+                                                        cookies().set('tg', signin.data.token);
+                                                        return signin.data;
+                                                    },
+                                                    (error) => { throw new Error("No es posible iniciar sesion con esta cuenta") }
+                                                );
+                                        },
+                                        (error) => {
+                                            //console.log('error usuario', error);
+                                            return error.response;
+                                        }
+                                    )
                             }
-                            else { throw new Error("No es posible iniciar sesion con esta cuenta")};
+                            else { throw new Error("No es posible iniciar sesion con esta cuenta") };
                         }
                     );
-            console.log("resLogin", resLogin);
-            if (resLogin) {
-                token.accessToken = resLogin.token;
-                token.user = resLogin.user;
+                console.log("resLogin", resLogin);
+                if (resLogin) {
+                    token.accessToken = resLogin.token;
+                    token.user = resLogin.user;
+                }
+                else throw new Error("No es posible iniciar sesion con esta cuenta");
             }
-            else throw new Error("No es posible iniciar sesion con esta cuenta");
-        }
-        return token
+            return token
         },
         async session({ session, token }) {
-        // Send properties to the client, like an access_token and user id from a provider.
-        session.token = token.accessToken;
-        session.user = {
-            ...token.user,
-            image: session.user.image,
-        }
-        //session.user = token.user;
-        return session
+            // Send properties to the client, like an access_token and user id from a provider.
+            session.token = token.accessToken;
+            session.user = {
+                ...token.user,
+                image: session.user.image,
+            }
+            //session.user = token.user;
+            return session
         }
     },
 }
 
 const handler = NextAuth(authOptions);
 
-export { handler as GET, handler as POST};
+export { handler as GET, handler as POST };
