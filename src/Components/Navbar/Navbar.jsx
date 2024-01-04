@@ -27,6 +27,7 @@ import { useAppSelector } from "@/redux/hooks";
 import { getlogindata } from "@/redux/features/userSlice";
 import { useDispatch } from "react-redux";
 import BotonPerfil from "../BotonPerfil/BotonPerfil";
+import { useSession } from "next-auth/react";
 
 const home = <FontAwesomeIcon icon={faHome} />;
 const favorite = <FontAwesomeIcon icon={faHeart} />;
@@ -44,6 +45,7 @@ function NavBar() {
   // console.log("userData", userData);
   const userName = userData?.name;
   const dispatch = useDispatch();
+  const { status } = useSession();
 
 
   /* const pathname = usePathname();
@@ -176,10 +178,8 @@ function NavBar() {
             </Link>
 
             {/* este es mi login */}
-            <li className={styles.nav__link}
-
-            >
-              {userName ? (
+            <li className={styles.nav__link}>
+              {userName && status === 'unauthenticated' ? (
                 <BotonPerfil />
               ) : (
                 <Ingresar />
