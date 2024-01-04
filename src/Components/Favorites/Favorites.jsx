@@ -47,7 +47,7 @@ export default function Popular() {
           return (
             <Card className="border border-bgred rounded-md p-4"
               key={e._id}
-              id={e._id}
+              _id={e._id}
               image={e.image}
               title={e.title}
               price={e.price}
