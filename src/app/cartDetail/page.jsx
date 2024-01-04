@@ -99,9 +99,11 @@ const CartDetailPage = () => {
                         src={item.image}
                         alt={item.title}
                         className="object-contain w-20 h-20 mr-4"
-                      />
+                        />
                     </td>
+                  <Link href={`/Detail/${item._id}`} className="flex-1">
                     <td className="p-2">{item.title}</td>
+                  </Link>
                     <td className="p-2">${item.price}</td>
                     <td className="p-2">
                       <input

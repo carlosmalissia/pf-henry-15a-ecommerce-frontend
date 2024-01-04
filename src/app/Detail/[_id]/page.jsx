@@ -13,6 +13,7 @@ import { useCartShoppingQuery, useShoppingCartupdateUserMutation} from "@/redux/
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Link from "next/link";
+import Similares from "@/Components/Similares/Similares";
 
 export default function DetailID({ params }) {
   const { _id } = params;
@@ -135,7 +136,7 @@ useEffect(() => {
         <>
           Por favor, <Link href="/Register" className="underline font-bold" >Inicia sesión o crea una cuenta</Link>  para agregar productos al carrito.
         </>,
-        { autoClose: 3000 }
+        { autoClose: 2000 }
       );
 
       setTimeout(() => {
@@ -260,7 +261,7 @@ useEffect(() => {
       </div>
 
       {/* Sección de revisiones  */}
-      <div className="bg-bggris2 mx-auto mt-8 w-80 md:w-4/5 p-4 rounded-lg shadow-md md:mb-8">
+      <section className="bg-bggris2 mx-auto mt-8 w-80 md:w-4/5 p-4 rounded-lg shadow-md md:mb-8">
         <h2 className="text-lg text-black">Opiniones del producto</h2>
         {productById.reviews.length > 0 ? (
           <ul className="space-y-4">
@@ -277,8 +278,12 @@ useEffect(() => {
         ) : (
           <p className="text-gray-600">Este producto aún no tiene comentarios.</p>
         )}
-      </div>
-
+      </section>
+      
+      {/* productos similares */}
+      <section>
+        <Similares category={productById.category.name} _id={productById._id}/>
+      </section>
 
       {/* cierre del contenedor mayor */}
     </div>
