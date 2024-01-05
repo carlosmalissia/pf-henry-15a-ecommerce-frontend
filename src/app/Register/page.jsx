@@ -98,15 +98,14 @@ const Register = () => {
 
   const handleRegisterSubmit = async (e) => {
     e.preventDefault();
-
+  
     if (validateForm()) {
       // Lógica de registro
       try {
         const response = await newUser(registerFormData);
-        const { name } = registerFormData;
+        const { name, email, password } = registerFormData;
         setWelcomeMessage(`Hola ${name}!`);
-        console.log("Usuario creado:", response);
-
+  
         // Limpia el formulario de registro
         setRegisterFormData({
           name: "",
@@ -114,6 +113,32 @@ const Register = () => {
           email: "",
           password: "",
         });
+  
+        
+        try {
+          const loginResponse = await login({ loginEmail: email, loginPassword: password });
+  
+          if (loginResponse?.data?.token) {
+            // La autenticación fue exitosa
+            const { user } = loginResponse.data;
+            const userName = user.name;
+            setWelcomeMessageLogin(`¡Hola de nuevo  ${userName}!`);
+            dispatch(loginUser(loginResponse.data));
+  
+          } else {
+            console.error("Error en el inicio de sesión:", loginResponse?.data?.error);
+            // Puedes manejar el error de inicio de sesión aquí
+          }
+  
+          // Limpia el formulario de inicio de sesión
+          setLoginFormData({
+            loginEmail: "",
+            loginPassword: "",
+          });
+        } catch (error) {
+          console.error("Error al iniciar sesión automáticamente:", error);
+        }
+  
       } catch (error) {
         console.error("Error al registrar el usuario:", error);
       }
