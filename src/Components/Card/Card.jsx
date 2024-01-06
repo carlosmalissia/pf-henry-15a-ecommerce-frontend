@@ -81,13 +81,13 @@ export default function Card({ _id, title, price, image, category, stock }) {
         <>
           Por favor, <Link href="/Register" className="underline font-bold" >Inicia sesión o crea una cuenta</Link>  para agregar productos al carrito.
         </>,
-        { autoClose: 2000 }
+        { autoClose: 1000 }
       );
 
       setTimeout(() => {
         setShowLoginMessage(false);
 
-      }, 5000); 
+      }, 3000); 
 
       return;
     }
@@ -162,7 +162,7 @@ export default function Card({ _id, title, price, image, category, stock }) {
         </button>
 
            {/* Mostrar mensaje de inicio de sesión si es necesario */}
-        <ToastContainer theme="colored"/>
+        <ToastContainer theme="colored" position="bottom-left"  autoClose={1000} />
 
       </div>
     </div>
