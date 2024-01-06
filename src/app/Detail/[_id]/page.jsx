@@ -119,12 +119,12 @@ export default function DetailID({ params }) {
           </Link>{" "}
           para agregar productos al carrito.
         </>,
-        { autoClose: 2000 }
+        { autoClose: 1000 }
       );
 
       setTimeout(() => {
         setShowLoginMessage(false);
-      }, 5000);
+      }, 3000);
       return;
     }
 
@@ -280,7 +280,7 @@ export default function DetailID({ params }) {
                 </span>
               </button>
               {/* Mostrar mensaje de inicio de sesión si es necesario */}
-              <ToastContainer theme="colored" />
+              <ToastContainer theme="colored" position="top-left" autoClose={2000}/>
             </div>
           </div>
         </div>

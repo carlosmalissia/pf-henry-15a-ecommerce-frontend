@@ -11,28 +11,24 @@ const CartDetailPage = () => {
   const cartItems = useSelector((state) => state.cartReducer.cartItems);
   const userId = useAppSelector((state) => state.loginReducer.user);
   const userToken = useAppSelector((state) => state.loginReducer.token);
-  let cartItemsId = cartItems.map((product) => product._id)
-
-
-
+  let cartItemsId = cartItems.map((product) => product._id);
 
   const [updateCart] = useShoppingCartupdateUserMutation();
-
 
   const handleUpdateCart = async () => {
     try {
       const userID = userId?._id;
       const token = userToken;
       const shoppingCart = cartItems.map((product) => product._id);
-  
+
       const config = {
         shoppingCart,
         userID,
         token,
       };
-  
+
       const { data, error } = await updateCart(config);
-  
+
       if (error) {
         console.error("Error al actualizar el carrito:", error);
       } else {
@@ -42,7 +38,7 @@ const CartDetailPage = () => {
       console.error("Error general al actualizar el carrito:", error);
     }
   };
-  
+
   const handleRemoveItem = async (_id) => {
     dispatch(removeItem({ _id }));
     handleUpdateCart();
@@ -62,19 +58,18 @@ const CartDetailPage = () => {
     return cartItems.reduce((acc, item) => acc + item.subtotal, 0).toFixed(2);
   };
 
-
   useEffect(() => {
     dispatch(getCartData());
   }, []);
-  
+
   useEffect(() => {
     console.log("Contenido del carrito:", cartItems);
     handleUpdateCart();
   }, [cartItems]);
 
   return (
-    <div className="p-14 font-bold" >
-      <fieldset className="border  p-4 rounded-md " >
+    <div className="p-14 font-bold">
+      <fieldset className="border  p-4 rounded-md ">
         <legend className="text-2xl p-8 text-start font-bold text-bgred ">
           Detalle del Carrito
         </legend>
@@ -83,11 +78,11 @@ const CartDetailPage = () => {
             <table className="w-full">
               <thead>
                 <tr className="border-b">
-                  <th className="text-left p-2 mr-4"></th>
-                  <th className="text-left p-2">Producto</th>
-                  <th className="text-left p-2">Precio</th>
-                  <th className="text-left p-2">Cantidad</th>
-                  <th className="text-left p-2">Subtotal</th>
+                  <th className="text-center p-2 mr-4"></th>
+                  <th className="text-center p-2">Producto</th>
+                  <th className="text-center p-2">Precio</th>
+                  <th className="text-center p-2">Cantidad</th>
+                  <th className="text-center p-2">Subtotal</th>
                   <th className="p-2"></th>
                 </tr>
               </thead>
@@ -95,15 +90,25 @@ const CartDetailPage = () => {
                 {cartItems.map((item) => (
                   <tr key={item._id} className="border-b text-sm">
                     <td className="p-2">
+                    <Link
+                      href={`/Detail/${item._id}`}
+                      className="underline font-bold "
+                    >
                       <img
                         src={item.image}
                         alt={item.title}
                         className="object-contain w-20 h-20 mr-4"
-                        />
+                      />
+                    </Link>
                     </td>
-                  <Link href={`/Detail/${item._id}`} className="flex-1">
-                    <td className="p-2">{item.title}</td>
-                  </Link>
+                      <td className="p-2 text-center">
+                    <Link
+                      href={`/Detail/${item._id}`}
+                      className="underline font-bold "
+                    >
+                        {item.title}
+                    </Link>
+                        </td>
                     <td className="p-2">${item.price}</td>
                     <td className="p-2">
                       <input
@@ -120,7 +125,7 @@ const CartDetailPage = () => {
                       />
                     </td>
                     <td className="p-2 font-bold text-bgred">
-                     ${item.subtotal.toFixed(2)}
+                      ${item.subtotal.toFixed(2)}
                     </td>
                     <td className="p-2">
                       <button onClick={() => handleRemoveItem(item._id)}>
@@ -132,7 +137,16 @@ const CartDetailPage = () => {
               </tbody>
             </table>
           ) : (
-            <p className="text-gray-600">El carrito está vacío.</p>
+            <p className="text-gray-600">
+              El carrito esta vacío.
+              <br />
+              <Link
+                href="/#product"
+                className="underline font-bold text-primary"
+              >
+                <span>Revisa el catalogo para agregar productos</span>
+              </Link>
+            </p>
           )}
           <div className="flex justify-end m-2 p-4 max-h-80">
             <fieldset className="border border-bggris  p-4 rounded-md">
@@ -151,18 +165,18 @@ const CartDetailPage = () => {
                   <p className=" text-xl flex text-start ">
                     Total:
                     <span className="text-bgred  ml-2 flex justify-end text-end">
-                    $ {calculateTotal()}
+                      $ {calculateTotal()}
                     </span>
                   </p>
                   <br />
                   <Link href="/Checkout">
-                  <button
-                    className="bg-bgbotones text-white text-base py-2 px-10 rounded-lg mx-2 
+                    <button
+                      className="bg-bgbotones text-white text-base py-2 px-10 rounded-lg mx-2 
                     flex justify-center items-center text-center whitespace-nowrap hover:bg-bgred hover:text-white"
                     >
-                    Finalizar Compra
-                  </button>
-                    </Link>
+                      Finalizar Compra
+                    </button>
+                  </Link>
                 </div>
               </div>
             </fieldset>
@@ -176,4 +190,3 @@ const CartDetailPage = () => {
 };
 
 export default CartDetailPage;
-

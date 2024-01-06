@@ -5,6 +5,9 @@ import { getCartData } from "@/redux/features/cart";
 import { useAppDispatch } from "@/redux/hooks";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import axios from 'axios'
+import { cleanCart } from "@/redux/features/cart";
+
+
 
 const Page = () => {
   const cartItems = useSelector((state) => state.cartReducer.cartItems);
@@ -163,6 +166,7 @@ const Page = () => {
                         onApprove={async (data, actions) => {
                           const order = await actions.order?.capture()
                           console.log("order: ", order);
+                          dispatch(cleanCart());
                         }}
                       />
                     </PayPalScriptProvider>
