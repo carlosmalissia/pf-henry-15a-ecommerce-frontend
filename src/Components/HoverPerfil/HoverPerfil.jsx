@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useLogoutUserMutation } from '@/redux/services/usersApi';
 import { logoutUser } from '@/redux/features/userSlice';
 import { useDispatch } from 'react-redux';
+import {cleanCart} from '@/redux/features/cart'
 import styles from "../Navbar/navbar.module.css";
 
 const HoverLogin = () => {
@@ -15,6 +16,7 @@ const HoverLogin = () => {
     try {
       await logoutUserMutation();
       dispatch(logoutUser());
+      dispatch(cleanCart());
       window.location.reload();
       console.log('Cierre de sesión exitoso');
     } catch (error) {
