@@ -1,3 +1,4 @@
+
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const userApi = createApi({
@@ -71,6 +72,10 @@ export const userApi = createApi({
             },
             invalidatesTags: ["Users"],
         }),
+        getUserReviews: builder.query({
+            query: (userId) => `/api/userReviews/${userId}`, // endpoint para obtener las reviews por ID de usuario
+            providesTags: (result, error, userId) => [{ type: 'Reviews', id: userId }],
+        }),
         shoppingCartupdateUser: builder.mutation({
             query: ({ shoppingCart, userID, token }) => {
                 const config = {
@@ -85,25 +90,6 @@ export const userApi = createApi({
             },
             invalidatesTags: ["Users"],
         }),
-        getAllReviews: builder.query({
-            query: () => '/api/review',
-            providesTags: ['Review'],
-            onSuccess: (data, variables, { dispatch, getState }) => {
-                const user = getState().auth.user;
-
-                if (user) {
-                    const reviewsWithUser = data.map(review => ({ ...review, user }));
-                    dispatch(setAllReviews(reviewsWithUser));
-                } else {
-                    dispatch(setAllReviews(data));
-                }
-            },
-        }),
-        getUserReviews: builder.query({
-            query: (reviewId) => `/api/review/${reviewId}`,
-            providesTags: (result, error, reviewId) => [{ type: 'Review', id: reviewId }],
-            onSuccess: (data) => setUserReviews(data), // Puede que necesites definir setUserReviews aquí
-        }),
     }),
 });
 
@@ -116,7 +102,6 @@ export const {
     useLogoutUserMutation,
     useCartShoppingQuery,
     useShoppingCartupdateUserMutation,
-    useGetAllReviewsQuery,
     useGetUserReviewsQuery
-
+    
 } = userApi;

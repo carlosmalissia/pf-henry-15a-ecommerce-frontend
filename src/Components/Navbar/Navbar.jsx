@@ -178,7 +178,7 @@ function NavBar() {
             </Link>
 
             {/* este es mi login */}
-            <li className={styles.nav__link}>
+            <li className={styles.nav__item}>
               {userName && status === 'unauthenticated' ? (
                 <BotonPerfil />
               ) : (
