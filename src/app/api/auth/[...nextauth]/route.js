@@ -77,21 +77,21 @@ const authOptions = {
                 password: profile.sub,
                 email: profile.email
             } 
-            const resLogin = await axios.post('http://localhost:3001/auth/signin', userdb)
+            const resLogin = await axios.post('https://pf-15a.up.railway.app/auth/signin', userdb)
                     .then(
                         (login) => {
                             cookies().set('tg', login.data.token);
                             return login.data;
                         },
                         async (error) => {
-                            //console.log("error axios", error.response.data);
+                            console.log("error axios", error.response.data);
                             if (error.response.data.error === "User not found") {
-                                //console.log('crear usuario');
-                                return await axios.post('http://localhost:3001/api/users', userdb)
+                                console.log('crear usuario');
+                                return await axios.post('https://pf-15a.up.railway.app/api/users', userdb)
                                 .then(
                                     async (response) => {
                                         //console.log('crear',response.data);
-                                        return await axios.post('http://localhost:3001/auth/signin', userdb)
+                                        return await axios.post('https://pf-15a.up.railway.app/auth/signin', userdb)
                                         .then(
                                             (signin) =>{
                                                 //console.log(signin.data);

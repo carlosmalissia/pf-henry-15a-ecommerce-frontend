@@ -2,26 +2,58 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getCartData, removeItem, updateQuantity } from "@/redux/features/cart";
-import { useAppDispatch } from "@/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import Link from "next/link";
+import { useShoppingCartupdateUserMutation } from "@/redux/services/usersApi";
 
 const CartDetailPage = () => {
   const dispatch = useAppDispatch();
   const cartItems = useSelector((state) => state.cartReducer.cartItems);
+  const userId = useAppSelector((state) => state.loginReducer.user);
+  const userToken = useAppSelector((state) => state.loginReducer.token);
+  let cartItemsId = cartItems.map((product) => product._id)
 
-  useEffect(() => {
-    // Cargar datos del carrito desde localStorage
-    dispatch(getCartData());
-  }, []);
 
-  const handleRemoveItem = (_id) => {
+
+
+  const [updateCart] = useShoppingCartupdateUserMutation();
+
+
+  const handleUpdateCart = async () => {
+    try {
+      const userID = userId?._id;
+      const token = userToken;
+      const shoppingCart = cartItems.map((product) => product._id);
+  
+      const config = {
+        shoppingCart,
+        userID,
+        token,
+      };
+  
+      const { data, error } = await updateCart(config);
+  
+      if (error) {
+        console.error("Error al actualizar el carrito:", error);
+      } else {
+        console.log("Carrito actualizado con éxito:", data);
+      }
+    } catch (error) {
+      console.error("Error general al actualizar el carrito:", error);
+    }
+  };
+  
+  const handleRemoveItem = async (_id) => {
     dispatch(removeItem({ _id }));
+    handleUpdateCart();
   };
 
-  const handleQuantityChange = (itemId, newQuantity) => {
+  const handleQuantityChange = async (itemId, newQuantity) => {
     if (!isNaN(newQuantity) && newQuantity > 0) {
       dispatch(updateQuantity({ itemId, newQuantity }));
     }
+
+    await handleUpdateCart();
   };
 
   const count = cartItems.reduce((total, item) => total + item.quantity, 0);
@@ -29,6 +61,16 @@ const CartDetailPage = () => {
   const calculateTotal = () => {
     return cartItems.reduce((acc, item) => acc + item.subtotal, 0).toFixed(2);
   };
+
+
+  useEffect(() => {
+    dispatch(getCartData());
+  }, []);
+  
+  useEffect(() => {
+    console.log("Contenido del carrito:", cartItems);
+    handleUpdateCart();
+  }, [cartItems]);
 
   return (
     <div className="p-14 font-bold" >
