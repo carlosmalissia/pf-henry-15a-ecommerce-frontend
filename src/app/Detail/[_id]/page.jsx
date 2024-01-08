@@ -12,11 +12,13 @@ import {
   useCartShoppingQuery,
   useShoppingCartupdateUserMutation,
 } from "@/redux/services/usersApi";
+import { useNewReviewMutation } from "@/redux/services/reviewsApi";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Link from "next/link";
 import Similares from "@/Components/Similares/Similares";
 import ReviewForm from "@/Components/ReviewForm/ReviewForm";
+import ReviewList from "@/Components/ReviewList/ReviewList";
 import { Rating } from "@material-tailwind/react";
 import { Progress } from "@material-tailwind/react";
 export default function DetailID({ params }) {
@@ -28,7 +30,7 @@ export default function DetailID({ params }) {
   const userToken = useAppSelector((state) => state.loginReducer.token);
   let cartItemsId = cartItems.map((product) => product._id);
   const [showLoginMessage, setShowLoginMessage] = useState(false);
-
+  const [newReview] = useNewReviewMutation();
   const { data: cartData, error: cartError } = useCartShoppingQuery({
     userID: userId?._id,
     _id: _id,
@@ -40,8 +42,6 @@ export default function DetailID({ params }) {
     isLoading,
     isFetching,
   } = useGetProductByIdQuery(_id);
-
-  useEffect(() => {}, [_id]);
 
   const [updateCart] = useShoppingCartupdateUserMutation();
 
@@ -74,6 +74,24 @@ export default function DetailID({ params }) {
     }
   };
 
+  const handleReviewSubmit = async (reviewData) => {
+    try {
+      const config = {
+        review: reviewData,
+        token: userToken,
+      };
+
+      console.log("datos de review:", config);
+      const { data, error } = await newReview(config);
+      toast.success("Reseña creada exitosamente");
+      
+      console.log("review cargada:", data);
+    } catch (error) {
+      console.error("Error al crear la reseña:", error);
+    }
+  };
+
+  useEffect(() => {}, [_id]);
   useEffect(() => {
     handleUpdateCart();
     console.log("Contenido del carrito:", cartItems);
@@ -105,8 +123,6 @@ export default function DetailID({ params }) {
     return <p>Hubo un error al obtener el producto.</p>;
   }
 
-  
- 
   const handleAddToCart = () => {
     if (!userId) {
       setShowLoginMessage(true);
@@ -141,16 +157,6 @@ export default function DetailID({ params }) {
     dispatch(addItem(productData));
     toast.success("Producto agregado al carrito.");
     handleUpdateCart();
-  };
-
-  const handleReviewSubmit = (review) => {
-    const reviewData = {
-      userId: userId?._id,
-      userName: userId?.name,
-      review,
-    };
-
-    console.log("Nueva revisión:", reviewData);
   };
 
   //**reviews
@@ -215,17 +221,20 @@ export default function DetailID({ params }) {
               )}
             </button>
             {/* rating y cuenta */}
-            <section className="text-start text-lg text-bggris flex flex-row gap-4">
-              <Rating
-                className="text-sm text-yellow-500"
-                readonly
-                value={roundedAverage}
-                unratedColor="yellow"
-                ratedColor="amber"
-              />
-              <p className="text-center text-xl text-yellow-500">
-                {productById.averageRating}/5 ({productById.reviews.length})
-              </p>
+            <section className="text-start text-lg text-yellow-500 flex flex-row gap-4">
+              <div>
+                <Rating
+                  className="text-sm "
+                  readonly
+                  value={roundedAverage}
+                  unratedColor="yellow"
+                  ratedColor="amber"
+                />
+                <p className="text-center text-xl">
+                  {productById.averageRating}/5 ({productById.reviews.length})
+                  calificaciones
+                </p>
+              </div>
             </section>
           </div>
 
@@ -280,31 +289,39 @@ export default function DetailID({ params }) {
                 </span>
               </button>
               {/* Mostrar mensaje de inicio de sesión si es necesario */}
-              <ToastContainer theme="colored" position="top-left" autoClose={2000}/>
+              <ToastContainer
+                theme="colored"
+                position="bottom-left"
+                autoClose={2000}
+              />
             </div>
           </div>
         </div>
       </div>
 
       {/* Sección de revisiones  */}
-      <section className="bg-bggris2 mx-auto mt-8 w-[85%]  p-4 rounded-lg shadow-md md:mb-8 flex flex-col">
-        <h2 className="text-2xl text-center m-4 text-black">Calificaciones de este producto</h2>
+      <section className="bg-bggris2 mx-auto mt-8 w-[80%]  p-4 rounded-xl md:mb-8 flex flex-col">
+        <h2 className="text-2xl text-center m-4 text-black">
+          Calificaciones de este producto
+        </h2>
         {/* Formulario de revision */}
         <div className="w-full  p-4 flex flex-row">
           <div className="w-[50%]  p-4">
             {/* calculo de revisiones */}
             <section className="text-start text-lg text-yellow-500 flex flex-row gap-4">
-              <Rating
-                className="text-sm "
-                readonly
-                value={roundedAverage}
-                unratedColor="yellow"
-                ratedColor="amber"
-              />
-              <p className="text-center text-xl">
-                {productById.averageRating}/5 ({productById.reviews.length})
-                calificaciones
-              </p>
+              <div>
+                <Rating
+                  className="text-sm "
+                  readonly
+                  value={roundedAverage}
+                  unratedColor="yellow"
+                  ratedColor="amber"
+                />
+                <p className="text-center text-xl">
+                  {productById.averageRating}/5 ({productById.reviews.length})
+                  calificaciones
+                </p>
+              </div>
             </section>
 
             {/* Estadísticas de calificación */}
@@ -319,40 +336,48 @@ export default function DetailID({ params }) {
                     .reverse()
                     .map((count, index) => (
                       <div key={index} className="mb-2">
-                      <div className="flex items-center">
-                        <Rating
-                          className={`text-sm ${
-                            5 - index === 1 ? 'text-bgred' : 'text-yellow-500'
-                          } mr-2`}
-                          readonly
-                          value={5 - index}
-                        />
-                        <div className="relative pt-1 w-[80%]">
-                          <div className="flex mb-2 items-center justify-between">
-                          </div>
-                          <div className="flex flex-col items-end">
-                            <div className="flex w-full items-center justify-between">
-                              <div className="flex-1 mr-2">
-                                <div className="h-2 bg-teal-500 rounded-full relative">
-                                  <div
-                                    style={{ width: `${ratingDistribution.percentagePerStar[5 - index - 1]}%` }}
-                                    className="h-full bg-teal-200 rounded-full absolute bottom-0"
-                                  ></div>
+                        <div className="flex items-center">
+                          <Rating
+                            className={`text-sm ${
+                              5 - index === 1 ? "text-bgred" : "text-yellow-500"
+                            } mr-2`}
+                            readonly
+                            value={5 - index}
+                          />
+                          <div className="relative pt-1 w-[80%]">
+                            <div className="flex mb-2 items-center justify-between"></div>
+                            <div className="flex flex-col items-end">
+                              <div className="flex w-full items-center justify-between">
+                                <div className="flex-1 mr-2">
+                                  <div className="h-2 bg-teal-500 rounded-full relative">
+                                    <div
+                                      style={{
+                                        width: `${
+                                          ratingDistribution.percentagePerStar[
+                                            5 - index - 1
+                                          ]
+                                        }%`,
+                                      }}
+                                      className="h-full bg-teal-200 rounded-full absolute bottom-0"
+                                    ></div>
+                                  </div>
                                 </div>
+                                <span className="text-lg text-teal-600 ml-2">
+                                  ({count}){" "}
+                                  {`${ratingDistribution.percentagePerStar[
+                                    5 - index - 1
+                                  ].toFixed(1)}%`}
+                                </span>
                               </div>
-                              <span className="text-lg text-teal-600 ml-2">
-                              ({count}) {`${ratingDistribution.percentagePerStar[5 - index - 1]}%`}
-                              </span>
                             </div>
                           </div>
                         </div>
                       </div>
-                    </div>
                     ))}
                 </div>
               ) : (
                 <p className="text-gray-600">
-                 Este producto no tiene calificaciones
+                  Este producto no tiene calificaciones
                 </p>
               )}
             </div>
@@ -361,34 +386,15 @@ export default function DetailID({ params }) {
             <h2 className="text-lg text-black text-center mb-4">
               Deja un comentario
             </h2>
-            <ReviewForm onReviewSubmit={handleReviewSubmit} />
+            <ReviewForm
+              onReviewSubmit={handleReviewSubmit}
+              productById={productById}
+            />
           </div>
         </div>
 
         {/* Seccion de revisiones  */}
-        <div className="w-full p-4 bg-white">
-          <h2 className="text-2xl text-black text-center mb-4">Comentarios sobre el producto</h2>
-          {productById.reviews.length > 0 ? (
-            <ul className="space-y-4">
-              {productById.reviews.map((review) => (
-                <li
-                  key={review._id}
-                  className="  rounded-md text-lg"
-                >
-                  <p>Usuario: {review.user.name}</p>
-                  <p className="font-bold text-yellow-500">
-                    <Rating readonly value={review.rating} size="sm" />
-                  </p>
-                  <p>Comentario: {review.comment}</p>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className="text-gray-600">
-              Este producto aún no tiene comentarios.
-            </p>
-          )}
-        </div>
+       <ReviewList  productById={productById} />
       </section>
 
       {/* productos similares */}
