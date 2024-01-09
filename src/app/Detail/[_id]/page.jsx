@@ -6,84 +6,81 @@ import Image from "next/image";
 import { MdOutlineShoppingCart } from "react-icons/md";
 import { BsHeart, BsHeartFill } from "react-icons/bs";
 import { useGetProductByIdQuery } from "@/redux/services/productApi";
-import { useDispatch } from 'react-redux';
-import { addItem } from '@/redux/features/cart'
+import { addItem } from "@/redux/features/cart";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { useCartShoppingQuery, useShoppingCartupdateUserMutation} from "@/redux/services/usersApi";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import {
+  useCartShoppingQuery,
+  useShoppingCartupdateUserMutation,
+} from "@/redux/services/usersApi";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Link from "next/link";
-
+import Similares from "@/Components/Similares/Similares";
+import ReviewForm from "@/Components/ReviewForm/ReviewForm";
+import { Rating } from "@material-tailwind/react";
+import { Progress } from "@material-tailwind/react";
 export default function DetailID({ params }) {
   const { _id } = params;
 
   const cartItems = useAppSelector((state) => state.cartReducer.cartItems);
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
   const userId = useAppSelector((state) => state.loginReducer.user);
   const userToken = useAppSelector((state) => state.loginReducer.token);
-  let cartItemsId = cartItems.map((product) => product._id)
+  let cartItemsId = cartItems.map((product) => product._id);
   const [showLoginMessage, setShowLoginMessage] = useState(false);
-  
+
   const { data: cartData, error: cartError } = useCartShoppingQuery({
-      userID: userId?._id,
-      _id: _id,
+    userID: userId?._id,
+    _id: _id,
   });
 
-  const { data: productById, error, isLoading, isFetching } = useGetProductByIdQuery(
-    _id
-  );
-  
+  const {
+    data: productById,
+    error,
+    isLoading,
+    isFetching,
+  } = useGetProductByIdQuery(_id);
 
-  
-  useEffect(() => { }, [_id]);
-  
-  
+  useEffect(() => {}, [_id]);
+
   const [updateCart] = useShoppingCartupdateUserMutation();
-    
- const handleUpdateCart = async () => {
-  try {
-    if (userId && userId?._id && userToken) {
-      const userID = userId?._id;
-      const token = userToken;
-      const shoppingCart = cartItemsId;
 
-      const config = {
-       shoppingCart,
-       userID,
-       token,
-     };
-     
-     const { data, error } = await updateCart(config);
+  const handleUpdateCart = async () => {
+    try {
+      if (userId && userId?._id && userToken) {
+        const userID = userId?._id;
+        const token = userToken;
+        const shoppingCart = cartItemsId;
 
-      if (error) {
-        console.error("Error al actualizar el carrito:", error);
+        const config = {
+          shoppingCart,
+          userID,
+          token,
+        };
+
+        const { data, error } = await updateCart(config);
+
+        if (error) {
+          console.error("Error al actualizar el carrito:", error);
+        } else {
+          console.log("Carrito actualizado con éxito:", data);
+          // Puedes mostrar un mensaje de éxito aquí si es necesario
+        }
       } else {
-        console.log("Carrito actualizado con éxito:", data);
-        // Puedes mostrar un mensaje de éxito aquí si es necesario
+        console.error("userID, userID._id o userToken es undefined");
       }
-    } else {
-      console.error("userID, userID._id o userToken es undefined");
+    } catch (error) {
+      console.error("Error general al actualizar el carrito:", error);
     }
-  } catch (error) {
-    console.error("Error general al actualizar el carrito:", error);
-  }
-};
+  };
 
- 
-useEffect(() => {
- handleUpdateCart();
- console.log("Contenido del carrito:", cartItems);
-}, [cartItems]);
+  useEffect(() => {
+    handleUpdateCart();
+    console.log("Contenido del carrito:", cartItems);
+  }, [cartItems]);
 
-
-
-  
   const [hoveredCarButon, setHoveredCarButon] = useState(false);
   const [quantity, setQuantity] = useState(1);
-
-
-  
-  
 
   const handleQuantityChange = (e) => {
     const newQuantity = parseInt(e.target.value, 10);
@@ -94,14 +91,12 @@ useEffect(() => {
     }
   };
 
-
   // Favoritos
   const [isFavorite, setIsFavorite] = useState(false);
   const handleAddToFavorites = () => {
     setIsFavorite(!isFavorite);
     console.log(`Agregar a favoritos: ${productById.title}`);
   };
-
 
   if (isLoading || isFetching) return <p>Cargando...</p>;
 
@@ -110,41 +105,28 @@ useEffect(() => {
     return <p>Hubo un error al obtener el producto.</p>;
   }
 
-
-
-  // Colores de reviews
-  function getRatingColorClass(rating) {
-    if (rating === 1 || rating === 2) {
-      return 'font-bold text-red-600';
-    } else if (rating === 3 || rating === 4) {
-      return 'font-bold text-yellow-500';
-    } else if (rating === 5) {
-      return 'font-bold text-green-500';
-    } else {
-      return 'font-bold text-gray-700';
-    }
-  }
-
-
+  
+ 
   const handleAddToCart = () => {
-
     if (!userId) {
       setShowLoginMessage(true);
-      
+
       toast.info(
         <>
-          Por favor, <Link href="/Register" className="underline font-bold" >Inicia sesión o crea una cuenta</Link>  para agregar productos al carrito.
+          Por favor,{" "}
+          <Link href="/Register" className="underline font-bold">
+            Inicia sesión o crea una cuenta
+          </Link>{" "}
+          para agregar productos al carrito.
         </>,
-        { autoClose: 3000 }
+        { autoClose: 1000 }
       );
 
       setTimeout(() => {
         setShowLoginMessage(false);
-      }, 5000); 
+      }, 3000);
       return;
     }
-
-
 
     const productData = {
       _id: productById._id,
@@ -153,7 +135,7 @@ useEffect(() => {
       quantity: quantity,
       subtotal: productById.price * quantity,
       image: productById.image,
-      stock: productById.stock
+      stock: productById.stock,
     };
 
     dispatch(addItem(productData));
@@ -161,7 +143,45 @@ useEffect(() => {
     handleUpdateCart();
   };
 
-  
+  const handleReviewSubmit = (review) => {
+    const reviewData = {
+      userId: userId?._id,
+      userName: userId?.name,
+      review,
+    };
+
+    console.log("Nueva revisión:", reviewData);
+  };
+
+  //**reviews
+  //calcular promedio de reviews
+  const calculateRatingDistribution = (reviews) => {
+    // Inicializar contadores para cada estrella
+    const starCounts = Array(5).fill(0);
+
+    // Contar las calificaciones
+    reviews.forEach((review) => {
+      const rating = review.rating;
+      if (rating >= 1 && rating <= 5) {
+        starCounts[rating - 1]++;
+      }
+    });
+
+    const totalReviews = reviews.length;
+    const percentagePerStar = starCounts.map(
+      (count) => (count / totalReviews) * 100
+    );
+
+    return {
+      starCounts,
+      percentagePerStar,
+    };
+  };
+
+  const ratingDistribution = calculateRatingDistribution(productById.reviews);
+
+  //redondear averagge de reviews
+  const roundedAverage = Math.floor(productById.averageRating);
 
   return (
     <div>
@@ -176,7 +196,6 @@ useEffect(() => {
             priority={true}
             className="border-none object-contain w-[400px] h-[300px] transition-transform transform hover:scale-110"
           />
-
         </div>
 
         {/* Detalles del producto a la derecha */}
@@ -196,9 +215,18 @@ useEffect(() => {
               )}
             </button>
             {/* rating y cuenta */}
-            <h2 className="text-start text-sm text-bggris">
-              {productById.averageRating} votos
-            </h2>
+            <section className="text-start text-lg text-bggris flex flex-row gap-4">
+              <Rating
+                className="text-sm text-yellow-500"
+                readonly
+                value={roundedAverage}
+                unratedColor="yellow"
+                ratedColor="amber"
+              />
+              <p className="text-center text-xl text-yellow-500">
+                {productById.averageRating}/5 ({productById.reviews.length})
+              </p>
+            </section>
           </div>
 
           {/* Titulo y descripción del producto */}
@@ -214,9 +242,7 @@ useEffect(() => {
           </h2>
           <br />
           <h2 className="text-start text-sm text-bggris">
-
             Categoria: {productById.category.name}
-
           </h2>
           <br />
           {/* Precio */}
@@ -239,8 +265,9 @@ useEffect(() => {
                 onClick={handleAddToCart}
                 className={`bg-bgbotones text-white text-base py-2 px-10 rounded-lg mx-2 
     flex justify-center items-center text-center 
-    transition duration-700 ease-in-out ${hoveredCarButon ? "hover:bg-bgred hover:text-white" : ""
-                  } whitespace-nowrap`}
+    transition duration-700 ease-in-out ${
+      hoveredCarButon ? "hover:bg-bgred hover:text-white" : ""
+    } whitespace-nowrap`}
                 onMouseEnter={() => setHoveredCarButon(true)}
                 onMouseLeave={() => setHoveredCarButon(false)}
               >
@@ -252,33 +279,122 @@ useEffect(() => {
                   )}
                 </span>
               </button>
-                {/* Mostrar mensaje de inicio de sesión si es necesario */}
-            <ToastContainer theme="colored"/>
+              {/* Mostrar mensaje de inicio de sesión si es necesario */}
+              <ToastContainer theme="colored" position="top-left" autoClose={2000}/>
             </div>
           </div>
         </div>
       </div>
 
       {/* Sección de revisiones  */}
-      <div className="bg-bggris2 mx-auto mt-8 w-80 md:w-4/5 p-4 rounded-lg shadow-md md:mb-8">
-        <h2 className="text-lg text-black">Opiniones del producto</h2>
-        {productById.reviews.length > 0 ? (
-          <ul className="space-y-4">
-            {productById.reviews.map((review) => (
-              <li key={review._id} className="bg-white border p-4 rounded-md">
-                <p>{review.user.name}</p>
-                <p className={getRatingColorClass(review.rating)}>
-                  Puntos: {review.rating}
-                </p>
-                <p>Comentario: {review.comment}</p>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p className="text-gray-600">Este producto aún no tiene comentarios.</p>
-        )}
-      </div>
+      <section className="bg-bggris2 mx-auto mt-8 w-[85%]  p-4 rounded-lg shadow-md md:mb-8 flex flex-col">
+        <h2 className="text-2xl text-center m-4 text-black">Calificaciones de este producto</h2>
+        {/* Formulario de revision */}
+        <div className="w-full  p-4 flex flex-row">
+          <div className="w-[50%]  p-4">
+            {/* calculo de revisiones */}
+            <section className="text-start text-lg text-yellow-500 flex flex-row gap-4">
+              <Rating
+                className="text-sm "
+                readonly
+                value={roundedAverage}
+                unratedColor="yellow"
+                ratedColor="amber"
+              />
+              <p className="text-center text-xl">
+                {productById.averageRating}/5 ({productById.reviews.length})
+                calificaciones
+              </p>
+            </section>
 
+            {/* Estadísticas de calificación */}
+            <div className="w-full p-4">
+              <h2 className="text-lg text-black">
+                Estadísticas de Calificación
+              </h2>
+              {productById.reviews.length > 0 ? (
+                <div>
+                  {ratingDistribution.starCounts
+                    .slice()
+                    .reverse()
+                    .map((count, index) => (
+                      <div key={index} className="mb-2">
+                      <div className="flex items-center">
+                        <Rating
+                          className={`text-sm ${
+                            5 - index === 1 ? 'text-bgred' : 'text-yellow-500'
+                          } mr-2`}
+                          readonly
+                          value={5 - index}
+                        />
+                        <div className="relative pt-1 w-[80%]">
+                          <div className="flex mb-2 items-center justify-between">
+                          </div>
+                          <div className="flex flex-col items-end">
+                            <div className="flex w-full items-center justify-between">
+                              <div className="flex-1 mr-2">
+                                <div className="h-2 bg-teal-500 rounded-full relative">
+                                  <div
+                                    style={{ width: `${ratingDistribution.percentagePerStar[5 - index - 1]}%` }}
+                                    className="h-full bg-teal-200 rounded-full absolute bottom-0"
+                                  ></div>
+                                </div>
+                              </div>
+                              <span className="text-lg text-teal-600 ml-2">
+                              ({count}) {`${ratingDistribution.percentagePerStar[5 - index - 1]}%`}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    ))}
+                </div>
+              ) : (
+                <p className="text-gray-600">
+                 Este producto no tiene calificaciones
+                </p>
+              )}
+            </div>
+          </div>
+          <div className="w-[50%]  p-4">
+            <h2 className="text-lg text-black text-center mb-4">
+              Deja un comentario
+            </h2>
+            <ReviewForm onReviewSubmit={handleReviewSubmit} />
+          </div>
+        </div>
+
+        {/* Seccion de revisiones  */}
+        <div className="w-full p-4 bg-white">
+          <h2 className="text-2xl text-black text-center mb-4">Comentarios sobre el producto</h2>
+          {productById.reviews.length > 0 ? (
+            <ul className="space-y-4">
+              {productById.reviews.map((review) => (
+                <li
+                  key={review._id}
+                  className="  rounded-md text-lg"
+                >
+                  <p>Usuario: {review.user.name}</p>
+                  <p className="font-bold text-yellow-500">
+                    <Rating readonly value={review.rating} size="sm" />
+                  </p>
+                  <p>Comentario: {review.comment}</p>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="text-gray-600">
+              Este producto aún no tiene comentarios.
+            </p>
+          )}
+        </div>
+      </section>
+
+      {/* productos similares */}
+      <section>
+        <Similares category={productById.category.name} _id={productById._id} />
+      </section>
 
       {/* cierre del contenedor mayor */}
     </div>

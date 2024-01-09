@@ -55,16 +55,16 @@ export default function Card({ _id, title, price, image, category, stock }) {
       const { data, error } = await updateCart(config);
  
        if (error) {
-         console.error("Error al actualizar el carrito:", error);
+        //  console.error("Error al actualizar el carrito:", error);
        } else {
-         console.log("Carrito actualizado con éxito:", data);
+        //  console.log("Carrito actualizado con éxito:", data);
          // Puedes mostrar un mensaje de éxito aquí si es necesario
        }
      } else {
-       console.error("userID, userID._id o userToken es undefined");
+      //  console.error("userID, userID._id o userToken es undefined");
      }
    } catch (error) {
-     console.error("Error general al actualizar el carrito:", error);
+    //  console.error("Error general al actualizar el carrito:", error);
    }
  };
 
@@ -81,13 +81,13 @@ export default function Card({ _id, title, price, image, category, stock }) {
         <>
           Por favor, <Link href="/Register" className="underline font-bold" >Inicia sesión o crea una cuenta</Link>  para agregar productos al carrito.
         </>,
-        { autoClose: 3000 }
+        { autoClose: 1000 }
       );
 
       setTimeout(() => {
         setShowLoginMessage(false);
 
-      }, 5000); 
+      }, 3000); 
 
       return;
     }
@@ -162,7 +162,7 @@ export default function Card({ _id, title, price, image, category, stock }) {
         </button>
 
            {/* Mostrar mensaje de inicio de sesión si es necesario */}
-        <ToastContainer theme="colored"/>
+        <ToastContainer theme="colored" position="bottom-left"  autoClose={1000} />
 
       </div>
     </div>

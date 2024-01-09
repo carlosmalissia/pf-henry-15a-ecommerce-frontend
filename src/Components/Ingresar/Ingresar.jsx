@@ -109,7 +109,12 @@ const userIcon = <FontAwesomeIcon icon={faUser} />;
 
 // Nuevo componente para el botón de ingresar
 const IngresarButton = ({ onMouseEnter, onMouseLeave }) => {
+<<<<<<< HEAD
   const { data, status } = useSession();
+=======
+
+  const {data, status} = useSession();
+>>>>>>> 7602a7b2a2ade244932cb0539876116d29931feb
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -119,6 +124,10 @@ const IngresarButton = ({ onMouseEnter, onMouseLeave }) => {
       dispatch(loginUser(data));
     }
   }, [status]);
+<<<<<<< HEAD
+=======
+
+>>>>>>> 7602a7b2a2ade244932cb0539876116d29931feb
 
   return (
     <button
@@ -128,7 +137,13 @@ const IngresarButton = ({ onMouseEnter, onMouseLeave }) => {
     >
       {status === 'unauthenticated' ?
         <span className=''>{userIcon} Ingresar</span> :
+<<<<<<< HEAD
         <span className='flex'><img src={data?.user.image} width={25} height={25} className='rounded-full w-5 h-5' /><p>Hola {data?.user.name}</p></span>
+=======
+
+        <span className='flex'><img src={data?.user.image} width={25} height={25} className='rounded-full w-5 h-5'/><p>Hola {data?.user.name}</p></span>
+
+>>>>>>> 7602a7b2a2ade244932cb0539876116d29931feb
       }
     </button>
   );
