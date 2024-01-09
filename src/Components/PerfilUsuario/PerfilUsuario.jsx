@@ -1,10 +1,11 @@
 "use Client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { useAppSelector } from "@/redux/hooks";
 
 const PerfilUsuario = () => {
+
 
   const localStorageToken = localStorage.getItem("token");
   const userD = useAppSelector((state) => state.loginReducer.user);
@@ -19,10 +20,16 @@ const PerfilUsuario = () => {
   });
 
   const [editable, setEditable] = useState(false);
+  const firstInputRef = useRef(null);
 
   const handleEdit = () => {
-    console.log("se esta editando...")
     setEditable(true);
+    setTimeout(() => {
+      if (firstInputRef.current) {
+        firstInputRef.current.focus();
+
+      }
+    }, 0); // El retraso de 0 ms ayuda a que se ejecute en el próximo ciclo de eventos
   };
 
   const handleSave = async (id) => {
@@ -82,18 +89,25 @@ const PerfilUsuario = () => {
         <h1 className="text-2xl font-bold mb-4 text-center font-serif mx-auto mt-4">
           Mis datos
         </h1>
-
         <div className="mb-4 flex items-center">
-          <label htmlFor="nombre" className="block text-gray-700 text-sm font-semibold mb-2 mr-2">
+          <label
+            htmlFor="nombre"
+            className="block text-gray-700 text-sm font-semibold mb-2 mr-2"
+          >
             Nombre:
           </label>
           <input
-            className={`transition-all duration-300 ease-in-out transform scale-100 hover:scale-105 mr-10 bg-gray-50 border border-gray-300 text-black-500 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-teal-500 dark:focus:border-teal-500`}
+            ref={firstInputRef}
+            autoFocus={editable}  // Agrega el atributo autoFocus aquí
+            className={`ml-1 transition-all duration-300 ease-in-out ${editable ? "transform scale-100 hover:scale-105 " : ""
+              } mr-10 bg-gray-50 border ${editable ? "border-teal-500" : "border-gray-800"
+              } text-black-500 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-teal-500 dark:focus:border-teal-500`}
             type="text"
             id="name"
             value={userData.name}
             onChange={handleChange}
             disabled={!editable}
+            placeholder="Name"
           />
         </div>
 
@@ -106,12 +120,15 @@ const PerfilUsuario = () => {
             Apellido:
           </label>
           <input
-            className={`transition-all duration-300 ease-in-out transform scale-100 hover:scale-105 mr-10 bg-gray-50 border border-gray-300 text-black-500 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-teal-500 dark:focus:border-teal-500`}
+            className={`ml-1 transition-all duration-300 ease-in-out ${editable ? "transform scale-100 hover:scale-105" : ""
+              } mr-10 bg-gray-50 border ${editable ? "border-teal-500" : "border-gray-300"
+              } text-black-500 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-teal-500 dark:focus:border-teal-500`}
             type="text"
             id="lastname"
             value={userData.lastname}
             onChange={handleChange}
             disabled={!editable}
+            placeholder="Lastname"
           />
 
         </div>
@@ -125,12 +142,15 @@ const PerfilUsuario = () => {
             Email:
           </label>
           <input
-            className={`transition-all duration-300 ease-in-out transform scale-100 hover:scale-105 mr-10 bg-gray-50 border border-gray-300 text-black-500 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-teal-500 dark:focus:border-teal-500`}
+            className={`ml-1 transition-all duration-300 ease-in-out ${editable ? "transform scale-100 hover:scale-105" : ""
+              } mr-10 bg-gray-50 border ${editable ? "border-teal-500" : "border-gray-300"
+              } text-black-500 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-teal-500 dark:focus:border-teal-500`}
             type="email"
             id="email"
             value={userData.email}
             onChange={handleChange}
             disabled={!editable}
+            placeholder="Email"
           />
 
         </div>
@@ -144,12 +164,15 @@ const PerfilUsuario = () => {
             Calle:
           </label>
           <input
-            className={`transition-all duration-300 ease-in-out transform scale-100 hover:scale-105 mr-10 bg-gray-50 border border-gray-300 text-black-500 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-teal-500 dark:focus:border-teal-500`}
+            className={`ml-1 transition-all duration-300 ease-in-out ${editable ? "transform scale-100 hover:scale-105" : ""
+              } mr-10 bg-gray-50 border ${editable ? "border-teal-500" : "border-gray-300"
+              } text-black-500 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-teal-500 dark:focus:border-teal-500`}
             type="email"
             id="email"
 
             onChange={handleChange}
             disabled={!editable}
+            placeholder="Calle"
           />
 
         </div>
@@ -163,12 +186,15 @@ const PerfilUsuario = () => {
             Nº:
           </label>
           <input
-            className={`transition-all duration-300 ease-in-out transform scale-100 hover:scale-105 mr-10 bg-gray-50 border border-gray-300 text-black-500 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-teal-500 dark:focus:border-teal-500`}
+            className={`ml-1 transition-all duration-300 ease-in-out ${editable ? "transform scale-100 hover:scale-105" : ""
+              } mr-10 bg-gray-50 border ${editable ? "border-teal-500" : "border-gray-300"
+              } text-black-500 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-teal-500 dark:focus:border-teal-500`}
             type="email"
             id="email"
 
             onChange={handleChange}
             disabled={!editable}
+            placeholder="Numero"
           />
 
         </div>
@@ -182,12 +208,15 @@ const PerfilUsuario = () => {
             Código Postal:
           </label>
           <input
-            className={`transition-all duration-300 ease-in-out transform scale-100 hover:scale-105 mr-10 bg-gray-50 border border-gray-300 text-black-500 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-teal-500 dark:focus:border-teal-500`}
+            className={`ml-1 transition-all duration-300 ease-in-out ${editable ? "transform scale-100 hover:scale-105" : ""
+              } mr-10 bg-gray-50 border ${editable ? "border-teal-500" : "border-gray-300"
+              } text-black-500 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-teal-500 dark:focus:border-teal-500`}
             type="email"
             id="email"
 
             onChange={handleChange}
             disabled={!editable}
+            placeholder="Codigo postal"
           />
 
         </div>
@@ -202,29 +231,41 @@ const PerfilUsuario = () => {
             Provincia:
           </label>
           <input
-            className={`transition-all duration-300 ease-in-out transform scale-100 hover:scale-105 mr-10 bg-gray-50 border border-gray-300 text-black-500 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-teal-500 dark:focus:border-teal-500`}
+            className={`ml-1 transition-all duration-300 ease-in-out ${editable ? "transform scale-100 hover:scale-105" : ""
+              } mr-10 bg-gray-50 border ${editable ? "border-teal-500" : "border-gray-300"
+              } text-black-500 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-teal-500 dark:focus:border-teal-500`}
             type="email"
             id="email"
 
             onChange={handleChange}
             disabled={!editable}
+            placeholder="Provincia"
           />
 
         </div>
+        <p className="text-gray-600 text-sm mb-2">
+          ¿Necesitas actualizar tu información? Haz clic en <strong>"Editar"</strong> para empezar.
+        </p>
 
         <div className="flex justify-center items-center">
-          <button className="mr-6 transition-all duration-300 ease-in-out transform scale-100 hover:scale-105 bg-red-600 text-white rounded px-2 py-1 hover:bg-teal-500 focus:outline-none cursor-pointer w-20" onClick={handleEdit} disabled={editable}>
+
+          <button
+            className="mr-6 bg-red-600 text-white rounded px-2 py-1 hover:bg-red-800 focus:outline-none cursor-pointer w-20 "
+            onClick={handleEdit}
+            disabled={editable}
+          >
             Editar
           </button>
+          <button
+            className="bg-teal-500 text-white rounded px-2 py-1 hover:bg-teal-800 focus:outline-none cursor-pointer w-20"
+            onClick={handleSave}
+            disabled={!editable}
 
-          <button className="transition-all duration-300 ease-in-out transform scale-100 hover:scale-105 bg-teal-500 text-white rounded px-2 py-1 hover:bg-red-600 focus:outline-none cursor-pointer w-20" onClick={() => handleSave(userD._id)} disabled={!editable}>
+          >
             Guardar
           </button>
         </div>
-
-
       </div>
-
     </div>
   );
 };

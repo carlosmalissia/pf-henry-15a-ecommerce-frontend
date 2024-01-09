@@ -118,6 +118,7 @@ const LoginForm = () => {
             placeholder='Email'
             value={loginFormData.loginEmail}
             onChange={handleChange}
+            autoComplete="off"  
             className={`mr-10 bg-gray-50 border border-gray-300 text-black-500 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-teal-500 dark:focus:border-teal-500`}
           />
           {formErrors.loginEmail && (
@@ -136,6 +137,7 @@ const LoginForm = () => {
             placeholder='Contraseña'
             value={loginFormData.loginPassword}
             onChange={handleChange}
+            autoComplete="off"  
             className={`mr-10 bg-gray-50 border border-gray-300 text-black-500 text-sm rounded-lg focus:ring-blue-500 focus:border-teal-500 block w-full p-2 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-teal-500 dark:focus:border-teal-500 `}
           />
           {formErrors.loginPassword && (

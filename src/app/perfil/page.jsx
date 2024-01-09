@@ -54,13 +54,13 @@ export default function perfil() {
 
 
 
-      <div className="flex justify-center items-center ">
+      <div className="flex ">
         <div className=" shadow-xl border-solid border border-gray-300 w-1/4 h-2/3 mt-20 mb-64 p-6 rounded-md">
           <h1 className="mb-10 text-2xl">MI CUENTA</h1>
           <ul>
             <li className="m-2">
               <button
-                className="cursor-pointer text-xl bg-teal-500 hover:bg-teal-600 text-white py-2 px-4 rounded-lg"
+                className="cursor-pointer text-xl bg-gray-100 hover:bg-teal-600 text-black font-serif py-2 px-4 rounded-lg  w-64 shadow-xl"
                 onClick={() => handleClickEnlace('informacionPersonal')}
               >
                 Informacion Personal
@@ -68,7 +68,7 @@ export default function perfil() {
             </li>
             <li className="m-2">
               <button
-                className="cursor-pointer text-xl bg-teal-500 hover:bg-teal-600 text-white py-2 px-4 rounded-lg"
+                className="cursor-pointer text-xl bg-gray-100 hover:bg-teal-600 text-black font-serif py-2 px-4 rounded-lg  w-64 shadow-xl"
                 onClick={() => handleClickEnlace('historialCompras')}
               >
                 Historial de Compras
@@ -76,7 +76,7 @@ export default function perfil() {
             </li>
             <li className="m-2">
               <button
-                className="cursor-pointer text-xl bg-teal-500 hover:bg-teal-600 text-white py-2 px-4 rounded-lg"
+                className="cursor-pointer text-xl bg-gray-100 hover:bg-teal-600 text-black font-serif py-2 px-4 rounded-lg  w-64 shadow-xl"
                 onClick={() => handleClickEnlace('misReseñas')}
               >
                 Mis reseñas
