@@ -4,6 +4,7 @@ import { useAppSelector } from '@/redux/hooks';
 import { useGetUserReviewsQuery } from '@/redux/services/usersApi';
 import Image from "next/image";
 import { useGetProductByIdQuery } from "@/redux/services/productApi";
+import {Rating} from '@material-tailwind/react';
 import ReviewsPagination from '../ReviewsPagination/ReviewsPagination';
 
 
@@ -77,7 +78,7 @@ const ProductReview = ({ productId, review }) => {
       <div className="flex items-center justify-center mb-2">
         {productImage && <Image src={productImage} alt="Producto" width={100} height={100} />}
       </div>
-      <div className="text-sm mb-1 pb-1 font-semibold mt-8">Calificación: {review.rating}</div>
+      <Rating readonly value={review.rating} className='text-yellow-500'/>
       <div className="text-sm mb-1 pb-1 font-semibold">Comentario: {review.comment}</div>
     </div>
   );
