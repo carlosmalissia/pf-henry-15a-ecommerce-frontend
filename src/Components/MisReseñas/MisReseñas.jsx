@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useAppSelector } from '@/redux/hooks';
 import { useGetUserReviewsQuery, useUpdateReviewMutation } from '@/redux/services/usersApi';
 import Image from 'next/image';
-port { useGetProductByIdQuery } from "@/redux/services/productApi";
+import { useGetProductByIdQuery } from "@/redux/services/productApi";
 import {Rating} from '@material-tailwind/react';
 import ReviewsPagination from '../ReviewsPagination/ReviewsPagination';
 import { useGetProductByIdQuery } from '@/redux/services/productApi';
