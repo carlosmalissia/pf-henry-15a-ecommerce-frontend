@@ -72,7 +72,7 @@ const ReviewUsuario = () => {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   if (isLoading) {
-    return <p>Cargando...</p>;
+    return <p>Cargand...</p>;
   }
 
   if (error) {
