@@ -8,6 +8,21 @@ export const userApi = createApi({
     }),
     tagTypes: ["Users", 'Reviews'],
     endpoints: (builder) => ({
+    
+        updateReview: builder.mutation({
+            query: ({ reviewId, userToken, updatedReview }) => {
+                console.log(userToken);
+                const config = {
+                    url: `/api/review/${reviewId}`,
+                    method: "PUT",
+                    headers: {
+                        Authorization: `Bearer ${userToken}`,
+                    },
+                    body: updatedReview
+                };
+                return config;
+            },
+        }),
         loginUser: builder.mutation({
             query: ({ loginEmail, loginPassword }) => ({
                 url: `/auth/signin`, // URL del endpoint de inicio de sesión
@@ -102,6 +117,8 @@ export const {
     useLogoutUserMutation,
     useCartShoppingQuery,
     useShoppingCartupdateUserMutation,
-    useGetUserReviewsQuery
+    useGetUserReviewsQuery,
+    useUpdateReviewMutation,
+    
     
 } = userApi;

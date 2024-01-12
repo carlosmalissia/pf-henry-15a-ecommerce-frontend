@@ -7,7 +7,9 @@ export const purchaseHistoryApi = createApi({
     }),
     endpoints: (builder) => ({
         getPurchaseHistory: builder.query({
-            query: (_id) => `api/userpurchasehistory/${id}`,
+
+            query: (_id) => `api/userpurchasehistory/${_id}`,
+
         }),
         newPurchase: builder.mutation({
             query: ({ purchase, token }) => {

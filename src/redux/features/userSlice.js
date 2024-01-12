@@ -6,14 +6,15 @@ const authSlice = createSlice({
   initialState: {
     user: null,
     token: null,
+    editingReviewId: null,
+    editedComment: "",
   },
   reducers: {
     getlogindata: (state) => {
       if (!state.user && !state.token) {
         const userDataString = localStorage.getItem('user');
         const token = localStorage.getItem('token');
-        console.log('userDataString', userDataString);
-        console.log('token', token);
+     
 
         const userData = JSON.parse(userDataString);
 
@@ -40,11 +41,16 @@ const authSlice = createSlice({
       localStorage.removeItem('user');
       localStorage.removeItem('token');
     },
-    // Otros reducers según tus necesidades
+    setEditingReviewId: (state, action) => {
+      state.editingReviewId = action.payload;
+    },
+    setEditedComment: (state, action) => {
+      state.editedComment = action.payload;
+    },
   },
 });
 
-export const { loginUser, logoutUser, getlogindata } = authSlice.actions;
+export const { loginUser, logoutUser, getlogindata, setEditingReviewId, setEditedComment } = authSlice.actions;
 
 export default authSlice.reducer;
 

@@ -7,10 +7,13 @@ import { setupListeners} from '@reduxjs/toolkit/query';
 import loginReducer from './features/userSlice';
 import authReducer from './features/userSlice';
 import { reviewsApi } from "./services/reviewsApi";
-import {purchaseHistoryApi} from "./services/purchaseHistoryApi";
+
+import {purchaseHistoryApi} from "./services/purchaseHistoryApi" 
+
 
 export const store = configureStore({
     reducer: {
+        [ purchaseHistoryApi.reducerPath]:  purchaseHistoryApi.reducer,
         countPageReducer,
         cartReducer,
         [productApi.reducerPath]: productApi.reducer,
@@ -21,7 +24,9 @@ export const store = configureStore({
         auth: authReducer,
     },
     middleware: (getDefaultMiddleware) => 
-        getDefaultMiddleware().concat([productApi.middleware, userApi.middleware, reviewsApi.middleware, purchaseHistoryApi.middleware]),
+
+        getDefaultMiddleware().concat([productApi.middleware, userApi.middleware, reviewsApi.middleware,purchaseHistoryApi.middleware ]),
+
 })
 
  setupListeners(store.dispatch)
