@@ -1,11 +1,13 @@
-"use Client";
+ "use Client";
 
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { useAppSelector } from "@/redux/hooks";
+import {useGetUserByIdQuery} from "@/redux/services/usersApi"
 
 const PerfilUsuario = () => {
 
+  
 
   const localStorageToken = localStorage.getItem("token");
   const userD = useAppSelector((state) => state.loginReducer.user);
@@ -18,6 +20,27 @@ const PerfilUsuario = () => {
     lastname: userD?.lastname,
     email: userD?.email,
   });
+  const getUserByIdQuery = useGetUserByIdQuery(id);
+
+  useEffect(() => {
+    // Obtener datos del usuario por ID cuando el componente se monta
+    if (id) {
+      getUserByIdQuery.refetch(); // Refresca la consulta
+    }
+  }, [id]);
+
+  useEffect(() => {
+    // Actualizar userData con los datos del usuario obtenidos por ID
+    if (getUserByIdQuery.isSuccess) {
+      const userDataById = getUserByIdQuery.data; // Datos del usuario por ID
+      setUserData({
+        name: userDataById.name || "",
+        lastname: userDataById.lastname || "",
+        email: userDataById.email || "",
+      });
+    }
+  }, [getUserByIdQuery.isSuccess, getUserByIdQuery.data]);
+
 
   const [editable, setEditable] = useState(false);
   const firstInputRef = useRef(null);
@@ -33,10 +56,8 @@ const PerfilUsuario = () => {
   };
 
   const handleSave = async (id) => {
-    console.log("este id llega al handleSave " + id)
     try {
       setEditable(false);
-      console.log(userData.name, userData.lastname, userData.email)
       if (!userData.name || !userData.lastname || !userData.email) {
         alert('Por favor, completa todos los campos antes de guardar.');
         return;
@@ -46,34 +67,29 @@ const PerfilUsuario = () => {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorageToken}`
         }
-      })
-
-      console.log("este es el console.log de " + response.data)
+      });
+      console.log("esta es la data delusuario ",userData);
 
       if (response.status === 200) {
-        console.log(response.data.name, response.data.lastname)
-        setUserData((prevUserData) => ({
-          ...prevUserData,
+        // Actualizar userData con los nuevos valores después de la edición
+        setUserData({
           name: response.data.name,
           lastname: response.data.lastname,
-          email: response.data.email
-        }))
+          email: response.data.email,
+        });
+
         alert('Cambios guardados correctamente.');
-
-
       } else {
         alert('Error al guardar los cambios.');
       }
     } catch (error) {
       console.error('Error en la solicitud:', error);
       if (error.response) {
-        console.error('Respuesta del servidor:', error.response.data)
+        console.error('Respuesta del servidor:', error.response.data);
       }
-
     }
-
-
   };
+    
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -258,10 +274,7 @@ const PerfilUsuario = () => {
           </button>
           <button
             className="bg-teal-500 text-white rounded px-2 py-1 hover:bg-teal-800 focus:outline-none cursor-pointer w-20"
-            onClick={handleSave}
-            disabled={!editable}
-
-          >
+            onClick={() => handleSave(userD._id)} disabled={!editable}>
             Guardar
           </button>
         </div>
@@ -269,4 +282,4 @@ const PerfilUsuario = () => {
     </div>
   );
 };
-export default PerfilUsuario;
+export default PerfilUsuario; 
