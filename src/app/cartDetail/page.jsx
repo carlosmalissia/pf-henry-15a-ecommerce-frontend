@@ -11,28 +11,41 @@ const CartDetailPage = () => {
   const cartItems = useSelector((state) => state.cartReducer.cartItems);
   const userId = useAppSelector((state) => state.loginReducer.user);
   const userToken = useAppSelector((state) => state.loginReducer.token);
-  let cartItemsId = cartItems.map((product) => product._id);
+
+  let idItems = [];
+
+  cartItems.forEach((product) => {
+    for (let i = 0; i < product.quantity; i++) {
+      idItems.push(product._id);
+    }
+  });
 
   const [updateCart] = useShoppingCartupdateUserMutation();
 
   const handleUpdateCart = async () => {
     try {
-      const userID = userId?._id;
-      const token = userToken;
-      const shoppingCart = cartItems.map((product) => product._id);
+      if (userId && userId?._id && userToken) {
+        const userID = userId?._id;
+        const token = userToken;
+        const shoppingCart = idItems;
 
-      const config = {
-        shoppingCart,
-        userID,
-        token,
-      };
+        const config = {
+          shoppingCart,
+          userID,
+          token,
+        };
 
-      const { data, error } = await updateCart(config);
+        const { data, error } = await updateCart(config);
 
-      if (error) {
-        console.error("Error al actualizar el carrito:", error);
+        if (error) {
+          console.error("Error al actualizar el carrito:", error);
+        } else {
+          console.log("Carrito actualizado con éxito:", data);
+        }
       } else {
-        console.log("Carrito actualizado con éxito:", data);
+        console.log(
+          "Usuario no autenticado. No se actualizará el carrito en la base de datos."
+        );
       }
     } catch (error) {
       console.error("Error general al actualizar el carrito:", error);
@@ -90,25 +103,25 @@ const CartDetailPage = () => {
                 {cartItems.map((item) => (
                   <tr key={item._id} className="border-b text-sm">
                     <td className="p-2">
-                    <Link
-                      href={`/Detail/${item._id}`}
-                      className="underline font-bold "
-                    >
-                      <img
-                        src={item.image}
-                        alt={item.title}
-                        className="object-contain w-20 h-20 mr-4"
-                      />
-                    </Link>
+                      <Link
+                        href={`/Detail/${item._id}`}
+                        className="underline font-bold "
+                      >
+                        <img
+                          src={item.image}
+                          alt={item.title}
+                          className="object-contain w-20 h-20 mr-4"
+                        />
+                      </Link>
                     </td>
-                      <td className="p-2 text-center">
-                    <Link
-                      href={`/Detail/${item._id}`}
-                      className="underline font-bold "
-                    >
+                    <td className="p-2 text-center">
+                      <Link
+                        href={`/Detail/${item._id}`}
+                        className="underline font-bold "
+                      >
                         {item.title}
-                    </Link>
-                        </td>
+                      </Link>
+                    </td>
                     <td className="p-2">${item.price}</td>
                     <td className="p-2">
                       <input
@@ -169,14 +182,25 @@ const CartDetailPage = () => {
                     </span>
                   </p>
                   <br />
-                  <Link href="/Checkout">
-                    <button
-                      className="bg-bgbotones text-white text-base py-2 px-10 rounded-lg mx-2 
-                    flex justify-center items-center text-center whitespace-nowrap hover:bg-bgred hover:text-white"
-                    >
-                      Finalizar Compra
-                    </button>
-                  </Link>
+                  {userId && userId?._id && userToken ? (
+                    <Link href="/Checkout">
+                      <button
+                        className="bg-bgbotones text-white text-base py-2 px-10 rounded-lg mx-2 
+      flex justify-center items-center text-center whitespace-nowrap hover:bg-bgred hover:text-white"
+                      >
+                        Finalizar Compra
+                      </button>
+                    </Link>
+                  ) : (
+                    <Link href="/Register">
+                      <button
+                        className="bg-bgbotones text-white text-base py-2 px-10 rounded-lg mx-2 
+                      flex justify-center items-center text-center whitespace-nowrap hover:bg-bgred hover:text-white"
+                      >
+                        Inicia sesión o crea una cuenta
+                      </button>
+                    </Link>
+                  )}
                 </div>
               </div>
             </fieldset>

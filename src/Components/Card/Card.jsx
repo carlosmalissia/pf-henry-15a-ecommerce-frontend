@@ -29,84 +29,68 @@ export default function Card({ _id, title, price, image, category, stock }) {
 
 
 
-  const { data: cartData, error: cartError } = useCartShoppingQuery({
-    userID: userId?._id,
-      _id: _id,
+  // const { data: cartData, error: cartError } = useCartShoppingQuery({
+  //   userID: userId?._id,
+  //     _id: _id,
+  // });
+
+
+  let cartItemsId = [];
+
+  cartItems.forEach((product) => {
+    for (let i = 0; i < product.quantity; i++) {
+      cartItemsId.push(product._id);
+    }
   });
 
-
- let cartItemsId = cartItems.map((product) => product._id)
-
  const [updateCart] = useShoppingCartupdateUserMutation();
-
+ 
  const handleUpdateCart = async () => {
    try {
+     // Verificar si el usuario está autenticado
      if (userId && userId?._id && userToken) {
        const userID = userId?._id;
        const token = userToken;
        const shoppingCart = cartItemsId;
  
        const config = {
-        shoppingCart,
-        userID,
-        token,
-      };
-      
-      const { data, error } = await updateCart(config);
+         shoppingCart,
+         userID,
+         token,
+       };
+ 
+       const { data, error } = await updateCart(config);
  
        if (error) {
-        //  console.error("Error al actualizar el carrito:", error);
+         console.error("Error al actualizar el carrito:", error);
        } else {
-        //  console.log("Carrito actualizado con éxito:", data);
+         console.log("Carrito actualizado con éxito:", data);
          // Puedes mostrar un mensaje de éxito aquí si es necesario
        }
      } else {
-      //  console.error("userID, userID._id o userToken es undefined");
+       // Si el usuario no está autenticado, puedes manejarlo de otra manera o simplemente no hacer nada
+       console.log("Usuario no autenticado. No se actualizará el carrito en la base de datos.");
      }
    } catch (error) {
-    //  console.error("Error general al actualizar el carrito:", error);
+     console.error("Error general al actualizar el carrito:", error);
    }
  };
-
-
-  const handleAddToCart = () => {
-
-
-    if (!userId) {
-      setShowLoginMessage(true);
-
-      
-      toast.info(
-
-        <>
-          Por favor, <Link href="/Register" className="underline font-bold" >Inicia sesión o crea una cuenta</Link>  para agregar productos al carrito.
-        </>,
-        { autoClose: 1000 }
-      );
-
-      setTimeout(() => {
-        setShowLoginMessage(false);
-
-      }, 3000); 
-
-      return;
-    }
-
-
-    const productData = {
-      _id: _id,
-      title: title,
-      price: price,
-      quantity: 1,
-      subtotal: price * 1,
-      image: image,
-      stock: stock,
-    };
-
-    dispatch(addItem(productData));
-    toast.success("Producto agregado al carrito.");
-    handleUpdateCart();
-  };
+ 
+ const handleAddToCart = () => {
+   const productData = {
+     _id: _id,
+     title: title,
+     price: price,
+     quantity: 1,
+     subtotal: price * 1,
+     image: image,
+     stock: stock,
+   };
+ 
+   dispatch(addItem(productData));
+   toast.success("Producto agregado al carrito.");
+   handleUpdateCart();
+ };
 
   useEffect(() => {
     dispatch(getlogindata());

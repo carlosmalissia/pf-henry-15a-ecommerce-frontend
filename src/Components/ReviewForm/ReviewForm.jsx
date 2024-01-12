@@ -5,7 +5,7 @@ import { useNewReviewMutation } from '@/redux/services/reviewsApi';
 import { ToastContainer } from 'react-toastify';
 
 
-const ReviewForm = ({ onReviewSubmit, productById }) => {
+const ReviewForm = ({ handleReviewSubmit, productById }) => {
   const userId = useAppSelector((state) => state.loginReducer.user);
   const userToken = useAppSelector((state) => state.loginReducer.token);
 
@@ -26,14 +26,14 @@ const ReviewForm = ({ onReviewSubmit, productById }) => {
   };
 
   const handleSubmit = (event) => {
-    
+
     const reviewData = {
       user: user, 
       product: product,
       rating: rating, 
       comment: comment,  
     };
-    onReviewSubmit(reviewData);
+    handleReviewSubmit(reviewData);
   };
 
   return (
