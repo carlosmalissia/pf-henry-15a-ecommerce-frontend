@@ -10,7 +10,7 @@ import { FaGoogle } from "react-icons/fa";
 import { useDispatch } from 'react-redux';
 import {loginUser, logoutUser} from "@/redux/features/userSlice"
 import styles from "../Navbar/navbar.module.css"
-
+import { addItem } from '@/redux/features/cart';
 import { signIn, signOut, useSession } from "next-auth/react";
 import axios from 'axios';
 //import { useCookies } from 'next-client-cookies';
@@ -54,10 +54,35 @@ const LoginForm = () => {
       try {
         const loginResponse = await login(loginFormData);
         if (loginResponse?.data?.token) {
-          
+
           setLoginSuccess(true);
           dispatch(loginUser(loginResponse.data))
-          
+
+          // Trayendo el shoppinCart del usuario
+          console.log("aca ", loginResponse.data.user._id);
+          const userID = loginResponse.data.user._id
+          const userById = await axios(`https://pf-15a.up.railway.app/api/users/${userID}`)
+          const data = userById.data.shoppingCart
+          console.log("data ", data);
+
+          data.forEach(element => {
+            const getProductById = async () => {
+              const productById = await axios(`https://pf-15a.up.railway.app/api/product/${element}`)
+              const productData = {
+                _id: productById.data._id,
+                title: productById.data.title,
+                price: productById.data.price,
+                quantity: 1,
+                subtotal: productById.data.price * 1,
+                image: productById.data.image,
+                stock: productById.data.stock,
+              }
+              console.log("productos ", productData);
+              dispatch(addItem(productData));
+            }
+            getProductById()
+          })
+
 
         } else {
           console.error('Error en el inicio de sesión:', loginResponse?.data?.error);
