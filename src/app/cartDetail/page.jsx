@@ -15,11 +15,19 @@ const CartDetailPage = () => {
 
   const [updateCart] = useShoppingCartupdateUserMutation();
 
+
   const handleUpdateCart = async () => {
+    // Saco solo los id de shoppingCart para ponerlo la bd
+    const shoppingcart = []
+    cartItems.forEach((product) => {
+      for (let i = 0; i < product.quantity; i++) {
+        shoppingcart.push(product._id);
+      }
+    });
     try {
       const userID = userId?._id;
       const token = userToken;
-      const shoppingCart = cartItems.map((product) => product._id);
+      const shoppingCart = shoppingcart;
 
       const config = {
         shoppingCart,
@@ -27,7 +35,7 @@ const CartDetailPage = () => {
         token,
       };
 
-      const { data, error } = await updateCart(config);
+      const { data, error } = await updateCart(config); // actualizo la bd con los datos del localStorage
 
       if (error) {
         console.error("Error al actualizar el carrito:", error);
@@ -38,7 +46,7 @@ const CartDetailPage = () => {
       console.error("Error general al actualizar el carrito:", error);
     }
   };
-
+  // Elimino del localStorage y de la BD
   const handleRemoveItem = async (_id) => {
     dispatch(removeItem({ _id }));
     handleUpdateCart();
@@ -90,25 +98,25 @@ const CartDetailPage = () => {
                 {cartItems.map((item) => (
                   <tr key={item._id} className="border-b text-sm">
                     <td className="p-2">
-                    <Link
-                      href={`/Detail/${item._id}`}
-                      className="underline font-bold "
-                    >
-                      <img
-                        src={item.image}
-                        alt={item.title}
-                        className="object-contain w-20 h-20 mr-4"
-                      />
-                    </Link>
+                      <Link
+                        href={`/Detail/${item._id}`}
+                        className="underline font-bold "
+                      >
+                        <img
+                          src={item.image}
+                          alt={item.title}
+                          className="object-contain w-20 h-20 mr-4"
+                        />
+                      </Link>
                     </td>
-                      <td className="p-2 text-center">
-                    <Link
-                      href={`/Detail/${item._id}`}
-                      className="underline font-bold "
-                    >
+                    <td className="p-2 text-center">
+                      <Link
+                        href={`/Detail/${item._id}`}
+                        className="underline font-bold "
+                      >
                         {item.title}
-                    </Link>
-                        </td>
+                      </Link>
+                    </td>
                     <td className="p-2">${item.price}</td>
                     <td className="p-2">
                       <input
