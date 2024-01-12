@@ -8,7 +8,7 @@ import Image from "next/image";
 import { useGetProductByIdQuery } from "@/redux/services/productApi";
 import {Rating} from '@material-tailwind/react';
 import ReviewsPagination from '../ReviewsPagination/ReviewsPagination';
-import { useGetProductByIdQuery } from '@/redux/services/productApi';
+
 import { FaStar } from 'react-icons/fa';
 
 
