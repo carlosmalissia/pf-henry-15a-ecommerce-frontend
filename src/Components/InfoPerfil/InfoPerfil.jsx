@@ -2,11 +2,15 @@ import React from 'react'
 import { useAppSelector } from "@/redux/hooks";
 
 const InfoPerfil = () => {
+  
     const userData = useAppSelector((state) => state.loginReducer.user);
   console.log("userData", userData);
+  const userToken = useAppSelector((state) => state.loginReducer.token);
 
   const name = userData?.name
+  
   console.log("este es el name " + name);
+  console.log("este es el token " + userToken);
     return (
         <div className="min-h-screen mr-64 mt-20 ml-12  ">
           <h2 className="text-3xl font-semibold mb-12">¡Bienvenido a tu Perfil, {name} !</h2>

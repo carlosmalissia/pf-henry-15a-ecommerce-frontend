@@ -2,16 +2,21 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { getCartData } from "@/redux/features/cart";
-import { useAppDispatch } from "@/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import axios from 'axios'
 import { cleanCart } from "@/redux/features/cart";
-
+import {useNewPurchaseMutation} from "@/redux/services/purchaseHistoryApi"
 
 
 const Page = () => {
   const cartItems = useSelector((state) => state.cartReducer.cartItems);
+  const userId = useAppSelector((state) => state.loginReducer.user);
+  const userToken = useAppSelector((state) => state.loginReducer.token);
   const dispatch = useAppDispatch();
+
+  const [createPurchase] = useNewPurchaseMutation()
+
 
   useEffect(() => {
     // Llama a getCartData al cargar el componente para asegurarte de que cartItems se haya actualizado
@@ -60,6 +65,38 @@ const Page = () => {
       // Manejar el error y posiblemente mostrar un mensaje al usuario
     }
   };
+
+
+  //? Purchase History
+  
+  let cartItemsId = [];
+
+  cartItems.forEach((product) => {
+    for (let i = 0; i < product.quantity; i++) {
+      cartItemsId.push(product._id);
+    }
+  });
+
+  const purchase ={
+    user: userId,
+    product: cartItemsId
+  }
+
+  const handlePurchase = async () => {
+    try {
+      const config ={
+        purchase: purchase,
+        token: userToken
+      }
+      
+      const {data, error} = await createPurchase(config)
+      console.log("Respuesta del backend:", data);
+
+    } catch (error) {
+      console.error("Error al procesar la respuesta del backend:", error);
+    }
+  }
+
 
   return (
     <div className="p-14 font-bold">
@@ -155,17 +192,22 @@ const Page = () => {
                                   description: item.description,
                                   unit_amount: {
                                     currency_code: "USD",
-                                    value: item.price.toFixed(2),
+                                    value: parseFloat(item.price.toFixed(2)),
                                   },
                                   quantity: item.quantity.toString(),
-                                }))
+                                  amount: {
+                                    currency_code: "USD",
+                                    value: parseFloat(item.subtotal),
+                                  },
+                                })),
                               },
-                            ]
-                          })
+                            ],
+                          });
                         }}
                         onApprove={async (data, actions) => {
                           const order = await actions.order?.capture()
                           console.log("order: ", order);
+                          handlePurchase();
                           dispatch(cleanCart());
                         }}
                         onCancel={() => {

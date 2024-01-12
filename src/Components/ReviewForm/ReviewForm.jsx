@@ -1,9 +1,21 @@
 import React, { useState } from 'react';
 import { Rating } from '@material-tailwind/react';
+import { useAppSelector } from '@/redux/hooks';
+import { useNewReviewMutation } from '@/redux/services/reviewsApi';
+import { ToastContainer } from 'react-toastify';
 
-const ReviewForm = ({ onReviewSubmit }) => {
+
+const ReviewForm = ({ handleReviewSubmit, productById }) => {
+  const userId = useAppSelector((state) => state.loginReducer.user);
+  const userToken = useAppSelector((state) => state.loginReducer.token);
+
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
+
+  const product = productById._id;
+
+  const user=userId;
+
 
   const handleRatingChange = (value) => {
     setRating(value);
@@ -14,8 +26,14 @@ const ReviewForm = ({ onReviewSubmit }) => {
   };
 
   const handleSubmit = (event) => {
-    event.preventDefault();0
-    onReviewSubmit({ rating, comment });
+
+    const reviewData = {
+      user: user, 
+      product: product,
+      rating: rating, 
+      comment: comment,  
+    };
+    handleReviewSubmit(reviewData);
   };
 
   return (
@@ -46,6 +64,11 @@ const ReviewForm = ({ onReviewSubmit }) => {
       >
         Enviar comentario
       </button>
+      <ToastContainer
+                theme="colored"
+                position="bottom-left"
+                autoClose={2000}
+              />
     </form>
   );
 };

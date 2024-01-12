@@ -1,88 +1,87 @@
-
 "use client";
-import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { useGetAllReviewsQuery, useGetUserReviewsQuery } from '@/redux/services/usersApi';
- import { useGetProductByIdQuery} from '@/redux/services/productApi';
-import Image from 'next/image';
+import {useState, useEffect } from 'react';
+import { useAppSelector } from '@/redux/hooks';
+import { useGetUserReviewsQuery } from '@/redux/services/usersApi';
+import Image from "next/image";
+import { useGetProductByIdQuery } from "@/redux/services/productApi";
+import {Rating} from '@material-tailwind/react';
+import ReviewsPagination from '../ReviewsPagination/ReviewsPagination';
+
+
+
 const ReviewUsuario = () => {
-  const { data: allReviews, isLoading: isLoadingAllReviews, isError: isErrorAllReviews, refetch: refetchAllReviews } = useGetAllReviewsQuery();
-  const { user } = useSelector((state) => state.auth);
+  const userData = useAppSelector((state) => state.loginReducer.user);
+  const userId = userData?._id;
+  const name = userData?.name;
+
+  const { data: reviews, error, isLoading } = useGetUserReviewsQuery(userId);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 6;
 
   useEffect(() => {
-      refetchAllReviews();
-  }, [refetchAllReviews]);
+    if (error) {
+      console.error('Error al cargar las reviews:', error);
+    }
+  }, [error]);
 
-  if (isLoadingAllReviews) {
-      return <div>Cargando reseñas...</div>;
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentReviews = reviews?.slice(indexOfFirstProduct, indexOfLastProduct);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  if (isLoading) {
+    return <p>Cargando...</p>;
   }
 
-  if (isErrorAllReviews) {
-      return <div>Error al cargar reseñas.</div>;
+  if (!reviews || reviews.length === 0) {
+    return <p>No hay reviews para este usuario.</p>;
   }
-
-  // Filtra las revisiones por el usuario actual
-  const userReviews = allReviews.filter(review => review.user._id === user?._id);
 
   return (
-    <div className="min-h-screen mr-96 flex items-center justify-center mt-[-64px]">
-        <div className=" shadow-xl border-solid border border-gray-300 rounded-md">
-        <h2 className="text-2xl font-bold mb-4">Reseñas</h2>
-            
-            {isLoadingAllReviews && <div>Cargando reseñas...</div>}
-            {isErrorAllReviews && <div>Error al cargar reseñas.</div>}
-            {userReviews && userReviews.map((review) => (
-                <div key={review._id} className="border p-4 mb-4 rounded">
-                    {/* Realiza una solicitud individual para obtener la reseña por su ID */}
-                    <ReviewDetail reviewId={review._id} />
-                </div>
-            ))}
-        </div>
+    <div className="bg-gray-100 p-2 rounded-md shadow-md min-h-screen">
+      <h2 className="text-lg font-bold mb-2">Reviews de {name}</h2>
+      <div className="flex flex-wrap -mx-2">
+        {currentReviews.map((review) => {
+          const productId = review.product;
+
+          return (
+            <div key={review._id} className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/3 p-2">
+              <ProductReview productId={productId} review={review} />
+            </div>
+          );
+        })}
+      </div>
+      <div className="flex justify-center mt-4">
+        <ReviewsPagination
+          productsPerPage={productsPerPage}
+          totalProducts={reviews.length}
+          paginate={paginate}
+          currentPage={currentPage}
+        />
+      </div>
     </div>
-);
+  );
 };
 
-const ReviewDetail = ({ reviewId }) => {
-const { data: review, isLoading, isError } = useGetUserReviewsQuery(reviewId);
-const _id= review?.product
- const { data: productById, error, isFetching } = useGetProductByIdQuery(_id); 
- 
- console.log('Producto por ID:', productById);
+const ProductReview = ({ productId, review }) => {
+  // Obtener los detalles del producto por su ID
+  const { data: productDetails } = useGetProductByIdQuery(productId);
 
+  // Renderizar la imagen del producto si existe
+  const productImage = productDetails?.image;
 
-
-if (isLoading) {
-  return <div>Cargando reseña...</div>;
-}
-
-if (isError) {
-  return <div>Error al cargar reseña.</div>;
-}
-
-return (
-  <div>
-    {isLoading && <div>Cargando reseña...</div>}
-    {isError && <div>Error al cargar reseña.</div>}
-    {review && (
-      <div>
-        
-        <p className="text-lg font-semibold">Producto: {review.product}</p>
-      {/*   <Image
-          src={productById.image}
-          alt={productById.title}
-          width={400}
-          height={300}
-          priority={true}
-          className="border-none object-contain w-[400px] h-[300px] transition-transform transform hover:scale-110"
-        /> */}
-        <p className="block text-gray-700 text-sm font-semibold mb-2 mr-2">Calificación: {review.rating}</p>
-        <p className="block text-gray-700 text-sm font-semibold mb-2 mr-2">Comentario: {review.comment}</p>
-        <h1 className=" text-lg block text-gray-700 text-sm font-semibold mb-2 mr-2">Fecha de creación: {review.created}</h1>
-        
+  return (
+    <div className="border rounded-md bg-white p-2 h-full shadow-xl">
+      <div className="text-m mb-1 font-serif font-bold">Producto</div>
+      <div className="flex items-center justify-center mb-2">
+        {productImage && <Image src={productImage} alt="Producto" width={100} height={100} />}
       </div>
-    )}
-  </div>
-);
+      <Rating readonly value={review.rating} className='text-yellow-500'/>
+      <div className="text-sm mb-1 pb-1 font-semibold">Comentario: {review.comment}</div>
+    </div>
+  );
 };
 
 export default ReviewUsuario;
