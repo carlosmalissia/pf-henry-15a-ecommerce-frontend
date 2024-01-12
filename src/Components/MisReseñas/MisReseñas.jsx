@@ -2,8 +2,11 @@
 
 import { useState } from 'react';
 import { useAppSelector } from '@/redux/hooks';
+
 import { useGetUserReviewsQuery, useUpdateReviewMutation } from '@/redux/services/usersApi';
-import Image from 'next/image';
+import Image from "next/image";
+import { useGetProductByIdQuery } from "@/redux/services/productApi";
+import {Rating} from '@material-tailwind/react';
 import ReviewsPagination from '../ReviewsPagination/ReviewsPagination';
 import { useGetProductByIdQuery } from '@/redux/services/productApi';
 import { FaStar } from 'react-icons/fa';
@@ -164,6 +167,7 @@ const ProductReview = ({
           </>
         )}
       </div>
+
       {editMode && (
         <button
           onClick={handleSaveEditClick}
@@ -204,6 +208,7 @@ const RatingStars = ({ rating, onChange, readOnly }) => {
         onClick={() => handleClick(star)}
         />
         ))}
+
     </div>
     </>
   );
