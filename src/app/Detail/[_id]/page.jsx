@@ -21,6 +21,7 @@ import ReviewForm from "@/Components/ReviewForm/ReviewForm";
 import ReviewList from "@/Components/ReviewList/ReviewList";
 import { Rating } from "@material-tailwind/react";
 import { Progress } from "@material-tailwind/react";
+
 export default function DetailID({ params }) {
   const { _id } = params;
 
@@ -28,13 +29,13 @@ export default function DetailID({ params }) {
   const dispatch = useAppDispatch();
   const userId = useAppSelector((state) => state.loginReducer.user);
   const userToken = useAppSelector((state) => state.loginReducer.token);
-  let cartItemsId = cartItems.map((product) => product._id);
   const [showLoginMessage, setShowLoginMessage] = useState(false);
   const [newReview] = useNewReviewMutation();
-  const { data: cartData, error: cartError } = useCartShoppingQuery({
-    userID: userId?._id,
-    _id: _id,
-  });
+
+  // const { data: cartData, error: cartError } = useCartShoppingQuery({
+  //   userID: userId?._id,
+  //   _id: _id,
+  // });
 
   const {
     data: productById,
@@ -43,6 +44,14 @@ export default function DetailID({ params }) {
     isFetching,
   } = useGetProductByIdQuery(_id);
 
+  let idItems = [];
+
+  cartItems.forEach((product) => {
+    for (let i = 0; i < product.quantity; i++) {
+      idItems.push(product._id);
+    }
+  });
+
   const [updateCart] = useShoppingCartupdateUserMutation();
 
   const handleUpdateCart = async () => {
@@ -50,7 +59,7 @@ export default function DetailID({ params }) {
       if (userId && userId?._id && userToken) {
         const userID = userId?._id;
         const token = userToken;
-        const shoppingCart = cartItemsId;
+        const shoppingCart = idItems;
 
         const config = {
           shoppingCart,
@@ -64,31 +73,31 @@ export default function DetailID({ params }) {
           console.error("Error al actualizar el carrito:", error);
         } else {
           console.log("Carrito actualizado con éxito:", data);
-          // Puedes mostrar un mensaje de éxito aquí si es necesario
         }
       } else {
-        console.error("userID, userID._id o userToken es undefined");
+        console.log(
+          "Usuario no autenticado. No se actualizará el carrito en la base de datos."
+        );
       }
     } catch (error) {
       console.error("Error general al actualizar el carrito:", error);
     }
   };
 
-  const handleReviewSubmit = async (reviewData) => {
-    try {
-      const config = {
-        review: reviewData,
-        token: userToken,
-      };
+  const handleAddToCart = () => {
+    const productData = {
+      _id: productById._id,
+      title: productById.title,
+      price: productById.price,
+      quantity: quantity,
+      subtotal: productById.price * 1,
+      image: productById.image,
+      stock: productById.stock,
+    };
 
-      console.log("datos de review:", config);
-      const { data, error } = await newReview(config);
-      toast.success("Reseña creada exitosamente");
-      
-      console.log("review cargada:", data);
-    } catch (error) {
-      console.error("Error al crear la reseña:", error);
-    }
+    dispatch(addItem(productData));
+    toast.success("Producto agregado al carrito.");
+    handleUpdateCart();
   };
 
   useEffect(() => {}, [_id]);
@@ -123,49 +132,31 @@ export default function DetailID({ params }) {
     return <p>Hubo un error al obtener el producto.</p>;
   }
 
-  const handleAddToCart = () => {
-    if (!userId) {
-      setShowLoginMessage(true);
-
-      toast.info(
-        <>
-          Por favor,{" "}
-          <Link href="/Register" className="underline font-bold">
-            Inicia sesión o crea una cuenta
-          </Link>{" "}
-          para agregar productos al carrito.
-        </>,
-        { autoClose: 1000 }
-      );
-
-      setTimeout(() => {
-        setShowLoginMessage(false);
-      }, 3000);
-      return;
-    }
-
-    const productData = {
-      _id: productById._id,
-      title: productById.title,
-      price: productById.price,
-      quantity: quantity,
-      subtotal: productById.price * quantity,
-      image: productById.image,
-      stock: productById.stock,
-    };
-
-    dispatch(addItem(productData));
-    toast.success("Producto agregado al carrito.");
-    handleUpdateCart();
-  };
-
   //**reviews
+  //cargar review
+  // const handleReviewSubmit = async (reviewData) => {
+  //   try {
+  //     const config = {
+  //       review: reviewData,
+  //       token: userToken,
+  //     };
+
+  //     console.log("datos de review:", config);
+
+  //     const { data, error } = await newReview(config);
+
+  //     toast.success("Reseña creada exitosamente");
+
+  //     console.log("review cargada:", data);
+  //   } catch (error) {
+  //     console.error("Error al crear la reseña:", error);
+  //   }
+  // };
+
   //calcular promedio de reviews
   const calculateRatingDistribution = (reviews) => {
-    // Inicializar contadores para cada estrella
     const starCounts = Array(5).fill(0);
 
-    // Contar las calificaciones
     reviews.forEach((review) => {
       const rating = review.rating;
       if (rating >= 1 && rating <= 5) {
@@ -185,13 +176,11 @@ export default function DetailID({ params }) {
   };
 
   const ratingDistribution = calculateRatingDistribution(productById.reviews);
-
-  //redondear averagge de reviews
   const roundedAverage = Math.floor(productById.averageRating);
 
   return (
     <div>
-      <div className="bg-bggris2 relative pt-10 mx-auto min-w-[20rem] w-[80%] flex flex-col md:flex-row mt-40 mb-10 shadow-md">
+      <div className="bg-bggris2 relative pt-10 mx-auto min-w-[20rem] w-[90%] rounded-2xl flex flex-col md:flex-row mt-28 mb-10 shadow-md">
         {/* Imagen a la izquierda en pantallas grandes */}
         <div className="bg-white border-solid border-2 border-primary cursor-grab w-[40%] mb-5 mr-10 relative overflow-hidden flex items-center justify-center ml-10">
           <Image
@@ -206,6 +195,9 @@ export default function DetailID({ params }) {
 
         {/* Detalles del producto a la derecha */}
         <div className="md:w-[60%] ">
+        <br />
+          <h1 className="text-start text-xl text-black">{productById.title}</h1>
+      <br />
           <div className="flex items-center">
             {/* Icono de corazón para agregar a favoritos */}
             <button
@@ -221,8 +213,8 @@ export default function DetailID({ params }) {
               )}
             </button>
             {/* rating y cuenta */}
-            <section className="text-start text-lg text-yellow-500 flex flex-row gap-4">
-              <div>
+            <section className="text-lg text-yellow-500 flex gap-4">
+             <p> {productById.averageRating}/5 </p>
                 <Rating
                   className="text-sm "
                   readonly
@@ -230,36 +222,35 @@ export default function DetailID({ params }) {
                   unratedColor="yellow"
                   ratedColor="amber"
                 />
-                <p className="text-center text-xl">
-                  {productById.averageRating}/5 ({productById.reviews.length})
+                <p className="flex items-center text-center text-sm">
+                 ({productById.reviews.length})
                   calificaciones
                 </p>
-              </div>
+              
             </section>
           </div>
 
           {/* Titulo y descripción del producto */}
           <br />
-          <h1 className="text-start text-xl text-black">{productById.title}</h1>
+          <span className="font-bold text-2xl text-bgred mt-4">
+            ${productById.price}
+          </span>
           <br />
-          <p className="text-start text-sm text-bggris">
+          <br />
+          <p className="text-start text-sm text-bggris mr-8">
             {productById.description}
           </p>
-          <br />
-          <h2 className="text-start text-sm text-bggris">
-            Disponibles: {productById.stock} unidades
-          </h2>
           <br />
           <h2 className="text-start text-sm text-bggris">
             Categoria: {productById.category.name}
           </h2>
           <br />
+          <h2 className="text-start text-sm text-bggris">
+            Disponibles: {productById.stock} unidades
+          </h2>
+          <br />
           {/* Precio */}
           <div className="flex flex-col items-center md:items-start gap-2 md:w-full">
-            <span className="font-bold text-2xl text-bgred">
-              ${productById.price}
-            </span>
-
             {/* Cantidad y botón Agregar al carrito */}
             <div className="flex items-center mt-3 mb-10">
               <label className="mr-2">Cantidad: </label>
@@ -300,7 +291,7 @@ export default function DetailID({ params }) {
       </div>
 
       {/* Sección de revisiones  */}
-      <section className="bg-bggris2 mx-auto mt-8 w-[80%]  p-4 rounded-xl md:mb-8 flex flex-col">
+      <section className="bg-bggris2 mx-auto mt-8 w-[90%]  p-4 rounded-xl md:mb-8 flex flex-col shadow-md">
         <h2 className="text-2xl text-center m-4 text-black">
           Calificaciones de este producto
         </h2>
@@ -382,19 +373,19 @@ export default function DetailID({ params }) {
               )}
             </div>
           </div>
-          <div className="w-[50%]  p-4">
+          {/* <div className="w-[50%]  p-4">
             <h2 className="text-lg text-black text-center mb-4">
               Deja un comentario
             </h2>
             <ReviewForm
-              onReviewSubmit={handleReviewSubmit}
+              handleReviewSubmit={handleReviewSubmit}
               productById={productById}
             />
-          </div>
+          </div> */}
         </div>
 
         {/* Seccion de revisiones  */}
-       <ReviewList  productById={productById} />
+        <ReviewList productById={productById} />
       </section>
 
       {/* productos similares */}

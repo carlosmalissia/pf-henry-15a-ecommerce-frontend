@@ -1,3 +1,4 @@
+
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const userApi = createApi({
@@ -7,6 +8,21 @@ export const userApi = createApi({
     }),
     tagTypes: ["Users", 'Reviews'],
     endpoints: (builder) => ({
+    
+        updateReview: builder.mutation({
+            query: ({ reviewId, userToken, updatedReview }) => {
+                console.log(userToken);
+                const config = {
+                    url: `/api/review/${reviewId}`,
+                    method: "PUT",
+                    headers: {
+                        Authorization: `Bearer ${userToken}`,
+                    },
+                    body: updatedReview
+                };
+                return config;
+            },
+        }),
         loginUser: builder.mutation({
             query: ({ loginEmail, loginPassword }) => ({
                 url: `/auth/signin`, // URL del endpoint de inicio de sesión
@@ -71,6 +87,10 @@ export const userApi = createApi({
             },
             invalidatesTags: ["Users"],
         }),
+        getUserReviews: builder.query({
+            query: (userId) => `/api/userReviews/${userId}`, // endpoint para obtener las reviews por ID de usuario
+            providesTags: (result, error, userId) => [{ type: 'Reviews', id: userId }],
+        }),
         shoppingCartupdateUser: builder.mutation({
             query: ({ shoppingCart, userID, token }) => {
                 const config = {
@@ -85,25 +105,6 @@ export const userApi = createApi({
             },
             invalidatesTags: ["Users"],
         }),
-        getAllReviews: builder.query({
-            query: () => '/api/review',
-            providesTags: ['Review'],
-            onSuccess: (data, variables, { dispatch, getState }) => {
-                const user = getState().auth.user;
-
-                if (user) {
-                    const reviewsWithUser = data.map(review => ({ ...review, user }));
-                    dispatch(setAllReviews(reviewsWithUser));
-                } else {
-                    dispatch(setAllReviews(data));
-                }
-            },
-        }),
-        getUserReviews: builder.query({
-            query: (reviewId) => `/api/review/${reviewId}`,
-            providesTags: (result, error, reviewId) => [{ type: 'Review', id: reviewId }],
-            onSuccess: (data) => setUserReviews(data), // Puede que necesites definir setUserReviews aquí
-        }),
     }),
 });
 
@@ -116,7 +117,8 @@ export const {
     useLogoutUserMutation,
     useCartShoppingQuery,
     useShoppingCartupdateUserMutation,
-    useGetAllReviewsQuery,
-    useGetUserReviewsQuery
-
+    useGetUserReviewsQuery,
+    useUpdateReviewMutation,
+    
+    
 } = userApi;

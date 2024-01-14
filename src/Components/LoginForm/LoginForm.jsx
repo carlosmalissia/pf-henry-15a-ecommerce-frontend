@@ -10,7 +10,7 @@ import { FaGoogle } from "react-icons/fa";
 import { useDispatch } from 'react-redux';
 import {loginUser, logoutUser} from "@/redux/features/userSlice"
 import styles from "../Navbar/navbar.module.css"
-
+import { addItem } from '@/redux/features/cart';
 import { signIn, signOut, useSession } from "next-auth/react";
 import axios from 'axios';
 //import { useCookies } from 'next-client-cookies';
@@ -54,10 +54,35 @@ const LoginForm = () => {
       try {
         const loginResponse = await login(loginFormData);
         if (loginResponse?.data?.token) {
-          
+
           setLoginSuccess(true);
           dispatch(loginUser(loginResponse.data))
-          
+
+          // Trayendo el shoppinCart del usuario
+          console.log("aca ", loginResponse.data.user._id);
+          const userID = loginResponse.data.user._id
+          const userById = await axios(`https://pf-15a.up.railway.app/api/users/${userID}`)
+          const data = userById.data.shoppingCart
+          console.log("data ", data);
+
+          data.forEach(element => {
+            const getProductById = async () => {
+              const productById = await axios(`https://pf-15a.up.railway.app/api/product/${element}`)
+              const productData = {
+                _id: productById.data._id,
+                title: productById.data.title,
+                price: productById.data.price,
+                quantity: 1,
+                subtotal: productById.data.price * 1,
+                image: productById.data.image,
+                stock: productById.data.stock,
+              }
+              console.log("productos ", productData);
+              dispatch(addItem(productData));
+            }
+            getProductById()
+          })
+
 
         } else {
           console.error('Error en el inicio de sesión:', loginResponse?.data?.error);
@@ -118,6 +143,7 @@ const LoginForm = () => {
             placeholder='Email'
             value={loginFormData.loginEmail}
             onChange={handleChange}
+            autoComplete="off"  
             className={`mr-10 bg-gray-50 border border-gray-300 text-black-500 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-teal-500 dark:focus:border-teal-500`}
           />
           {formErrors.loginEmail && (
@@ -136,6 +162,7 @@ const LoginForm = () => {
             placeholder='Contraseña'
             value={loginFormData.loginPassword}
             onChange={handleChange}
+            autoComplete="off"  
             className={`mr-10 bg-gray-50 border border-gray-300 text-black-500 text-sm rounded-lg focus:ring-blue-500 focus:border-teal-500 block w-full p-2 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-teal-500 dark:focus:border-teal-500 `}
           />
           {formErrors.loginPassword && (
