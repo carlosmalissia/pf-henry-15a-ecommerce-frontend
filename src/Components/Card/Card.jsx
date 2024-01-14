@@ -13,18 +13,18 @@ import {
 } from "@/redux/services/usersApi";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { BsHeart, BsHeartFill } from "react-icons/bs";
 
 
 
-
-export default function Card({ _id, title, price, image, category, stock }) {
+export default function Card({ _id, title, price, image, category, stock, onToggleFavorite,isFavorite }) {
   const [hovered, setHovered] = useState(false);
   const cartItems = useAppSelector((state) => state.cartReducer.cartItems);
   const userId = useAppSelector((state) => state.loginReducer.user);
   const userToken = useAppSelector((state) => state.loginReducer.token);
   const dispatch = useAppDispatch();
-
-
+  //const [favorite, setFavorite] = useState([])
+const idUser = userId?._id;
   const [showLoginMessage, setShowLoginMessage] = useState(false);
 
 
@@ -113,10 +113,28 @@ export default function Card({ _id, title, price, image, category, stock }) {
     handleUpdateCart();
   }, [cartItems]);
 
+  useEffect(() => {
+    console.log("este es el console del useEfect" + isFavorite)
+    }, [isFavorite]);
+
   return (
     <div
       className={`bg-white-500 w-full border border-gray-300 rounded-md p-2 relative flex flex-col shadow-md`}
     >
+      <button
+              onClick={()=>{
+                console.log("onToggleFavorite:", onToggleFavorite);
+    onToggleFavorite()}}
+              className={`text-bgred p-3 rounded-lg mx-2 
+    flex justify-end items-center text-center 
+    transition duration-300 ease-in-out `}
+            >
+              {isFavorite ? (
+                <BsHeartFill className="text-2xl" />
+              ) : (
+                <BsHeart className="text-2xl" />
+              )}
+            </button>
       <Link href={`/Detail/${_id}`} className="flex-1">
         <div className="flex flex-col items-center h-auto w-auto m-5">
           {/* Contenido de la imagen */}

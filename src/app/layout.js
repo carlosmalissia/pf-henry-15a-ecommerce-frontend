@@ -5,6 +5,7 @@ import Navbar from '@/Components/Navbar/Navbar'
 import Footer from '@/Components/Footer/Footer'
 import { Providers } from '@/redux/providers'
 import { NextAuthProvider } from './providers'
+import { FavoriteProvider } from './context/FavoriteContext'
 
 
 const inter = Inter({ subsets: ['latin'] })
@@ -22,8 +23,10 @@ export default function RootLayout({ children }) {
     <body className={inter.className}>
       <NextAuthProvider>
       <Providers>
+      
         <Navbar />
           {children}
+         
         <footer className="bg-bgfooter p-10">
           <Footer />
         </footer> 

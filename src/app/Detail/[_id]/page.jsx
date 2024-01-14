@@ -1,6 +1,6 @@
 // Importa "use client" del paquete "next/client"
 "use client";
-
+import axios from "axios";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { MdOutlineShoppingCart } from "react-icons/md";
@@ -19,6 +19,8 @@ import Similares from "@/Components/Similares/Similares";
 import ReviewForm from "@/Components/ReviewForm/ReviewForm";
 import { Rating } from "@material-tailwind/react";
 import { Progress } from "@material-tailwind/react";
+
+
 export default function DetailID({ params }) {
   const { _id } = params;
 
@@ -28,7 +30,11 @@ export default function DetailID({ params }) {
   const userToken = useAppSelector((state) => state.loginReducer.token);
   let cartItemsId = cartItems.map((product) => product._id);
   const [showLoginMessage, setShowLoginMessage] = useState(false);
+  const [favorite, setFavorite] = useState([])
+  const idUser = userId?._id
+  const localStorageToken = localStorage.getItem("token");
 
+ // console.log("idUser" + idUser)
   const { data: cartData, error: cartError } = useCartShoppingQuery({
     userID: userId?._id,
     _id: _id,
@@ -93,10 +99,10 @@ export default function DetailID({ params }) {
 
   // Favoritos
   const [isFavorite, setIsFavorite] = useState(false);
-  const handleAddToFavorites = () => {
-    setIsFavorite(!isFavorite);
-    console.log(`Agregar a favoritos: ${productById.title}`);
-  };
+  // const handleAddToFavorites = () => {
+  //   setIsFavorite(!isFavorite);
+  //   console.log(`Agregar a favoritos: ${productById.title}`);
+  // };
 
   if (isLoading || isFetching) return <p>Cargando...</p>;
 
@@ -105,7 +111,50 @@ export default function DetailID({ params }) {
     return <p>Hubo un error al obtener el producto.</p>;
   }
 
+  //Favorites by Isaac
   
+
+  const handleAddToFavorites  = async ()=>{
+    favorite ? await deleteFavorites(idUser, _id) : await addToFavorites(idUser, _id)
+    setFavorite(!favorite)
+
+  }
+
+  const addToFavorites = async (idUser,_id) => {
+    try {
+      // Realizar una solicitud para agregar un producto a favoritos
+      await axios.post(`https://pf-15a.up.railway.app/api/favorites/${idUser}`, { product: _id },{
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorageToken}`
+        }
+      });
+      setFavorite((prevFavorite) => [...prevFavorite, _id])
+      // return res.status(200).json({message: "Product added to favorites"})
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const deleteFavorites = async (idUser, _id) => {
+    try {
+      console.log( "token para delete " + localStorageToken)
+      // Realizar una solicitud para eliminar un producto de favoritos
+      await axios.delete(`https://pf-15a.up.railway.app/api/favorites/${idUser}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorageToken}`
+        }
+      },{ product: _id },);
+      const updatedFavorites = favorite.filter((product) => product !== _id);
+      setFavorite(updatedFavorites);
+      // return res.status(200).json({message: "Product deleted of favorites"});
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+
  
   const handleAddToCart = () => {
     if (!userId) {
