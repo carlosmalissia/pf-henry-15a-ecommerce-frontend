@@ -10,6 +10,7 @@ import { useAppSelector } from "@/redux/hooks";
 import { useParams } from 'react-router-dom';
 import Link from "next/link";
 import InfoPerfil from "@/Components/InfoPerfil/InfoPerfil";
+import { ToastContainer, toast } from "react-toastify";
 
 export default function perfil() {
 
@@ -55,7 +56,7 @@ export default function perfil() {
 
 
       <div className="flex ">
-        <div className=" shadow-xl border-solid border border-gray-300 w-1/4 h-2/3 mt-20 mb-64 p-6 rounded-md">
+        <div className=" shadow-xl border-solid border border-gray-300 w-1/4 h-2/3 mt-20 ml-12 mb-64 p-6 rounded-md">
           <h1 className="mb-10 text-2xl">MI CUENTA</h1>
           <ul>
             <li className="m-2">
@@ -84,9 +85,14 @@ export default function perfil() {
             </li>
           </ul>
         </div>
-        <div className="w-3/4 mx-auto">
+        <div className="w-3/4 m-10 ">
           {renderComponenteActual()}
         </div>
+        <ToastContainer
+                theme="colored"
+                position="bottom-left"
+                autoClose={2000}
+              />
       </div>
     </div>
   );

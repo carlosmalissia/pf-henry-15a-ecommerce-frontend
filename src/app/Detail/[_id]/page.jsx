@@ -134,24 +134,24 @@ export default function DetailID({ params }) {
 
   //**reviews
   //cargar review
-  const handleReviewSubmit = async (reviewData) => {
-    try {
-      const config = {
-        review: reviewData,
-        token: userToken,
-      };
+  // const handleReviewSubmit = async (reviewData) => {
+  //   try {
+  //     const config = {
+  //       review: reviewData,
+  //       token: userToken,
+  //     };
 
-      console.log("datos de review:", config);
+  //     console.log("datos de review:", config);
 
-      const { data, error } = await newReview(config);
+  //     const { data, error } = await newReview(config);
 
-      toast.success("Reseña creada exitosamente");
+  //     toast.success("Reseña creada exitosamente");
 
-      console.log("review cargada:", data);
-    } catch (error) {
-      console.error("Error al crear la reseña:", error);
-    }
-  };
+  //     console.log("review cargada:", data);
+  //   } catch (error) {
+  //     console.error("Error al crear la reseña:", error);
+  //   }
+  // };
 
   //calcular promedio de reviews
   const calculateRatingDistribution = (reviews) => {
@@ -373,7 +373,7 @@ export default function DetailID({ params }) {
               )}
             </div>
           </div>
-          <div className="w-[50%]  p-4">
+          {/* <div className="w-[50%]  p-4">
             <h2 className="text-lg text-black text-center mb-4">
               Deja un comentario
             </h2>
@@ -381,7 +381,7 @@ export default function DetailID({ params }) {
               handleReviewSubmit={handleReviewSubmit}
               productById={productById}
             />
-          </div>
+          </div> */}
         </div>
 
         {/* Seccion de revisiones  */}
