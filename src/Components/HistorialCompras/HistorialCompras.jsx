@@ -96,12 +96,6 @@ const HistorialCompras = () => {
                   />
                 </div>
               ))}
-
-              <ToastContainer
-                theme="colored"
-                position="bottom-left"
-                autoClose={2000}
-              />
             </div>
           </section>
         </div>
