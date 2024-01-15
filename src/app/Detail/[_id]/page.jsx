@@ -42,7 +42,10 @@ export default function DetailID({ params }) {
     error,
     isLoading,
     isFetching,
-  } = useGetProductByIdQuery(_id);
+  } = useGetProductByIdQuery(_id, {
+    refetchOnMountOrArgChange: true,
+    refetchInterval: 5000,
+  });
 
   let idItems = [];
 
@@ -214,7 +217,7 @@ export default function DetailID({ params }) {
             </button>
             {/* rating y cuenta */}
             <section className="text-lg text-yellow-500 flex gap-4">
-             <p> {productById.averageRating}/5 </p>
+            <p> {productById.averageRating.toFixed(2)}/5 </p>
                 <Rating
                   className="text-sm "
                   readonly
