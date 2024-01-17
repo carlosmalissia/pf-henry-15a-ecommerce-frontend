@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import PerfilUsuario from "@/Components/PerfilUsuario/PerfilUsuario";
 import HistorialCompras from "@/Components/HistorialCompras/HistorialCompras";
 import MisReseñas from "@/Components/MisReseñas/MisReseñas";
+import MisFavoritos from "@/Components/MisFavoritos/MisFavoritos"
 import { useGetUserByIdQuery } from "@/redux/services/usersApi";
 import { useAppSelector } from "@/redux/hooks";
 import { useParams } from "react-router-dom";
@@ -44,6 +45,8 @@ export default function perfil() {
         return <HistorialCompras />;
       case "misReseñas":
         return <MisReseñas />;
+        case 'favoritos':
+        return <MisFavoritos />;
       case "info":
         return <InfoPerfil />;
       default:
@@ -59,7 +62,7 @@ export default function perfil() {
           <ul>
             <li className="m-2">
               <button
-                className="cursor-pointer text-xl bg-gray-100 hover:bg-teal-600 text-black font-serif py-2 px-4 rounded-lg  w-64 shadow-xl"
+                className={`cursor-pointer text-xl hover:bg-teal-600 hover:text-white text-black font-serif py-2 px-4 rounded-lg  w-64 shadow-xl ${(componenteActual === "informacionPersonal") ? "bg-teal-600 text-white" : "bg-gray-100"}`}
                 onClick={() => handleClickEnlace("informacionPersonal")}
               >
                 Informacion Personal
@@ -67,7 +70,7 @@ export default function perfil() {
             </li>
             <li className="m-2">
               <button
-                className="cursor-pointer text-xl bg-gray-100 hover:bg-teal-600 text-black font-serif py-2 px-4 rounded-lg  w-64 shadow-xl"
+                className={`cursor-pointer text-xl hover:bg-teal-600 hover:text-white text-black font-serif py-2 px-4 rounded-lg  w-64 shadow-xl ${(componenteActual === "historialCompras") ? "bg-teal-600 text-white" : "bg-gray-100"}`}
                 onClick={() => handleClickEnlace("historialCompras")}
               >
                 Historial de Compras
@@ -75,10 +78,18 @@ export default function perfil() {
             </li>
             <li className="m-2">
               <button
-                className="cursor-pointer text-xl bg-gray-100 hover:bg-teal-600 text-black font-serif py-2 px-4 rounded-lg  w-64 shadow-xl"
+                className={`cursor-pointer text-xl hover:bg-teal-600 hover:text-white text-black font-serif py-2 px-4 rounded-lg  w-64 shadow-xl ${(componenteActual === "misReseñas") ? "bg-teal-600 text-white" : "bg-gray-100"}`}
                 onClick={() => handleClickEnlace("misReseñas")}
               >
                 Mis reseñas
+              </button>
+            </li>
+            <li className="m-2">
+              <button
+                className={`cursor-pointer text-xl hover:bg-teal-600 hover:text-white text-black font-serif py-2 px-4 rounded-lg  w-64 shadow-xl ${(componenteActual === "favoritos") ? "bg-teal-600 text-white" : "bg-gray-100"}`}
+                onClick={() => handleClickEnlace('favoritos')}
+              >
+                Favoritos
               </button>
             </li>
           </ul>
