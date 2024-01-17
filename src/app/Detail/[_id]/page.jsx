@@ -109,7 +109,7 @@ export default function DetailID({ params }) {
     toast.success("Producto agregado al carrito.");
     handleUpdateCart();
   };
-  
+
   useEffect(() => {}, [_id]);
 
   useEffect(() => {
@@ -151,13 +151,14 @@ export default function DetailID({ params }) {
 
       if (isFavorite.includes(idProduct)) {
         const { data, error } = await removeFavorite(config);
-        console.log("producto eliminado de favoritos:", productById?.title);
+        toast.success("Producto eliminado de favoritos.");
         setIsFavorite((prevFavorites) =>
           prevFavorites.filter((productId) => productId !== idProduct)
         );
       } else {
         const { data, error } = await addFavorite(config);
         console.log("producto agregado a favoritos:", productById?.title);
+        toast.success("Producto agregado a favoritos.");
         setIsFavorite((prevFavorites) => [...prevFavorites, idProduct]);
       }
     } catch (error) {
@@ -223,7 +224,8 @@ export default function DetailID({ params }) {
           <br />
           <div className="flex items-center">
             {/* Icono de corazón para agregar a favoritos */}
-            <button
+           {userId && (
+              <button
               onClick={handleAddToFavorites}
               className={`text-bgred p-3 rounded-lg mx-2 
         flex justify-center items-center text-center 
@@ -235,9 +237,16 @@ export default function DetailID({ params }) {
                 <BsHeart className="text-2xl" />
               )}
             </button>
+           )}
             {/* rating y cuenta */}
-            <section className="text-lg text-yellow-500 flex gap-4">
-              <p> {productById?.averageRating.toFixed(1)} /5 </p>
+            <section className="text-lg text-yellow-500 flex flex-row gap-4">
+              <p>
+                {" "}
+                {productById && productById.averageRating
+                  ? productById.averageRating.toFixed(1) + " /5"
+                  : 0 + "/5"}
+              </p>
+
               <Rating
                 className="text-sm "
                 readonly
@@ -320,20 +329,21 @@ export default function DetailID({ params }) {
         <div className="w-full  p-4 flex flex-row">
           <div className="w-[50%]  p-4">
             {/* calculo de revisiones */}
-            <section className="text-start text-lg text-yellow-500 flex flex-row gap-4">
+            <section className="w-[80%] text-start text-lg text-yellow-500 flex flex-row gap-4">
               <div>
                 <Rating
-                  className="text-sm "
+                  className="text-xl "
                   readonly
                   value={roundedAverage}
-                  unratedColor="yellow"
-                  ratedColor="amber"
-                />
-                <p className="text-center text-xl">
-                  {productById.averageRating.toFixed(1)}/5 (
-                  {productById.reviews.length}) calificaciones
-                </p>
+                /> 
               </div>
+              <p className="text-center text-xl">
+                  {productById && productById.averageRating
+                    ? `${productById.averageRating.toFixed(1)}/5 (${
+                        productById.reviews ? productById.reviews.length : 0
+                      } calificaciones)`
+                    : "No hay reviews aún"}
+                </p>
             </section>
 
             {/* Estadísticas de calificación */}
