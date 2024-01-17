@@ -10,24 +10,70 @@ import { getlogindata } from "@/redux/features/userSlice";
 import {
   useCartShoppingQuery,
   useShoppingCartupdateUserMutation,
+  useGetUserByIdQuery
 } from "@/redux/services/usersApi";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { BsHeart, BsHeartFill } from "react-icons/bs";
+import {useAddFavoriteMutation,useRemoveFavoriteMutation} from "@/redux/services/favoritesApi"
 
 
 
-export default function Card({ _id, title, price, image, category, stock, onToggleFavorite,isFavorite }) {
+export default function Card({ _id, title, price, image, category, stock }) {
   const [hovered, setHovered] = useState(false);
   const cartItems = useAppSelector((state) => state.cartReducer.cartItems);
   const userId = useAppSelector((state) => state.loginReducer.user);
   const userToken = useAppSelector((state) => state.loginReducer.token);
   const dispatch = useAppDispatch();
-  //const [favorite, setFavorite] = useState([])
-const idUser = userId?._id;
   const [showLoginMessage, setShowLoginMessage] = useState(false);
+  
+  const userid =userId?._id
 
+  const{ data: user, error: userError } = useGetUserByIdQuery(userid);
+  
+  const [fav, setFav] = useState(user?.favorites || []);
+  const [addFavorite] = useAddFavoriteMutation();
+  const [removeFavorite] = useRemoveFavoriteMutation();
 
+  useEffect(() => {
+    setFav(user?.favorites || []);
+ 	 }, [user?.favorites]);
+
+    useEffect(() => {
+   	 console.log("Contenido de favoritos:", fav);
+  	}, [fav]);
+
+    const handleAddToFavorites = async () => {
+      try {
+        const userID = user?._id;
+        const idProduct = _id;
+  
+        const config = {
+          product: idProduct,
+          token: userToken,
+          userId: userID,
+        };
+    
+   
+        if (fav.includes(idProduct)) {
+          const { data, error } = await removeFavorite(config);
+          console.log("Producto eliminado de favoritos");
+          setFav((prevFavorites) =>
+            prevFavorites.filter((productId) => productId !== idProduct)
+          );
+        } else {
+
+          const { data, error } = await addFavorite(config);
+          console.log("Producto agregado a favoritos:");
+          setFav((prevFavorites) => [...prevFavorites, idProduct]);
+        }
+      } catch (error) {
+        console.error(
+          "Error al agregar/eliminar el producto de favoritos:",
+          error
+        );
+      }
+    };
 
   const { data: cartData, error: cartError } = useCartShoppingQuery({
     userID: userId?._id,
@@ -113,23 +159,21 @@ const idUser = userId?._id;
     handleUpdateCart();
   }, [cartItems]);
 
-  useEffect(() => {
-    console.log("este es el console del useEfect" + isFavorite)
-    }, [isFavorite]);
+  
+   
+
 
   return (
     <div
       className={`bg-white-500 w-full border border-gray-300 rounded-md p-2 relative flex flex-col shadow-md`}
     >
       <button
-              onClick={()=>{
-                console.log("onToggleFavorite:", onToggleFavorite);
-    onToggleFavorite()}}
+              onClick={()=>{handleAddToFavorites()}}
               className={`text-bgred p-3 rounded-lg mx-2 
     flex justify-end items-center text-center 
     transition duration-300 ease-in-out `}
             >
-              {isFavorite ? (
+              {fav.includes(_id) ? (
                 <BsHeartFill className="text-2xl" />
               ) : (
                 <BsHeart className="text-2xl" />
