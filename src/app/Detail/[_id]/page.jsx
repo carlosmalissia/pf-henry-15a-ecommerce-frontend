@@ -10,6 +10,7 @@ import { addItem } from "@/redux/features/cart";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import {
   useCartShoppingQuery,
+  useGetUserByIdQuery,
   useShoppingCartupdateUserMutation,
 } from "@/redux/services/usersApi";
 import { useNewReviewMutation } from "@/redux/services/reviewsApi";
@@ -21,6 +22,11 @@ import ReviewForm from "@/Components/ReviewForm/ReviewForm";
 import ReviewList from "@/Components/ReviewList/ReviewList";
 import { Rating } from "@material-tailwind/react";
 import { Progress } from "@material-tailwind/react";
+import {
+  useAddFavoriteMutation,
+  useRemoveFavoriteMutation,
+} from "@/redux/services/favoritesApi";
+import { config } from "@fortawesome/fontawesome-svg-core";
 
 export default function DetailID({ params }) {
   const { _id } = params;
@@ -32,10 +38,8 @@ export default function DetailID({ params }) {
   const [showLoginMessage, setShowLoginMessage] = useState(false);
   const [newReview] = useNewReviewMutation();
 
-  // const { data: cartData, error: cartError } = useCartShoppingQuery({
-  //   userID: userId?._id,
-  //   _id: _id,
-  // });
+  const { data: userData } = useGetUserByIdQuery(userId?._id);
+  const [isFavorite, setIsFavorite] = useState(userData?.favorites || []);
 
   const {
     data: productById,
@@ -57,6 +61,9 @@ export default function DetailID({ params }) {
 
   const [updateCart] = useShoppingCartupdateUserMutation();
 
+  const [addFavorite] = useAddFavoriteMutation();
+  const [removeFavorite] = useRemoveFavoriteMutation();
+
   const handleUpdateCart = async () => {
     try {
       if (userId && userId?._id && userToken) {
@@ -75,7 +82,7 @@ export default function DetailID({ params }) {
         if (error) {
           console.error("Error al actualizar el carrito:", error);
         } else {
-          console.log("Carrito actualizado con éxito:", data);
+          // console.log("Carrito actualizado con éxito:", data);
         }
       } else {
         console.log(
@@ -102,12 +109,20 @@ export default function DetailID({ params }) {
     toast.success("Producto agregado al carrito.");
     handleUpdateCart();
   };
-
+  
   useEffect(() => {}, [_id]);
+
   useEffect(() => {
     handleUpdateCart();
-    console.log("Contenido del carrito:", cartItems);
   }, [cartItems]);
+
+  useEffect(() => {
+    setIsFavorite(userData?.favorites || []);
+  }, [userData?.favorites]);
+
+  useEffect(() => {
+    console.log("Contenido de favoritos:", isFavorite);
+  }, [isFavorite]);
 
   const [hoveredCarButon, setHoveredCarButon] = useState(false);
   const [quantity, setQuantity] = useState(1);
@@ -122,10 +137,35 @@ export default function DetailID({ params }) {
   };
 
   // Favoritos
-  const [isFavorite, setIsFavorite] = useState(false);
-  const handleAddToFavorites = () => {
-    setIsFavorite(!isFavorite);
-    console.log(`Agregar a favoritos: ${productById.title}`);
+
+  const handleAddToFavorites = async () => {
+    try {
+      const userID = userId?._id;
+      const idProduct = productById?._id;
+
+      const config = {
+        product: idProduct,
+        token: userToken,
+        userId: userID,
+      };
+
+      if (isFavorite.includes(idProduct)) {
+        const { data, error } = await removeFavorite(config);
+        console.log("producto eliminado de favoritos:", productById?.title);
+        setIsFavorite((prevFavorites) =>
+          prevFavorites.filter((productId) => productId !== idProduct)
+        );
+      } else {
+        const { data, error } = await addFavorite(config);
+        console.log("producto agregado a favoritos:", productById?.title);
+        setIsFavorite((prevFavorites) => [...prevFavorites, idProduct]);
+      }
+    } catch (error) {
+      console.error(
+        "Error al agregar/eliminar el producto de favoritos:",
+        error
+      );
+    }
   };
 
   if (isLoading || isFetching) return <p>Cargando...</p>;
@@ -136,26 +176,6 @@ export default function DetailID({ params }) {
   }
 
   //**reviews
-  //cargar review
-  // const handleReviewSubmit = async (reviewData) => {
-  //   try {
-  //     const config = {
-  //       review: reviewData,
-  //       token: userToken,
-  //     };
-
-  //     console.log("datos de review:", config);
-
-  //     const { data, error } = await newReview(config);
-
-  //     toast.success("Reseña creada exitosamente");
-
-  //     console.log("review cargada:", data);
-  //   } catch (error) {
-  //     console.error("Error al crear la reseña:", error);
-  //   }
-  // };
-
   //calcular promedio de reviews
   const calculateRatingDistribution = (reviews) => {
     const starCounts = Array(5).fill(0);
@@ -198,18 +218,18 @@ export default function DetailID({ params }) {
 
         {/* Detalles del producto a la derecha */}
         <div className="md:w-[60%] ">
-        <br />
+          <br />
           <h1 className="text-start text-xl text-black">{productById.title}</h1>
-      <br />
+          <br />
           <div className="flex items-center">
             {/* Icono de corazón para agregar a favoritos */}
             <button
               onClick={handleAddToFavorites}
               className={`text-bgred p-3 rounded-lg mx-2 
-    flex justify-center items-center text-center 
-    transition duration-300 ease-in-out `}
+        flex justify-center items-center text-center 
+        transition duration-300 ease-in-out `}
             >
-              {isFavorite ? (
+              {isFavorite.includes(productById?._id) ? (
                 <BsHeartFill className="text-2xl" />
               ) : (
                 <BsHeart className="text-2xl" />
@@ -217,19 +237,17 @@ export default function DetailID({ params }) {
             </button>
             {/* rating y cuenta */}
             <section className="text-lg text-yellow-500 flex gap-4">
-            <p> {productById.averageRating.toFixed(2)}/5 </p>
-                <Rating
-                  className="text-sm "
-                  readonly
-                  value={roundedAverage}
-                  unratedColor="yellow"
-                  ratedColor="amber"
-                />
-                <p className="flex items-center text-center text-sm">
-                 ({productById.reviews.length})
-                  calificaciones
-                </p>
-              
+              <p> {productById?.averageRating.toFixed(1)} /5 </p>
+              <Rating
+                className="text-sm "
+                readonly
+                value={roundedAverage}
+                unratedColor="yellow"
+                ratedColor="amber"
+              />
+              <p className="flex items-center text-center text-sm">
+                ({productById.reviews.length}) calificaciones
+              </p>
             </section>
           </div>
 
@@ -312,8 +330,8 @@ export default function DetailID({ params }) {
                   ratedColor="amber"
                 />
                 <p className="text-center text-xl">
-                  {productById.averageRating}/5 ({productById.reviews.length})
-                  calificaciones
+                  {productById.averageRating.toFixed(1)}/5 (
+                  {productById.reviews.length}) calificaciones
                 </p>
               </div>
             </section>

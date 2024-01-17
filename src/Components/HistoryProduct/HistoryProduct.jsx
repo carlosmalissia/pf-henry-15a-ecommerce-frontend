@@ -73,11 +73,11 @@ const HistoryProduct = ({ productos }) => {
           )}
         </div>
       ))}
-        <ToastContainer
+        {/* <ToastContainer
                 theme="colored"
                 position="bottom-left"
                 autoClose={2000}
-              />
+              /> */}
     </div>
   );
 };
@@ -97,7 +97,7 @@ const ProductItem = ({ productId }) => {
       <p>{productDetails?.title}</p>
       <section className="flex flex-row  items-center gap-4 space-between" >
       <p className="text-sm text-bggris">{productDetails?.category.name}</p>
-      <p className="text-sm text-bggris">Rating: {productDetails?.averageRating.toFixed(1)}</p>
+      {/* <p className="text-sm text-bggris">Rating: {productDetails?.averageRating.toFixed(2)}/5</p> */}
       <p className="text-sm text-bggris">$: {productDetails?.price}</p>
       </section>
       </Link>

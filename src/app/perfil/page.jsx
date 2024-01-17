@@ -88,11 +88,11 @@ export default function perfil() {
         <div className="w-3/4 m-10 ">
           {renderComponenteActual()}
         </div>
-        <ToastContainer
+        {/* <ToastContainer
                 theme="colored"
                 position="bottom-left"
                 autoClose={2000}
-              />
+              /> */}
       </div>
     </div>
   );
