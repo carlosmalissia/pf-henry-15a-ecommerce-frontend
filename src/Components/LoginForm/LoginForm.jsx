@@ -61,6 +61,7 @@ const LoginForm = () => {
           // Trayendo el shoppinCart del usuario
           console.log("aca ", loginResponse.data.user._id);
           const userID = loginResponse.data.user._id
+
           const userById = await axios(`https://pf-15a.up.railway.app/api/users/${userID}`)
           const data = userById.data.shoppingCart
           console.log("data ", data);

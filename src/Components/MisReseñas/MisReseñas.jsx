@@ -23,10 +23,10 @@ const ReviewUsuario = () => {
   const name = userData?.name;
 
   const {
-    data: reviews, error, isLoading,} = useGetUserReviewsQuery(userId, {
-    refetchOnMountOrArgChange: true,
-    refetchInterval: 2000,
-  });
+    data: reviews, error, isLoading, } = useGetUserReviewsQuery(userId, {
+      refetchOnMountOrArgChange: true,
+      refetchInterval: 2000,
+    });
 
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 6;
@@ -34,17 +34,17 @@ const ReviewUsuario = () => {
   const [updatedReviews, setUpdatedReviews] = useState([]);
 
   const [triggerMutation, { data: mutationResult }] = useUpdateReviewMutation({
-  onSuccess: () => {
-    // Actualiza localmente la lista de revisiones con la edición
-    const updatedReviewsCopy = reviews.map((review) =>
-      review._id === reviewId
-        ? { ...review, comment: editedComment }
-        : review
-    );
-    // Actualiza el estado con las revisiones actualizadas
-    setUpdatedReviews(updatedReviewsCopy);
-  },
-});
+    onSuccess: () => {
+      // Actualiza localmente la lista de revisiones con la edición
+      const updatedReviewsCopy = reviews.map((review) =>
+        review._id === reviewId
+          ? { ...review, comment: editedComment }
+          : review
+      );
+      // Actualiza el estado con las revisiones actualizadas
+      setUpdatedReviews(updatedReviewsCopy);
+    },
+  });
   const handleSaveEdit = async (reviewId, editedComment, editedRating) => {
     try {
       const mutationResult = await triggerMutation({
@@ -90,7 +90,7 @@ const ReviewUsuario = () => {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   if (isLoading) {
-    return <p>Cargand...</p>;
+    return <p>Cargando comentarios...</p>;
   }
 
   if (error) {
@@ -103,7 +103,7 @@ const ReviewUsuario = () => {
   return (
     <div className="bg-gray-100 ml-2 p-8 rounded-md shadow-md min-h-screen">
       <h2 className="text-lg font-bold mb-2">Tus reviews {name}</h2>
-      
+
       <div className="flex flex-wrap flex-row">
         {currentReviews.map((review) => (
           <div
@@ -118,9 +118,9 @@ const ReviewUsuario = () => {
             />
           </div>
         ))}
-     
+
       </div>
-         
+
       <div className="flex justify-center mt-4">
         <ReviewsPagination
           productsPerPage={productsPerPage}
@@ -154,7 +154,7 @@ const ProductReview = ({ productId, review, onSaveEdit }) => {
 
   return (
     <div className="border rounded-md bg-white p-2 h-full shadow-xl flex flex-col justify-between">
-      
+
       <div>
         <div className="text-m mb-1 font-serif font-bold">Producto</div>
         <Link href={`/Detail/${productId}`}>
@@ -174,10 +174,10 @@ const ProductReview = ({ productId, review, onSaveEdit }) => {
           </div>
         </Link>
         <ToastContainer
-                theme="colored"
-                position="bottom-left"
-                autoClose={2000}
-              />
+          theme="colored"
+          position="bottom-left"
+          autoClose={2000}
+        />
         {editMode && (
           <>
             <textarea
@@ -185,8 +185,8 @@ const ProductReview = ({ productId, review, onSaveEdit }) => {
               onChange={(e) => setEditedComment(e.target.value)}
               className="w-full h-20 mb-2 p-2 border rounded-md"
             />
-            <div className="flex items-center">
-              <span className="text-m  font-semibold custom-text">
+            <div className="flex items-center ">
+              <span className="text-m  font-semibold custom-text ">
                 Calificación:
               </span>
               <RatingStars
@@ -199,7 +199,7 @@ const ProductReview = ({ productId, review, onSaveEdit }) => {
         {!editMode && (
           <>
             <div className="flex items-center text-center flex-row  overflow-hidden">
-              <p className="text-md  font-semibold custom-text py-4 px-4 text-start">
+              <p className="text-md  font-semibold custom-text py-4 px-2 text-start">
                 Calificación:
               </p>
               <RatingStars
@@ -234,7 +234,7 @@ const ProductReview = ({ productId, review, onSaveEdit }) => {
         </button>
       )}
 
-      
+
     </div>
   );
 };
@@ -252,9 +252,8 @@ const RatingStars = ({ rating, onChange, readOnly }) => {
         {[1, 2, 3, 4, 5].map((star) => (
           <FaStar
             key={star}
-            className={`cursor-pointer ${
-              rating >= star ? "text-yellow-500" : "text-gray-300"
-            } text-xl`}
+            className={`cursor-pointer ${rating >= star ? "text-yellow-500" : "text-gray-300"
+              } text-xl`}
             onClick={() => handleClick(star)}
           />
         ))}
