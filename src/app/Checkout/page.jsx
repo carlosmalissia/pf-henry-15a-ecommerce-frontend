@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import axios from 'axios'
 import { cleanCart } from "@/redux/features/cart";
-import {useNewPurchaseMutation} from "@/redux/services/purchaseHistoryApi"
+import { useNewPurchaseMutation } from "@/redux/services/purchaseHistoryApi"
 
 
 const Page = () => {
@@ -68,7 +68,7 @@ const Page = () => {
 
 
   //? Purchase History
-  
+
   let cartItemsId = [];
 
   cartItems.forEach((product) => {
@@ -77,20 +77,28 @@ const Page = () => {
     }
   });
 
-  const purchase ={
+  const purchase = {
     user: userId,
     product: cartItemsId
   }
 
   const handlePurchase = async () => {
     try {
-      const config ={
+      const config = {
         purchase: purchase,
         token: userToken
       }
-      
-      const {data, error} = await createPurchase(config)
+
+      const { data, error } = await createPurchase(config)
       console.log("Respuesta del backend:", data);
+      console.log("ver email", userId);
+      const res = await fetch('/api/send', {
+        method: 'POST',
+        body: cartItems
+      })
+      const dato = await res.json()
+      console.log("respuesta del envio", dato);
+
 
     } catch (error) {
       console.error("Error al procesar la respuesta del backend:", error);
@@ -208,7 +216,8 @@ const Page = () => {
                           const order = await actions.order?.capture()
                           console.log("order: ", order);
                           handlePurchase();
-                          dispatch(cleanCart());
+
+                          /* dispatch(cleanCart()); */
                         }}
                         onCancel={() => {
                           console.log("compra cancelada");
@@ -229,3 +238,5 @@ const Page = () => {
 };
 
 export default Page
+
+/* body: JSON.stringify({ cartData: cartItems }) */
