@@ -4,6 +4,7 @@
 import React, { useState } from "react";
 import PerfilUsuario from "@/Components/PerfilUsuario/PerfilUsuario";
 import HistorialCompras from "@/Components/HistorialCompras/HistorialCompras";
+import MisFavoritos from "@/Components/MisFavoritos/MisFavoritos"
 import MisReseñas from "@/Components/MisReseñas/MisReseñas";
 import { useGetUserByIdQuery } from "@/redux/services/usersApi";
 import { useAppSelector } from "@/redux/hooks";
@@ -35,6 +36,8 @@ export default function perfil() {
         return <HistorialCompras />;
       case 'misReseñas':
         return <MisReseñas />;
+      case 'favoritos':
+        return <MisFavoritos />;
       case 'info':
         return <InfoPerfil />;
       default:
@@ -42,7 +45,7 @@ export default function perfil() {
     }
   };
 
-
+  console.log("estado ", componenteActual);
   return (
     <div className="mt-24 text-center">
       {/* <h1 className='text-3xl font-semibold mb-4'>Cuenta</h1>
@@ -61,7 +64,7 @@ export default function perfil() {
           <ul>
             <li className="m-2">
               <button
-                className="cursor-pointer text-xl bg-gray-100 hover:bg-teal-600 text-black font-serif py-2 px-4 rounded-lg  w-64 shadow-xl"
+                className={`cursor-pointer text-xl hover:bg-teal-600  hover:text-white text-black font-serif py-2 px-4 rounded-lg  w-64 shadow-xl ${(componenteActual === "informacionPersonal") ? "bg-teal-600 text-white" : "bg-gray-100"}`}
                 onClick={() => handleClickEnlace('informacionPersonal')}
               >
                 Informacion Personal
@@ -69,7 +72,7 @@ export default function perfil() {
             </li>
             <li className="m-2">
               <button
-                className="cursor-pointer text-xl bg-gray-100 hover:bg-teal-600 text-black font-serif py-2 px-4 rounded-lg  w-64 shadow-xl"
+                className={`cursor-pointer text-xl hover:bg-teal-600 hover:text-white text-black font-serif py-2 px-4 rounded-lg  w-64 shadow-xl ${(componenteActual === "historialCompras") ? "bg-teal-600 text-white" : "bg-gray-100"}`}
                 onClick={() => handleClickEnlace('historialCompras')}
               >
                 Historial de Compras
@@ -77,10 +80,18 @@ export default function perfil() {
             </li>
             <li className="m-2">
               <button
-                className="cursor-pointer text-xl bg-gray-100 hover:bg-teal-600 text-black font-serif py-2 px-4 rounded-lg  w-64 shadow-xl"
+                className={`cursor-pointer text-xl hover:bg-teal-600 hover:text-white text-black font-serif py-2 px-4 rounded-lg  w-64 shadow-xl ${(componenteActual === "misReseñas") ? "bg-teal-600 text-white" : "bg-gray-100"}`}
                 onClick={() => handleClickEnlace('misReseñas')}
               >
                 Mis reseñas
+              </button>
+            </li>
+            <li className="m-2">
+              <button
+                className={`cursor-pointer text-xl hover:bg-teal-600 hover:text-white text-black font-serif py-2 px-4 rounded-lg  w-64 shadow-xl ${(componenteActual === "favoritos") ? "bg-teal-600 text-white" : "bg-gray-100"}`}
+                onClick={() => handleClickEnlace('favoritos')}
+              >
+                Favoritos
               </button>
             </li>
           </ul>

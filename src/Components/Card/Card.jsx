@@ -43,54 +43,54 @@ export default function Card({ _id, title, price, image, category, stock }) {
     }
   });
 
- const [updateCart] = useShoppingCartupdateUserMutation();
- 
- const handleUpdateCart = async () => {
-   try {
-     // Verificar si el usuario está autenticado
-     if (userId && userId?._id && userToken) {
-       const userID = userId?._id;
-       const token = userToken;
-       const shoppingCart = cartItemsId;
- 
-       const config = {
-         shoppingCart,
-         userID,
-         token,
-       };
- 
-       const { data, error } = await updateCart(config);
- 
-       if (error) {
-         console.error("Error al actualizar el carrito:", error);
-       } else {
-         console.log("Carrito actualizado con éxito:", data);
-         // Puedes mostrar un mensaje de éxito aquí si es necesario
-       }
-     } else {
-       // Si el usuario no está autenticado, puedes manejarlo de otra manera o simplemente no hacer nada
-       console.log("Usuario no autenticado. No se actualizará el carrito en la base de datos.");
-     }
-   } catch (error) {
-     console.error("Error general al actualizar el carrito:", error);
-   }
- };
- 
- const handleAddToCart = () => {
-   const productData = {
-     _id: _id,
-     title: title,
-     price: price,
-     quantity: 1,
-     subtotal: price * 1,
-     image: image,
-     stock: stock,
-   };
- 
-   dispatch(addItem(productData));
-   toast.success("Producto agregado al carrito.");
-   handleUpdateCart();
- };
+  const [updateCart] = useShoppingCartupdateUserMutation();
+
+  const handleUpdateCart = async () => {
+    try {
+      // Verificar si el usuario está autenticado
+      if (userId && userId?._id && userToken) {
+        const userID = userId?._id;
+        const token = userToken;
+        const shoppingCart = cartItemsId;
+
+        const config = {
+          shoppingCart,
+          userID,
+          token,
+        };
+
+        const { data, error } = await updateCart(config);
+
+        if (error) {
+          console.error("Error al actualizar el carrito:", error);
+        } else {
+          console.log("Carrito actualizado con éxito:", data);
+          // Puedes mostrar un mensaje de éxito aquí si es necesario
+        }
+      } else {
+        // Si el usuario no está autenticado, puedes manejarlo de otra manera o simplemente no hacer nada
+        console.log("Usuario no autenticado. No se actualizará el carrito en la base de datos.");
+      }
+    } catch (error) {
+      console.error("Error general al actualizar el carrito:", error);
+    }
+  };
+
+  const handleAddToCart = () => {
+    const productData = {
+      _id: _id,
+      title: title,
+      price: price,
+      quantity: 1,
+      subtotal: price * 1,
+      image: image,
+      stock: stock,
+    };
+
+    dispatch(addItem(productData));
+    toast.success("Producto agregado al carrito.");
+    handleUpdateCart();
+  };
 
   useEffect(() => {
     dispatch(getlogindata());
@@ -145,8 +145,8 @@ export default function Card({ _id, title, price, image, category, stock }) {
           )}
         </button>
 
-           {/* Mostrar mensaje de inicio de sesión si es necesario */}
-        <ToastContainer theme="colored" position="bottom-left"  autoClose={1000} />
+        {/* Mostrar mensaje de inicio de sesión si es necesario */}
+        <ToastContainer theme="colored" position="bottom-left" autoClose={1000} />
 
       </div>
     </div>

@@ -22,7 +22,15 @@ const CartDetailPage = () => {
 
   const [updateCart] = useShoppingCartupdateUserMutation();
 
+
   const handleUpdateCart = async () => {
+    // Saco solo los id de shoppingCart para ponerlo la bd
+    const shoppingcart = []
+    cartItems.forEach((product) => {
+      for (let i = 0; i < product.quantity; i++) {
+        shoppingcart.push(product._id);
+      }
+    });
     try {
       if (userId && userId?._id && userToken) {
         const userID = userId?._id;
@@ -51,7 +59,7 @@ const CartDetailPage = () => {
       console.error("Error general al actualizar el carrito:", error);
     }
   };
-
+  // Elimino del localStorage y de la BD
   const handleRemoveItem = async (_id) => {
     dispatch(removeItem({ _id }));
     handleUpdateCart();
