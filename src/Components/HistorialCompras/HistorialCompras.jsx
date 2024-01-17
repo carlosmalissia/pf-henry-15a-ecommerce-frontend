@@ -1,6 +1,7 @@
-import React, { useState } from "react";
-import { useGetPurchaseHistoryQuery } from "@/redux/services/purchaseHistoryApi";
+import React, { useEffect, useState } from "react";
+import { useGetPurchaseHistoryQuery, } from "@/redux/services/purchaseHistoryApi";
 import HistoryProduct from "../HistoryProduct/HistoryProduct";
+import { useGetProductByIdQuery } from "@/redux/services/productApi";
 import { ToastContainer, toast } from "react-toastify";
 
 
@@ -16,9 +17,9 @@ const HistorialCompras = () => {
   // console.log("userData:", userData);
   // console.log("este es el id :", _id);
 
-  
+
   // const{ data: user, error: userError } = useGetUserByIdQuery(_id);
-  
+
   // console.log("user:", user);
   // console.log("userName", user?.name + " " + user?.lastname);
 
@@ -40,6 +41,7 @@ const HistorialCompras = () => {
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
+
 
   if (error) {
     return (
@@ -79,11 +81,12 @@ const HistorialCompras = () => {
           <section className="flex flex-wrap flex-col">
             <div>
               <p className="text-m bg-gray-100  text-black font-serif py-2 px-4 rounded-lg shadow-m mb-2">
-                Productos:
+                Factura Nº: {compra._id}
               </p>
             </div>
             <div className="flex flex-wrap flex-row">
               {compra.product.map((productoId, index) => (
+
                 <div key={index} className="sm:w-1/2  p-2 flex flex-row">
                   <HistoryProduct
                     key={productoId}
@@ -96,7 +99,16 @@ const HistorialCompras = () => {
                   />
                 </div>
               ))}
+
             </div>
+
+            <p className=" text-xl flex text-start ">
+
+              Total:
+              <span className="text-bgred  ml-2 flex justify-end text-end">
+                $
+              </span>
+            </p>
           </section>
         </div>
       ))}
@@ -117,11 +129,10 @@ const HistorialCompras = () => {
             <button
               key={index}
               onClick={() => paginate(index + 1)}
-              className={`mx-1 px-3 py-1 rounded-md ${
-                currentPage === index + 1
-                  ? "bg-blue-500 text-white"
-                  : "bg-gray-300 text-black"
-              }`}
+              className={`mx-1 px-3 py-1 rounded-md ${currentPage === index + 1
+                ? "bg-blue-500 text-white"
+                : "bg-gray-300 text-black"
+                }`}
             >
               {index + 1}
             </button>

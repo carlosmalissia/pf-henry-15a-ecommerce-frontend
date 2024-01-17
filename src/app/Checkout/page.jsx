@@ -210,6 +210,9 @@ const Page = () => {
                           handlePurchase();
                           dispatch(cleanCart());
                         }}
+                        onCancel={() => {
+                          console.log("compra cancelada");
+                        }}
                       />
                     </PayPalScriptProvider>
                   </div>

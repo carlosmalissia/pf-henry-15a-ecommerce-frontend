@@ -43,7 +43,7 @@ const HistoryProduct = ({ productos }) => {
     }
   };
 
-
+  const totales = [];
 
 
   return (
@@ -52,12 +52,14 @@ const HistoryProduct = ({ productos }) => {
       {productos.map((productoId) => (
         <div
           key={productoId}
-          className={`flex items-center justify-center mb-2 flex-col transition ${
-            openReviewFormProductId === productoId
-              ? "h-100 p-4 border rounded-md shadow-md"
-              : "h-auto"
-          }`}
+          className={`flex items-center justify-center mb-2 flex-col transition ${openReviewFormProductId === productoId
+            ? "h-100 p-4 border rounded-md shadow-md"
+            : "h-auto"
+            }`
+
+          }
         >
+
           <ProductItem productId={productoId} />
           <button
             onClick={() => toggleReviewForm(productoId)}
@@ -71,13 +73,14 @@ const HistoryProduct = ({ productos }) => {
               handleReviewSubmit={(reviewData) => handleReviewSubmit(reviewData, productoId)}
             />
           )}
+
         </div>
       ))}
-        <ToastContainer
+      {/* <ToastContainer
                 theme="colored"
                 position="bottom-left"
                 autoClose={2000}
-              />
+              /> */}
     </div>
   );
 };
@@ -91,15 +94,15 @@ const ProductItem = ({ productId }) => {
   return (
     <div className="flex items-center justify-center mb-2 flex-col font-serif" key={productId}>
       <Link className="flex flex-col items-center justify-center" href={`/Detail/${productId}`}>
-      {productImage && (
-        <Image src={productImage} className="object-contain" alt="Producto" width={100} height={100} />
+        {productImage && (
+          <Image src={productImage} className="object-contain" alt="Producto" width={100} height={100} />
         )}
-      <p>{productDetails?.title}</p>
-      <section className="flex flex-row  items-center gap-4 space-between" >
-      <p className="text-sm text-bggris">{productDetails?.category.name}</p>
-      <p className="text-sm text-bggris">Rating: {productDetails?.averageRating.toFixed(1)}</p>
-      <p className="text-sm text-bggris">$: {productDetails?.price}</p>
-      </section>
+        <p>{productDetails?.title}</p>
+        <section className="flex flex-row  items-center gap-4 space-between" >
+          <p className="text-sm text-bggris">{productDetails?.category.name}</p>
+          {/* <p className="text-sm text-bggris">Rating: {productDetails?.averageRating.toFixed(2)}/5</p> */}
+          <p className="text-sm text-bggris">$: {productDetails?.price}</p>
+        </section>
       </Link>
     </div>
   );

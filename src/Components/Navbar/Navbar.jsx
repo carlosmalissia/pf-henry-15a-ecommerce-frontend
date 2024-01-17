@@ -153,14 +153,7 @@ function NavBar() {
               </a>
             </li>
 
-            <li className={styles.nav__item}>
-              <a href="/#favorites"
-                className={styles.nav__link}
 
-              >
-                {favorite} Favoritos
-              </a>
-            </li>
             <li className={styles.nav__item}>
               {/* <a href="/#product" className="nav__link relative text-title-color text-second-font font-medium hover:text-title-color-hover hover:after-width-70 active:after-width-70"> */}
 
@@ -170,6 +163,14 @@ function NavBar() {
               >
                 {productos} Productos
               </Link>
+            </li>
+            <li className={styles.nav__item}>
+              <a href="/#favorites"
+                className={styles.nav__link}
+
+              >
+                {favorite} Los Más Votados
+              </a>
             </li>
             <Link href="/about" className={styles.nav__link}
 
