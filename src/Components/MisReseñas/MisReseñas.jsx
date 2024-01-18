@@ -174,10 +174,10 @@ const ProductReview = ({ productId, review, onSaveEdit }) => {
           </div>
         </Link>
         <ToastContainer
-          theme="colored"
-          position="bottom-left"
-          autoClose={2000}
-        />
+                theme="colored"
+                position="top-center"
+                autoClose={2000}
+              />
         {editMode && (
           <>
             <textarea

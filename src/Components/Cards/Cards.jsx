@@ -23,6 +23,7 @@ export default function Cards(props) {
               image={e.image}
               title={e.title}
               price={e.price}
+              stock={e.stock}
               category={e.category?.name} // Asegúrate de verificar también si category es undefined
             />
           ))}
