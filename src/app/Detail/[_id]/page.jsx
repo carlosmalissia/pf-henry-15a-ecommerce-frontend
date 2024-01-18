@@ -50,6 +50,9 @@ export default function DetailID({ params }) {
     refetchOnMountOrArgChange: true,
     refetchInterval: 5000,
   });
+  
+
+
 
   let idItems = [];
 
@@ -95,20 +98,33 @@ export default function DetailID({ params }) {
   };
 
   const handleAddToCart = () => {
-    const productData = {
-      _id: productById._id,
-      title: productById.title,
-      price: productById.price,
-      quantity: quantity,
-      subtotal: productById.price * 1,
-      image: productById.image,
-      stock: productById.stock,
-    };
-
-    dispatch(addItem(productData));
-    toast.success("Producto agregado al carrito.");
-    handleUpdateCart();
+    if (quantity >= 1) {
+     
+      const productData = {
+        _id: productById._id,
+        title: productById.title,
+        price: productById.price,
+        quantity: quantity,
+        subtotal: productById.price * quantity,
+        image: productById.image,
+        stock: productById.stock,
+      };
+  
+      const existingItem = cartItems.find(item => item._id === productById._id);
+   
+   
+      if (existingItem && existingItem.quantity + quantity > existingItem.stock) {
+        toast.error("No hay suficiente stock disponible para agregar más unidades de este producto al carrito.");
+      } else {
+        dispatch(addItem(productData));
+        toast.success("Producto agregado al carrito.");
+        handleUpdateCart();
+      }
+    } else {
+      toast.error("La cantidad debe ser mayor a 0");
+    }
   };
+  
 
   useEffect(() => {}, [_id]);
 
@@ -312,7 +328,7 @@ export default function DetailID({ params }) {
               {/* Mostrar mensaje de inicio de sesión si es necesario */}
               <ToastContainer
                 theme="colored"
-                position="bottom-left"
+                position="top-center"
                 autoClose={2000}
               />
             </div>

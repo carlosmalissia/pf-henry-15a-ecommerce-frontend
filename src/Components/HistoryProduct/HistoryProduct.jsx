@@ -76,11 +76,11 @@ const HistoryProduct = ({ productos }) => {
 
         </div>
       ))}
-      {/* <ToastContainer
+       <ToastContainer
                 theme="colored"
-                position="bottom-left"
+                position="top-center"
                 autoClose={2000}
-              /> */}
+              />
     </div>
   );
 };
