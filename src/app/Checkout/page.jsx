@@ -93,13 +93,6 @@ const Page = () => {
       const { data, error } = await createPurchase(config)
       console.log("Respuesta del backend:", data);
       console.log("ver email", userId);
-      // const res = await fetch('/api/send', {
-      //   method: 'POST',
-      //   body: JSON.stringify()
-      // })
-      // const dato = await res.json()
-      // console.log("respuesta del envio", dato);
-
 
     } catch (error) {
       console.error("Error al procesar la respuesta del backend:", error);

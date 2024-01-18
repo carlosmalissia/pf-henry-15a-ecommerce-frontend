@@ -4,6 +4,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import styles from "./navbar.module.css";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 //import CartCounter from "@/components/Cart/CartCounter/CartCounter";
 //import { useSession } from "next-auth/react";
@@ -38,8 +39,8 @@ const cart = <FontAwesomeIcon icon={faCartShopping} />;
 
 function NavBar() {
 
-
-
+  const pathname = usePathname()
+  console.log("url ", pathname === "/about");
 
   const userData = useAppSelector((state) => state.loginReducer.user);
   // console.log("userData", userData);
@@ -54,13 +55,13 @@ function NavBar() {
 
 
 
-    /*=============== SHOW MENU ===============*/
+    /*=============== SHOW MENU  responsive===============*/
     const navMenu = document.getElementById("nav-menu"),
       navContainer = document.getElementById("header"),
       navToggle = document.getElementById("nav-toggle"),
       carrito = document.getElementById("carrito"),
       navClose = document.getElementById("nav-close");
-    /*===== MENU SHOW =====*/
+    /*===== MENU SHOW responsive=====*/
     /* Validate if constant exists */
     if (navToggle) {
       navToggle.addEventListener("click", () => {
@@ -71,7 +72,7 @@ function NavBar() {
       });
     }
 
-    /*===== MENU HIDDEN =====*/
+    /*===== MENU HIDDEN respunsive=====*/
     /* Validate if constant exists */
     if (navClose) {
       navClose.addEventListener("click", () => {
@@ -102,7 +103,7 @@ function NavBar() {
 
     /*=============== SCROLL SECTIONS ACTIVE LINK ===============*/
     const sections = document.querySelectorAll("section[id]");
-
+    console.log("ver ", sections);
     const scrollActive = () => {
       const scrollY = window.pageYOffset;
       sections.forEach((current) => {
@@ -110,8 +111,9 @@ function NavBar() {
           sectionTop = current.offsetTop - 58,
           sectionId = current.getAttribute("id"),
           sectionsClass = document.querySelector(
-            "#nav-menu a[href='#" + sectionId + "']"
+            `#nav__menu a[href*=${sectionId}]`
           );
+        console.log("ver2", sectionsClass);
         if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
           sectionsClass?.classList.add(styles.active_link);
         } else {
@@ -141,39 +143,28 @@ function NavBar() {
         <a href="/#" className="text-2xl max-sm:ml-20">
           Henrucci
         </a>
-        <div className={styles.nav__menu} id="nav-menu">
+        <div className={styles.nav__menu} id="nav__menu">
           <ul className={styles.nav__list}>
             <li className={styles.nav__item}>
               <a
-                href="/#product"
+                href="/#tienda"
                 className={`${styles.nav__link} ${styles.active_link}`}
 
               >
-                {home} Inicio
+                {home} Tienda
               </a>
             </li>
 
 
             <li className={styles.nav__item}>
-              {/* <a href="/#product" className="nav__link relative text-title-color text-second-font font-medium hover:text-title-color-hover hover:after-width-70 active:after-width-70"> */}
-
-              <Link href="/#product"
-                className={styles.nav__link}
-
-              >
-                {productos} Productos
-              </Link>
-            </li>
-            <li className={styles.nav__item}>
-              <a href="/#favorites"
+              <a href="/#votados"
                 className={styles.nav__link}
 
               >
                 {favorite} Los Más Votados
               </a>
             </li>
-            <Link href="/about" className={styles.nav__link}
-
+            <Link href="/about" className={`${styles.nav__link} ${(pathname === "/about") ? styles.active_link : ""}`}
             >
               {user} Quienes somos
             </Link>
@@ -188,7 +179,7 @@ function NavBar() {
             </li>
 
             <li className={styles.nav__item}>
-              <Link href="/cartDetail" className={styles.nav__link}>
+              <Link href="/cartDetail" className={`${styles.nav__link} ${(pathname === "/cartDetail") ? styles.active_link : ""}`}>
                 {cart} <span>{cartItemsCount}</span>
               </Link>
             </li>
