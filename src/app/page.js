@@ -36,19 +36,19 @@ export default function Home() {
       {/* ==================== MAIN ====================*/}
       <main className="main">
         {/*==================== Productos ====================*/}
-        <section className="py-12 px-4 xl:py-24 xl:px-8" id="product">
+        <section className="py-12 px-4 xl:py-24 xl:px-8" id="tienda">
           <Product />
         </section>
         {/*==================== Favoritos ====================*/}
-        <section className="py-12 px-4 xl:py-24 xl:px-8" id="favorites">
+        <section className="py-12 px-4 xl:py-24 xl:px-8" id="votados">
           <Favorites />
         </section>
       </main>
 
       {/*========== SCROLL UP ==========*/}
-      <a href="#" className={styles.scrollup} id="scroll-up">
+      {/* <a href="#" className={styles.scrollup} id="scroll-up">
         <i className="ri-arrow-up-line" />
-      </a>
+      </a> */}
     </>
   );
 }
