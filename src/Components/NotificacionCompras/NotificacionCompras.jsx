@@ -2,7 +2,7 @@ import * as React from 'react';
 
 
 export const NotificacionCompras = ({
-    firstName, cartItems
+    firstName, cartItems, totalPay
 }) => (
 
     <div>
@@ -83,7 +83,7 @@ export const NotificacionCompras = ({
                                     <p className=" text-xl flex text-start ">
                                         Total:
                                         <span className="text-bgred  ml-2 flex justify-end text-end">
-                                            $ 200
+                                          {totalPay}
                                         </span>
                                     </p>
                                     <br />
