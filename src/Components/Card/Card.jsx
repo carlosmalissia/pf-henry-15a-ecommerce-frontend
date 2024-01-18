@@ -86,16 +86,34 @@ export default function Card({ _id, title, price, image, category, stock }) {
       image: image,
       stock: stock,
     };
+  
+    const existingItem = cartItems.find(item => item._id === _id);
 
-    dispatch(addItem(productData));
-    toast.success("Producto agregado al carrito.");
-    handleUpdateCart();
+  
+    if (existingItem && existingItem.quantity + 1 > existingItem.stock) {
+      toast.error("No hay suficiente stock disponible para agregar más unidades de este producto al carrito.");
+    } else {
+      dispatch(addItem(productData));
+      toast.success("Producto agregado al carrito.");
+      handleUpdateCart();
+    }
   };
-
+  
+  
   useEffect(() => {
     dispatch(getlogindata());
+    // Verificar si cartItems es definido antes de usarlo
+    if (cartItems) {
+      let cartItemsId = [];
+      cartItems.forEach((product) => {
+        for (let i = 0; i < product.quantity; i++) {
+          cartItemsId.push(product._id);
+        }
+      });
+    }
     handleUpdateCart();
   }, [cartItems]);
+
 
   return (
     <div
@@ -146,7 +164,7 @@ export default function Card({ _id, title, price, image, category, stock }) {
         </button>
 
         {/* Mostrar mensaje de inicio de sesión si es necesario */}
-        <ToastContainer theme="colored" position="bottom-left" autoClose={1000} />
+        <ToastContainer theme="colored" position="top-center" autoClose={1000} />
 
       </div>
     </div>

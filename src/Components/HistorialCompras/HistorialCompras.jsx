@@ -102,13 +102,13 @@ const HistorialCompras = () => {
 
             </div>
 
-            <p className=" text-xl flex text-start ">
+            {/* <p className=" text-xl flex text-start ">
 
               Total:
               <span className="text-bgred  ml-2 flex justify-end text-end">
                 $
               </span>
-            </p>
+            </p> */}
           </section>
         </div>
       ))}
