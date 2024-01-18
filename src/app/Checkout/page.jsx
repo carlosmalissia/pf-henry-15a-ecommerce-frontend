@@ -92,9 +92,10 @@ const Page = () => {
       const { data, error } = await createPurchase(config)
       console.log("Respuesta del backend:", data);
       console.log("ver email", userId);
+
       const res = await fetch('/api/send', {
         method: 'POST',
-        body: cartItems
+        body: JSON.stringify({ cartData: cartItems })
       })
       const dato = await res.json()
       console.log("respuesta del envio", dato);

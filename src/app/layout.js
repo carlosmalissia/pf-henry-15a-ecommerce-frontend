@@ -5,6 +5,7 @@ import Navbar from '@/Components/Navbar/Navbar'
 import Footer from '@/Components/Footer/Footer'
 import { Providers } from '@/redux/providers'
 import { NextAuthProvider } from './providers'
+import styles from "./page.module.css";
 
 
 const inter = Inter({ subsets: ['latin'] })
@@ -16,21 +17,34 @@ export const metadata = {
 }
 
 export default function RootLayout({ children }) {
-  
+  /* const scrollUp = () => {
+    const scrollUp = document.getElementById("scroll-up");
+    if (!scrollUp) return;
+    // When the scroll is higher than 150 viewport height, add the show-scroll class to the a tag with the scrollup class
+    window.scrollY >= 150
+      ? scrollUp.classList.add(styles.show_scroll)
+      : scrollUp.classList.remove(styles.show_scroll);
+  };
+  window.addEventListener("scroll", scrollUp); */
+  //scrollUp()
   return (
     <html lang="en">
-    <body className={inter.className}>
-      <NextAuthProvider>
-      <Providers>
-        <Navbar />
-          {children}
-        <footer className="bg-bgfooter p-10">
-          <Footer />
-        </footer> 
-      </Providers>
-      </NextAuthProvider>
-       
-    </body>
-  </html>
+      <body className={inter.className}>
+        <NextAuthProvider>
+          <Providers>
+            <Navbar />
+            {children}
+            <footer className="bg-bgfooter p-10">
+              <Footer />
+            </footer>
+            {/*========== SCROLL UP ==========*/}
+            <a href="#" className={styles.scrollup} id="scroll-up">
+              <i className="ri-arrow-up-line" />
+            </a>
+          </Providers>
+        </NextAuthProvider>
+
+      </body>
+    </html>
   )
 }
