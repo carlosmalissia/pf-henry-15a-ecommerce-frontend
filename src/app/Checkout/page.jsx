@@ -7,6 +7,7 @@ import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import axios from 'axios'
 import { cleanCart } from "@/redux/features/cart";
 import { useNewPurchaseMutation } from "@/redux/services/purchaseHistoryApi"
+import { ToastContainer, toast } from "react-toastify";
 
 
 const Page = () => {
@@ -92,12 +93,12 @@ const Page = () => {
       const { data, error } = await createPurchase(config)
       console.log("Respuesta del backend:", data);
       console.log("ver email", userId);
-      const res = await fetch('/api/send', {
-        method: 'POST',
-        body: cartItems
-      })
-      const dato = await res.json()
-      console.log("respuesta del envio", dato);
+      // const res = await fetch('/api/send', {
+      //   method: 'POST',
+      //   body: JSON.stringify()
+      // })
+      // const dato = await res.json()
+      // console.log("respuesta del envio", dato);
 
 
     } catch (error) {
@@ -105,7 +106,31 @@ const Page = () => {
     }
   }
 
-
+  //envio de mail de compras
+  const sendEmail = async () => {
+    try {
+      const response = await fetch('/api/send', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          cartItems: cartItems,
+          userId: userId,
+          totalPay: totalPay
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to send email');
+      }
+      toast.success('Your email message has been sent successfully');
+    } catch (error) {
+      console.error('Error sending email:', error);
+      toast.error('An error occurred while sending the email. Please try again.');
+    }
+  };
+  
   return (
     <div className="p-14 font-bold">
       <fieldset className="border  p-4 rounded-md ">
@@ -215,28 +240,35 @@ const Page = () => {
                         onApprove={async (data, actions) => {
                           const order = await actions.order?.capture()
                           console.log("order: ", order);
-                          handlePurchase();
-
+                          // await handlePurchase();
+                          await sendEmail()
                           /* dispatch(cleanCart()); */
                         }}
                         onCancel={() => {
                           console.log("compra cancelada");
                         }}
                       />
+                 
                     </PayPalScriptProvider>
                   </div>
                 </div>
               </div>
             </fieldset>
           </div>
+     
         </div>
       </fieldset>
-
+  
+      <ToastContainer
+                theme="colored"
+                position="top-center"
+                autoClose={2000}
+              />
       {/* cierre del div contenedor     */}
+
     </div>
   );
 };
 
 export default Page
 
-/* body: JSON.stringify({ cartData: cartItems }) */
