@@ -50,7 +50,7 @@ export default function DetailID({ params }) {
     refetchOnMountOrArgChange: true,
     refetchInterval: 5000,
   });
-  
+
 
 
 
@@ -99,7 +99,7 @@ export default function DetailID({ params }) {
 
   const handleAddToCart = () => {
     if (quantity >= 1) {
-     
+
       const productData = {
         _id: productById._id,
         title: productById.title,
@@ -109,10 +109,10 @@ export default function DetailID({ params }) {
         image: productById.image,
         stock: productById.stock,
       };
-  
+
       const existingItem = cartItems.find(item => item._id === productById._id);
-   
-   
+
+
       if (existingItem && existingItem.quantity + quantity > existingItem.stock) {
         toast.error("No hay suficiente stock disponible para agregar más unidades de este producto al carrito.");
       } else {
@@ -124,9 +124,9 @@ export default function DetailID({ params }) {
       toast.error("La cantidad debe ser mayor a 0");
     }
   };
-  
 
-  useEffect(() => {}, [_id]);
+
+  useEffect(() => { }, [_id]);
 
   useEffect(() => {
     handleUpdateCart();
@@ -240,20 +240,20 @@ export default function DetailID({ params }) {
           <br />
           <div className="flex items-center">
             {/* Icono de corazón para agregar a favoritos */}
-           {userId && (
+            {userId && (
               <button
-              onClick={handleAddToFavorites}
-              className={`text-bgred p-3 rounded-lg mx-2 
+                onClick={handleAddToFavorites}
+                className={`text-bgred p-3 rounded-lg mx-2 
         flex justify-center items-center text-center 
         transition duration-300 ease-in-out `}
-            >
-              {isFavorite.includes(productById?._id) ? (
-                <BsHeartFill className="text-2xl" />
-              ) : (
-                <BsHeart className="text-2xl" />
-              )}
-            </button>
-           )}
+              >
+                {isFavorite.includes(productById?._id) ? (
+                  <BsHeartFill className="text-2xl" />
+                ) : (
+                  <BsHeart className="text-2xl" />
+                )}
+              </button>
+            )}
             {/* rating y cuenta */}
             <section className="text-lg text-yellow-500 flex flex-row gap-4">
               <p>
@@ -311,9 +311,8 @@ export default function DetailID({ params }) {
                 onClick={handleAddToCart}
                 className={`bg-bgbotones text-white text-base py-2 px-10 rounded-lg mx-2 
     flex justify-center items-center text-center 
-    transition duration-700 ease-in-out ${
-      hoveredCarButon ? "hover:bg-bgred hover:text-white" : ""
-    } whitespace-nowrap`}
+    transition duration-700 ease-in-out ${hoveredCarButon ? "hover:bg-bgred hover:text-white" : ""
+                  } whitespace-nowrap`}
                 onMouseEnter={() => setHoveredCarButon(true)}
                 onMouseLeave={() => setHoveredCarButon(false)}
               >
@@ -351,15 +350,14 @@ export default function DetailID({ params }) {
                   className="text-xl "
                   readonly
                   value={roundedAverage}
-                /> 
+                />
               </div>
               <p className="text-center text-xl">
-                  {productById && productById.averageRating
-                    ? `${productById.averageRating.toFixed(1)}/5 (${
-                        productById.reviews ? productById.reviews.length : 0
-                      } calificaciones)`
-                    : "No hay reviews aún"}
-                </p>
+                {productById && productById.averageRating
+                  ? `${productById.averageRating.toFixed(1)}/5 (${productById.reviews ? productById.reviews.length : 0
+                  } calificaciones)`
+                  : "No hay reviews aún"}
+              </p>
             </section>
 
             {/* Estadísticas de calificación */}
@@ -376,9 +374,8 @@ export default function DetailID({ params }) {
                       <div key={index} className="mb-2">
                         <div className="flex items-center">
                           <Rating
-                            className={`text-sm ${
-                              5 - index === 1 ? "text-bgred" : "text-yellow-500"
-                            } mr-2`}
+                            className={`text-sm ${5 - index === 1 ? "text-bgred" : "text-yellow-500"
+                              } mr-2`}
                             readonly
                             value={5 - index}
                           />
@@ -390,11 +387,10 @@ export default function DetailID({ params }) {
                                   <div className="h-2 bg-teal-500 rounded-full relative">
                                     <div
                                       style={{
-                                        width: `${
-                                          ratingDistribution.percentagePerStar[
-                                            5 - index - 1
+                                        width: `${ratingDistribution.percentagePerStar[
+                                          5 - index - 1
                                           ]
-                                        }%`,
+                                          }%`,
                                       }}
                                       className="h-full bg-teal-200 rounded-full absolute bottom-0"
                                     ></div>
@@ -436,9 +432,9 @@ export default function DetailID({ params }) {
       </section>
 
       {/* productos similares */}
-      <section>
+      {/* <section>
         <Similares category={productById.category.name} _id={productById._id} />
-      </section>
+      </section> */}
 
       {/* cierre del contenedor mayor */}
     </div>

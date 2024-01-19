@@ -10,10 +10,12 @@ import { getlogindata } from "@/redux/features/userSlice";
 import {
   useCartShoppingQuery,
   useShoppingCartupdateUserMutation,
+  useGetUserByIdQuery
 } from "@/redux/services/usersApi";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import { BsHeart, BsHeartFill } from "react-icons/bs";
+import { useAddFavoriteMutation, useRemoveFavoriteMutation } from "@/redux/services/favoritesApi"
 
 
 
@@ -23,18 +25,60 @@ export default function Card({ _id, title, price, image, category, stock }) {
   const userId = useAppSelector((state) => state.loginReducer.user);
   const userToken = useAppSelector((state) => state.loginReducer.token);
   const dispatch = useAppDispatch();
-
-
   const [showLoginMessage, setShowLoginMessage] = useState(false);
 
+  const userid = userId?._id
+
+  const { data: user, error: userError } = useGetUserByIdQuery(userid);
+
+  const [fav, setFav] = useState(user?.favorites || []);
+  const [addFavorite] = useAddFavoriteMutation();
+  const [removeFavorite] = useRemoveFavoriteMutation();
+
+  useEffect(() => {
+    setFav(user?.favorites || []);
+  }, [user?.favorites]);
+
+  useEffect(() => {
+    console.log("Contenido de favoritos:", fav);
+  }, [fav]);
+
+  const handleAddToFavorites = async () => {
+    try {
+      const userID = user?._id;
+      const idProduct = _id;
+
+      const config = {
+        product: idProduct,
+        token: userToken,
+        userId: userID,
+      };
 
 
-  // const { data: cartData, error: cartError } = useCartShoppingQuery({
-  //   userID: userId?._id,
-  //     _id: _id,
-  // });
+      if (fav.includes(idProduct)) {
+        const { data, error } = await removeFavorite(config);
+        console.log("Producto eliminado de favoritos");
+        setFav((prevFavorites) =>
+          prevFavorites.filter((productId) => productId !== idProduct)
+        );
+      } else {
 
+        const { data, error } = await addFavorite(config);
+        console.log("Producto agregado a favoritos:");
+        setFav((prevFavorites) => [...prevFavorites, idProduct]);
+      }
+    } catch (error) {
+      console.error(
+        "Error al agregar/eliminar el producto de favoritos:",
+        error
+      );
+    }
+  };
 
+  /* const { data: cartData, error: cartError } = useCartShoppingQuery({
+    userID: userId?._id,
+    _id: _id,
+  }); */
   let cartItemsId = [];
 
   cartItems.forEach((product) => {
@@ -86,10 +130,10 @@ export default function Card({ _id, title, price, image, category, stock }) {
       image: image,
       stock: stock,
     };
-  
+
     const existingItem = cartItems.find(item => item._id === _id);
 
-  
+
     if (existingItem && existingItem.quantity + 1 > existingItem.stock) {
       toast.error("No hay suficiente stock disponible para agregar más unidades de este producto al carrito.");
     } else {
@@ -98,9 +142,9 @@ export default function Card({ _id, title, price, image, category, stock }) {
       handleUpdateCart();
     }
   };
-  
-  
-  useEffect(() => {
+
+
+  /* useEffect(() => {
     dispatch(getlogindata());
     // Verificar si cartItems es definido antes de usarlo
     if (cartItems) {
@@ -113,12 +157,26 @@ export default function Card({ _id, title, price, image, category, stock }) {
     }
     handleUpdateCart();
   }, [cartItems]);
+ */
+
 
 
   return (
     <div
       className={`bg-white-500 w-full border border-gray-300 rounded-md p-2 relative flex flex-col shadow-md`}
     >
+      <button
+        onClick={() => { handleAddToFavorites() }}
+        className={`text-bgred p-3 rounded-lg mx-2 
+    flex justify-end items-center text-center 
+    transition duration-300 ease-in-out `}
+      >
+        {fav.includes(_id) ? (
+          <BsHeartFill className="text-2xl" />
+        ) : (
+          <BsHeart className="text-2xl" />
+        )}
+      </button>
       <Link href={`/Detail/${_id}`} className="flex-1">
         <div className="flex flex-col items-center h-auto w-auto m-5">
           {/* Contenido de la imagen */}
@@ -164,7 +222,7 @@ export default function Card({ _id, title, price, image, category, stock }) {
         </button>
 
         {/* Mostrar mensaje de inicio de sesión si es necesario */}
-        <ToastContainer theme="colored" position="top-center" autoClose={1000} />
+        <ToastContainer theme="colored" position="bottom-left" autoClose={1000} />
 
       </div>
     </div>
