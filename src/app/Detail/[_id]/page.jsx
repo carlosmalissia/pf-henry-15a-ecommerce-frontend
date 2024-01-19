@@ -436,9 +436,9 @@ export default function DetailID({ params }) {
       </section>
 
       {/* productos similares */}
-      <section>
+      {/* <section>
         <Similares category={productById.category.name} _id={productById._id} />
-      </section>
+      </section> */}
 
       {/* cierre del contenedor mayor */}
     </div>
