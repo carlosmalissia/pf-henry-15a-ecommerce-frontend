@@ -144,6 +144,7 @@ export default function Card({ _id, title, price, image, category, stock }) {
   };
 
 
+
   /* useEffect(() => {
     dispatch(getlogindata());
     // Verificar si cartItems es definido antes de usarlo
@@ -158,6 +159,8 @@ export default function Card({ _id, title, price, image, category, stock }) {
     handleUpdateCart();
   }, [cartItems]);
  */
+
+
 
 
 

@@ -8,6 +8,8 @@ export async function POST(req, res) {
 
     const { cartItems, userId, totalPay } = await req.json();
 
+    console.log(userId?.email)
+
     try {
         const data = await resend.emails.send({
             from: 'Acme <onboarding@resend.dev>',
