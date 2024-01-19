@@ -99,20 +99,6 @@ export default function Card({ _id, title, price, image, category, stock }) {
     }
   };
   
-  
-  useEffect(() => {
-    dispatch(getlogindata());
-    // Verificar si cartItems es definido antes de usarlo
-    if (cartItems) {
-      let cartItemsId = [];
-      cartItems.forEach((product) => {
-        for (let i = 0; i < product.quantity; i++) {
-          cartItemsId.push(product._id);
-        }
-      });
-    }
-    handleUpdateCart();
-  }, [cartItems]);
 
 
   return (

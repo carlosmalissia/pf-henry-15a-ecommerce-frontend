@@ -19,6 +19,7 @@ import { signIn } from "next-auth/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FaGoogle } from "react-icons/fa";
 import { faUser, faLock, faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import { ToastContainer, toast } from "react-toastify";
 const envelopeIcon = <FontAwesomeIcon icon={faEnvelope} />;
 const userIcon = <FontAwesomeIcon icon={faUser} />;
 const lockIcon = <FontAwesomeIcon icon={faLock} />;
@@ -102,45 +103,37 @@ const Register = () => {
     e.preventDefault();
   
     if (validateForm()) {
-      // Lógica de registro
       try {
         const response = await newUser(registerFormData);
-        const { name, email, password } = registerFormData;
-        setWelcomeMessage(`Hola ${name}!`);
+        console.log("esto es response ", response);
   
-        // Limpia el formulario de registro
-        setRegisterFormData({
-          name: "",
-          lastname: "",
-          email: "",
-          password: "",
-        });
+        if (response.error && response.error.data && response.error.data.error) {
+          toast.error("Este correo electronico ya existe");
+        } else {
+          
+          const { name, email, password } = registerFormData;
+          setWelcomeMessage(`Hola ${name}!`);
   
-        
-        try {
-          const loginResponse = await login({ loginEmail: email, loginPassword: password });
+          try {
+            const loginResponse = await login({ loginEmail: email, loginPassword: password });
   
-          if (loginResponse?.data?.token) {
-            // La autenticación fue exitosa
-            const { user } = loginResponse.data;
-            const userName = user.name;
-            setWelcomeMessageLogin(`¡Hola de nuevo  ${userName}!`);
-            dispatch(loginUser(loginResponse.data));
+            if (loginResponse?.data?.token) {
+              const { user } = loginResponse.data;
+              const userName = user.name;
+              setWelcomeMessageLogin(`¡Hola de nuevo ${userName}!`);
+              dispatch(loginUser(loginResponse.data));
+            } else {
+              console.error("Error en el inicio de sesión:", loginResponse?.data?.error);
+            }
   
-          } else {
-            console.error("Error en el inicio de sesión:", loginResponse?.data?.error);
-            // Puedes manejar el error de inicio de sesión aquí
+            setLoginFormData({
+              loginEmail: "",
+              loginPassword: "",
+            });
+          } catch (error) {
+            console.error("Error al iniciar sesión automáticamente:", error);
           }
-  
-          // Limpia el formulario de inicio de sesión
-          setLoginFormData({
-            loginEmail: "",
-            loginPassword: "",
-          });
-        } catch (error) {
-          console.error("Error al iniciar sesión automáticamente:", error);
         }
-  
       } catch (error) {
         console.error("Error al registrar el usuario:", error);
       }
@@ -148,13 +141,13 @@ const Register = () => {
       console.log("Formulario de registro inválido");
     }
   };
+  
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
 
     if (validateForm()) {
-      // no entra al try , verificar el validate form
-      // Lógica de inicio de sesión
+      
       try {
         const loginResponse = await login(loginFormData);
 
@@ -303,6 +296,11 @@ const Register = () => {
                   Registrarse
                 </button>
               </div>
+              <ToastContainer
+        position="top-center"
+        autoClose={1000}
+        theme="colored"      
+      />
             </form>
 
             <div className="mt-2 flex flex-col">
@@ -428,6 +426,7 @@ const Register = () => {
         la información necesaria para que el proceso de compra sea más rápido y
         sencillo.
       </div>
+     
     </div>
   );
 };
