@@ -24,7 +24,7 @@ const InfoPerfil = () => {
             <div className="p-4 bg-white rounded-md shadow">
               <h3 className="text-lg font-semibold mb-2">Modificar Datos Personales</h3>
               <p className="text-gray-600">
-                Actualiza tu información personal, como nombre, dirección y detalles de contacto.
+                Actualiza tu información personal, como nombre, dirección, email y contraseña.
               </p>
               
             </div>
@@ -33,7 +33,7 @@ const InfoPerfil = () => {
             <div className="p-4 bg-white rounded-md shadow">
               <h3 className="text-lg font-semibold mb-2">Revisar Tus Reseñas</h3>
               <p className="text-gray-600">
-                Accede a todas las reseñas que has realizado. Modifica o elimina tus comentarios según sea necesario.
+                Accede a todas las reseñas que has realizado. Modifica tus comentarios según sea necesario.
               </p>
               
             </div>
@@ -42,7 +42,7 @@ const InfoPerfil = () => {
             <div className="p-4 bg-white rounded-md shadow">
               <h3 className="text-lg font-semibold mb-2">Ver Historial de Compras</h3>
               <p className="text-gray-600">
-                Explora todas las compras que has realizado. Obtén detalles sobre productos, fechas y más.
+                Explora todas las compras que has realizado. Obtén detalles sobre productos y fechas.
               </p>
               
             </div>

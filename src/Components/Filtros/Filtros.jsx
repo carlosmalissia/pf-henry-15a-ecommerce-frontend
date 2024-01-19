@@ -23,7 +23,7 @@ export default function Filtros({ handleChange, handleChangeRange, select, selec
 
       <div className={`${show ? "lg:w-1/4 w-7/12 fixed z-10" : "lg:w-1/4 max-lg:hidden"}  bg-white border-solid border border-gray-300  mt-28 rounded-md shadow-md `}>
 
-        <h2 className="text-center text-xl ">Filtros</h2>
+        <h2 className="text-center text-xl p-8">Filtros</h2>
         <div className="bg-gray text-black fixed top-28  mt-12 shadow-md">
           <button className="mt-2 text-black lg:hidden" onClick={() => setShow(false)}>
 

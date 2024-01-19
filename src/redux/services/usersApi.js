@@ -66,7 +66,7 @@ export const userApi = createApi({
                 body: updateProfile,
                 token,
             }),
-            invalidatesTags: ["Users"], // crea un usuario
+            invalidatesTags: ["Users"], 
         }),
         logoutUser: builder.mutation({
             query: () => ({
@@ -119,6 +119,7 @@ export const {
     useShoppingCartupdateUserMutation,
     useGetUserReviewsQuery,
     useUpdateReviewMutation,
+    
     
     
 } = userApi;

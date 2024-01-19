@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import HoverLogin from '../HoverPerfil/HoverPerfil';
 import { useAppSelector } from "@/redux/hooks";
+import { useGetUserByIdQuery } from "@/redux/services/usersApi"
 
 
 const userIcon = <FontAwesomeIcon icon={faUser} />;
@@ -11,14 +12,22 @@ const userIcon = <FontAwesomeIcon icon={faUser} />;
 const ButtonWelcome = ({ onMouseEnter, onMouseLeave }) => {
     const userData = useAppSelector((state) => state.loginReducer.user);
     // console.log("userData", userData);
-    const userName = userData?.name;
+    
+    const id = userData?._id;
+
+    const getUserByIdQuery = useGetUserByIdQuery(id);
+    console.log("esta es  la data del usuario",getUserByIdQuery);
+    const userName= getUserByIdQuery?.currentData?.name
+    const image= getUserByIdQuery?.currentData?.image 
+    console.log("esta es la foto de perfil", image);
+    
     return (
         <button
             className='text-gray-600 font-'
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
         >
-           {userIcon} Hola {userName} 
+           {userIcon} Hola {userName}
         </button>
     );
 };
