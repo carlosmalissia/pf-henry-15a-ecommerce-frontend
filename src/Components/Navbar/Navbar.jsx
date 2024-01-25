@@ -21,6 +21,7 @@ import {
   faShoppingBag,
   faUsers,
   faUserShield,
+  faStar,
 
   faCartShopping,
 } from '@fortawesome/free-solid-svg-icons';
@@ -36,6 +37,7 @@ const productos = <FontAwesomeIcon icon={faShoppingBag} />;
 const user = <FontAwesomeIcon icon={faUsers} />;
 const admin = <FontAwesomeIcon icon={faUserShield} />;
 const cart = <FontAwesomeIcon icon={faCartShopping} />;
+const star = <FontAwesomeIcon icon={faStar} />;
 
 function NavBar() {
 
@@ -138,11 +140,13 @@ function NavBar() {
 
   /* const { data: session, status } = useSession(); */
   return (
-    <header className={styles.header} id="header">
-      <nav className={`${styles.nav} ${styles.container}`}>
-        <a href="/#" className="text-2xl max-sm:ml-20">
-          Henrucci
-        </a>
+    <header className="bg-white border-solid border border-gray-300 rounded-md shadow-md text-white p-4 fixed w-full top-0 left-0 z-50 backdrop-filter backdrop-blur-24 -webkit-backdrop-filter backdrop-blur-24" id="header">
+      <nav className="flex items-center justify-between container mx-auto">
+        <img
+          src="/images/logoHenrucci.png"
+          alt="Logo Henrucci"
+          className="max-w-24 rounded-full"
+        />
         <div className={styles.nav__menu} id="nav__menu">
           <ul className={styles.nav__list}>
             <li className={styles.nav__item}>
@@ -161,7 +165,7 @@ function NavBar() {
                 className={styles.nav__link}
 
               >
-                {favorite} Los Más Votados
+                {star} Los Más Votados
               </a>
             </li>
             <Link href="/about" className={`${styles.nav__link} ${(pathname === "/about") ? styles.active_link : ""}`}
@@ -199,3 +203,16 @@ function NavBar() {
 }
 
 export default NavBar;
+
+
+
+
+/* 
+<header className="bg-white border-solid border border-gray-300 rounded-md shadow-md text-white p-4" id="header">
+      <nav className="flex items-center justify-between container mx-auto">
+     
+        <img
+          src="/images/logoHenrucci.png"
+          alt="Logo Henrucci"
+          className="max-w-24 rounded-full"
+        /> */
