@@ -21,9 +21,9 @@ export default function Filtros({ handleChange, handleChangeRange, select, selec
         </button>
       </div>
 
-      <div className={`${show ? "lg:w-1/4 w-7/12 fixed z-10" : "lg:w-1/4 max-lg:hidden"}  bg-white border-solid border border-gray-300  mt-28 rounded-md shadow-md `}>
+      <div  className={`${show ? "lg:w-1/4 w-7/12 fixed z-10 h-48" : "lg:w-1/4     max-lg:hidden h-full"} bg-white border-solid border border-gray-300 mt-64 rounded-md shadow-md pb-32`}>
 
-        <h2 className="text-center text-xl ">Filtros</h2>
+        <h2 className="text-center text-black text-xl mt-12 p-4  ">Filtrar por :</h2>
         <div className="bg-gray text-black fixed top-28  mt-12 shadow-md">
           <button className="mt-2 text-black lg:hidden" onClick={() => setShow(false)}>
 
@@ -40,12 +40,12 @@ export default function Filtros({ handleChange, handleChangeRange, select, selec
               name="category"
               id=""
               onChange={handleChange}
-              className="block p-2 m-3 w-[200px] text-center rounded-lg text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
+              className=" mb-8 cursor-pointer text-xl text-black hover:bg-teal-500 hover:text-white text-black font-serif py-2 px-4 rounded-lg  w-64 shadow-xl block p-4 m-6 w-[200px] text-center rounded-lg text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
             >
               <option value="" >Categorias</option>
-              <option value="ropa hombre" >Ropa de hombre</option>
-              <option value="ropa mujer" >Ropa de mujer</option>
-              <option value="joyeria" >Joyería</option>
+              <option value="ropa hombre" >Ropa de Hombre</option>
+              <option value="ropa mujer" >Ropa de Mujer</option>
+              <option value="joyeria" >Joyeria</option>
             </select>
           </div>
           <div>
@@ -53,11 +53,11 @@ export default function Filtros({ handleChange, handleChangeRange, select, selec
               name="rating"
               id=""
               onChange={handleChange}
-              className="block p-2 m-3 w-[200px] text-center rounded-lg text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
+              className="mb-8 cursor-pointer text-xl text-black hover:bg-teal-500 hover:text-white text-black font-serif py-2 px-4 rounded-lg  w-64 shadow-xl block p-4 m-6 w-[200px] text-center rounded-lg text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
             >
-              <option value="">Rating</option>
-              <option value="asc">Rating Asc.</option>
-              <option value="des">Rating Desc.</option>
+              <option value="">Clasificacion</option>
+              <option value="asc">Ascendente</option>
+              <option value="des">Descendente</option>
             </select>
           </div>
           <div>
@@ -66,12 +66,12 @@ export default function Filtros({ handleChange, handleChangeRange, select, selec
               name="price"
               id=""
               onChange={handleChange}
-              className="block p-2 m-3 w-[200px] text-center rounded-lg text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
+              className="mb-8 cursor-pointer text-xl text-black hover:bg-teal-500 hover:text-white text-black font-serif py-2 px-4 rounded-lg  w-64 shadow-xl block p-4 m-6 w-[200px] text-center rounded-lg text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
             >
-              <option value="">Price</option>
-              <option value="asc">Precio Asc.</option>
-              <option value="des">Precio Desc.</option>
-              <option value="range">Rango de precio</option>
+              <option value="">Precio</option>
+              <option value="asc">Ascendente</option>
+              <option value="des">Descendente</option>
+              <option value="range">Rango de Precio</option>
             </select>
             {select.price === "range" && (
 
@@ -106,7 +106,7 @@ export default function Filtros({ handleChange, handleChangeRange, select, selec
 
                         <p className="block font-sans text-sm antialiased font-medium leading-relaxed text-gray-400 bg-transparent">
 
-                          De 1 a 100 $U
+                          1 a 100 $U
                         </p>
                       </label>
                     </div>
@@ -138,7 +138,7 @@ export default function Filtros({ handleChange, handleChangeRange, select, selec
 
                         <p className="block font-sans text-sm antialiased font-medium leading-relaxed text-gray-400 bg-transparent">
 
-                          de 100 a 500 $U
+                          100 a 500 $U
                         </p>
                       </label>
                     </div>
@@ -171,7 +171,7 @@ export default function Filtros({ handleChange, handleChangeRange, select, selec
 
                         <p className="block font-sans text-sm antialiased font-medium leading-relaxed text-gray-400 bg-transparent">
 
-                          de 500 a 5000 $U
+                          500 a 5000 $U
                         </p>
                       </label>
                     </div>

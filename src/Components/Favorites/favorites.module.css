@@ -15,7 +15,7 @@
   .popular__container {
     padding-top: 1.5rem;
     grid-template-columns: 280px;
-    justify-content: center;
+    justify-content: end;
     row-gap: 2.5rem;
   }
   .popular__img {
