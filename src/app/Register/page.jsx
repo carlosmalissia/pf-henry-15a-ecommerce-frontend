@@ -19,7 +19,7 @@ import { signIn } from "next-auth/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FaGoogle } from "react-icons/fa";
 import { faUser, faLock, faEnvelope } from "@fortawesome/free-solid-svg-icons";
-import { ToastContainer, toast } from "react-toastify";
+import  { toast, Toaster } from 'react-hot-toast';
 const envelopeIcon = <FontAwesomeIcon icon={faEnvelope} />;
 const userIcon = <FontAwesomeIcon icon={faUser} />;
 const lockIcon = <FontAwesomeIcon icon={faLock} />;
@@ -145,40 +145,61 @@ const Register = () => {
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
-
+  
     if (validateForm()) {
-      
       try {
-        const loginResponse = await login(loginFormData);
-
-        if (loginResponse?.data?.token) {
-          // La autenticación fue exitosa
-          const { user } = loginResponse.data;
-          const userName = user.name;
-          setWelcomeMessageLogin(`¡Hola de nuevo  ${userName}!`);
-          dispatch(loginUser(loginResponse.data))
-          
-          // Puedes hacer más cosas aquí si es necesario
+        const response = await newUser(registerFormData);
+        console.log("esto es response ", response);
+  
+        if (response.error && response.error.data && response.error.data.error) {
+          toast.error("Usuario inválido");
         } else {
-          console.error(
-            "Error en el inicio de sesión:",
-            loginResponse?.data?.error
-          );
-          // Puedes manejar el error de inicio de sesión aquí
+          try {
+            const loginResponse = await login({
+              loginEmail: registerFormData.email,
+              loginPassword: registerFormData.password,
+            });
+  
+            console.log("loginResponse", loginResponse); // Agrega este log para entender la estructura de loginResponse
+  
+            if (loginResponse?.data?.token) {
+              // La autenticación fue exitosa
+              const { user } = loginResponse.data;
+              const userName = user.name;
+              setWelcomeMessageLogin(`¡Hola de nuevo ${userName}!`);
+              dispatch(loginUser(loginResponse.data));
+            } else {
+              console.error(
+                "Error en el inicio de sesión:",
+                loginResponse?.data?.error
+              );
+              // Puedes manejar el error de inicio de sesión aquí
+            }
+  
+            // Limpia el formulario de inicio de sesión
+            setLoginFormData({
+              loginEmail: "",
+              loginPassword: "",
+            });
+          } catch (error) {
+            console.error("Error al iniciar sesión:", error);
+          }
         }
-
-        // Limpia el formulario de inicio de sesión
-        setLoginFormData({
-          loginEmail: "",
-          loginPassword: "",
-        });
       } catch (error) {
-        console.error("Error al iniciar sesión:", error);
+        console.error("Error al registrar el usuario:", error);
+        toast.error('Usuario inválido', {
+          style: {
+            background: 'red',
+            color: 'white',
+          },
+        });
       }
     } else {
       console.log("Formulario de inicio de sesión inválido");
     }
   };
+  
+  
   return (
     <div className="min-h-screen ml-48 flex items-center justify-center ">
       <div className="bg-white p-4 rounded shadow-xl w-96 flex flex-col">
@@ -296,11 +317,7 @@ const Register = () => {
                   Registrarse
                 </button>
               </div>
-              <ToastContainer
-        position="top-center"
-        autoClose={1000}
-        theme="colored"      
-      />
+              <Toaster position="top-center"/>
             </form>
 
             <div className="mt-2 flex flex-col">
@@ -396,6 +413,7 @@ const Register = () => {
                   <FaGoogle className="mr-2" />
                   Accede con Google
                 </button>
+                <Toaster position="top-center"/>
               </div>
             </form>
             <div className="mt-2 text-center">

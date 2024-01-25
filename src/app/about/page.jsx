@@ -30,15 +30,6 @@ function About() {
       email: "mirkaalamilla97@gmail.com",
     },
     {
-      name: "Fernando Revilla",
-      image: {
-        src: "https://github.com/LCamarilloFlores.png",
-        width: 100,
-        height: 100,
-      },
-      email: "revcastfer@gmail.com",
-    },
-    {
       name: "Isaac Rodríguez",
       image: isaacbarboza,
       email: "isaacrbarboza98@gmail.com",
