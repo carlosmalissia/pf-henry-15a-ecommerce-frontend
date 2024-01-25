@@ -14,8 +14,7 @@ import {
   useShoppingCartupdateUserMutation,
 } from "@/redux/services/usersApi";
 import { useNewReviewMutation } from "@/redux/services/reviewsApi";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import  { toast, Toaster } from 'react-hot-toast';
 import Link from "next/link";
 import Similares from "@/Components/Similares/Similares";
 import ReviewForm from "@/Components/ReviewForm/ReviewForm";
@@ -326,11 +325,7 @@ export default function DetailID({ params }) {
                 </span>
               </button>
               {/* Mostrar mensaje de inicio de sesión si es necesario */}
-              <ToastContainer
-                theme="colored"
-                position="top-center"
-                autoClose={2000}
-              />
+              <Toaster position="top-center"/>
             </div>
           </div>
         </div>
