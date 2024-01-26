@@ -13,6 +13,7 @@ export default function Cards(props) {
     <div className="flex flex-col mb-16 xl:mb-0">
       <div
         className={`grid sm:grid-cols-2 md:grid-cols-3 gap-10 md:w-[70vw] lg:w-[60vw]   mx-auto justify-end mt-36 `}
+
       >
         {Array.isArray(props?.data) &&
           props.data.map((e, index) => (
