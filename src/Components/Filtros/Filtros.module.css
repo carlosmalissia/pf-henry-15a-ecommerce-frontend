@@ -1,0 +1,91 @@
+.container {
+    position: relative;
+    z-index: 1;
+  }
+  
+  /* Estilos para el botón de Filtros */
+  .button {
+    margin-top: 2px;
+    color: black;
+  }
+  
+  /* Estilos para el contenedor de filtros */
+  .filterContainer {
+    width: 100%;
+    height: 48px;
+    position: fixed;
+    top: 28px;
+    z-index: 10;
+    background-color: white;
+    border: 1px solid #ccc;
+  }
+  
+  /* Estilos para el contenedor de filtros abierto */
+  .filterContainerOpen {
+    width: 25%;
+  }
+  
+  /* Estilos para el título Filtrar por */
+  .title {
+    text-align: center;
+    color: black;
+    font-size: 1.5rem;
+    margin-top: 12px;
+    padding: 16px;
+  }
+  
+  /* Estilos para los select */
+  .select {
+    margin-bottom: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    text-align: center;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    width: 200px;
+    padding: 8px;
+  }
+  
+  /* Estilos para el rango de precio */
+  .priceRangeContainer {
+    display: flex;
+    flex-direction: column;
+    margin-left: 13%;
+    margin-top: 8px;
+  }
+  
+  /* Estilos para los botones de rango de precio */
+  .rangeButton {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 0;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  /* Estilos para el texto de rango de precio */
+  .rangeText {
+    font-size: 1rem;
+    color: #666;
+    padding: 8px;
+  }
+  
+  /* Estilos para el contenedor de opciones de rango de precio */
+  .rangeOptionsContainer {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Estilos para la opción de rango de precio */
+  .rangeOption {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 0;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
