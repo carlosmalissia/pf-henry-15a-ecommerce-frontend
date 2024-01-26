@@ -33,6 +33,7 @@ const Searchbar = ({ handlesearchName, category }) => {
             placeholder="Buscar..."
             className={styles.input}
           />
+          
           {/* <button
             className="ml-2 bg-primary p-2 text-white rounded-lg"
             onClick={fetchProducts}
