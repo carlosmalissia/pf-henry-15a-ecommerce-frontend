@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Searchbar from "../Searchbar/Searchbar";
+import Searchbar from "../searchbar/searchbar";
 import Cards from "../Cards/Cards";
 import Filtros from "../Filtros/Filtros";
 import { useAppSelector, useAppDispatch } from "@/redux/hooks";
