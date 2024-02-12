@@ -1,20 +1,12 @@
 import React, { useState, useEffect } from "react";
-import Image from "next/image";
-import styles from "./product.module.css";
 import Searchbar from "../searchbar/searchbar";
 import Cards from "../Cards/Cards";
-import Filtros from "../Filtros/Filtros"
+import Filtros from "../Filtros/Filtros";
 import { useAppSelector, useAppDispatch } from "@/redux/hooks";
 import axios from "axios";
-import {
-  useGetProductByPageQuery,
-  useGetProductByTitleQuery,
-  useGetProductByFilterAndPageQuery,
-} from "@/redux/services/productApi";
-import { useDispatch } from "react-redux";
+import { useGetProductByPageQuery, useGetProductByTitleQuery } from "@/redux/services/productApi";
 import { pageone } from "@/redux/features/countPageSlice";
-import { getlogindata } from "@/redux/features/userSlice";
-
+import Banner from "../Banner/Banner";
 export default function Product() {
   const actualPage = useAppSelector((state) => state.countPageReducer.page);
   const pageSize = useAppSelector((state) => state.countPageReducer.pageSize);
@@ -41,19 +33,15 @@ export default function Product() {
     }
   );
 
-  /* const { data, error, isLoading, isFetching } = useGetProductByPageQuery({
-    pageSize,
-    actualPage,
-  });
- */
-  const [product, setProduct] = useState([]); //estado para los productos
+ 
+
+  const [product, setProduct] = useState([]); 
   /*Estado para los select*/
   const [select, setSelect] = useState({
     category: "",
     price: "",
     rating: "",
-
-  })
+  });
 
   //trayendo los select seleccionados
   const handleChange = (e) => {
@@ -68,61 +56,54 @@ export default function Product() {
   //Seleccion solo de rangos de precios
   const [selectRange, setSelectRange] = useState({
     minprice: 0,
-    maxprice: 5000
-
-  })
+    maxprice: 5000,
+  });
   const handleChangeRange = (e) => {
     dispatch(pageone());
     if (e.target.value === "min") {
       setSelectRange({
         minprice: 1,
-        maxprice: 100
-      })
+        maxprice: 100,
+      });
     } else if (e.target.value === "medium") {
       setSelectRange({
         minprice: 100,
-        maxprice: 500
-      })
+        maxprice: 500,
+      });
     } else if (e.target.value === "max") {
       setSelectRange({
         minprice: 500,
-        maxprice: 5000
-      })
+        maxprice: 5000,
+      });
     } else {
       setSelectRange({
         minprice: 0,
-        maxprice: 5000
-      })
+        maxprice: 5000,
+      });
     }
+  };
 
-  }
-
-  const category = select.category
-  const price = select.price
-  const rating = select.rating
-  const minprice = selectRange.minprice
-  const maxprice = selectRange.maxprice
-
+  const category = select.category;
+  const price = select.price;
+  const rating = select.rating;
+  const minprice = selectRange.minprice;
+  const maxprice = selectRange.maxprice;
 
   /*Peticion pe productos al back */
   // console.log("categoria: " + select.category, " precio: " + select.price, " rating: " + select.rating);
   const getProduct = async () => {
     try {
-
-
-      const response = await axios
-        .get(`https://pf-15a.up.railway.app/api/filter?itemsperpage=${pageSize}&actualpage=${actualPage}&category=${category}&rating=${rating}&price=${price}&minprice=${minprice}&maxprice=${maxprice}`);
+      const response = await axios.get(
+        `https://pf-15a.up.railway.app/api/filter?itemsperpage=${pageSize}&actualpage=${actualPage}&category=${category}&rating=${rating}&price=${price}&minprice=${minprice}&maxprice=${maxprice}`
+      );
       // console.log(response.data)
-      setProduct(response.data)
-
-
+      setProduct(response.data);
     } catch (error) {
       throw new Error(error);
     }
-  }
+  };
 
   useEffect(() => {
-
     getProduct();
     // console.log(product)
   }, [actualPage, select, selectRange]);
@@ -134,52 +115,59 @@ export default function Product() {
     setSearchTerm(e.target.value);
   };
 
-
-
   // console.log(searchData?.pageSize , searchData?.actualPage)
 
   /*  */
   return (
-    <div className={styles.explore__container}>
-      <div className="flex">
-        <Filtros handleChange={handleChange} handleChangeRange={handleChangeRange} select={select} selectRange={selectRange} />
-        <div className="w-3/4 max-lg:w-full">
-          <div
-            className={`${styles.explore__content} ${styles.contaimer} ${styles.grid}`}
-          >
-            <div className="flex justify-center gap-16 items-center my-5">
+    <div>
+      <div className=" w-full">
+        <Banner />
+      </div>
 
-              <Searchbar handlesearchName={handlesearchName} category={select.category} />
-            </div>
-          </div>
+      <div className="flex mt-10">
+        <div className={`flex  w-1/4 flex-col`}>
           <div className="">
-            {searchLoading && <p>Buscando...</p>}
-            {searchError && (
-              <p>Error al realizar la búsqueda: {searchError.message}</p>
-            )}
-            {!searchLoading && !searchError && (
-              <div>
-                {searchData && searchData.products.length > 0 ? (
-                  <Cards
-                    data={searchData?.products}
-                    pageSize={pageSize}
-                    pageAmount={searchData?.totalPages}
-                  />
-                ) : (
-                  !searchTerm && (
-                    <Cards
-                      data={product?.products} // Mostrar todos los productos
-                      pageSize={pageSize}
-                      pageAmount={product?.totalPages}
-                    />
-                  )
-                )}
-                {searchData && searchData.length === 0 && searchTerm && (
-                  <p>No se encontraron resultados.</p>
-                )}
-              </div>
-            )}
+            <Searchbar
+              handlesearchName={handlesearchName}
+              category={select.category}
+            />
           </div>
+          <div>
+          <Filtros
+            handleChange={handleChange}
+            handleChangeRange={handleChangeRange}
+            select={select}
+            selectRange={selectRange}
+          />
+          </div>
+        </div>
+        <div className="w-3/4 gap-4 ">
+          {searchLoading && <p>Buscando...</p>}
+          {searchError && (
+            <p>Error al realizar la búsqueda: {searchError.message}</p>
+          )}
+          {!searchLoading && !searchError && (
+            <div>
+              {searchData && searchData.products.length > 0 ? (
+                <Cards
+                  data={searchData?.products}
+                  pageSize={pageSize}
+                  pageAmount={searchData?.totalPages}
+                />
+              ) : (
+                !searchTerm && (
+                  <Cards
+                    data={product?.products} // Mostrar todos los productos
+                    pageSize={pageSize}
+                    pageAmount={product?.totalPages}
+                  />
+                )
+              )}
+              {searchData && searchData.products.length === 0 && searchTerm && (
+                <p className="text-center text-bgred text-xl">No hubo coincidencias.</p>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>
