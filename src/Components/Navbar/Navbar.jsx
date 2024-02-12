@@ -363,7 +363,7 @@ function NavBar() {
     <header className={styles.header} id="header">
       <nav className={`${styles.nav} ${styles.container}`}>
       <img
-           src="/images/logoHenrucci.png"
+           src="/images/LogoHenrucci.png"
            alt="Logo Henrucci"
            className="max-w-24 rounded-full"
          />
