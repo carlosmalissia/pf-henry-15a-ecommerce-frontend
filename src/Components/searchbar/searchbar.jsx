@@ -25,13 +25,13 @@ const Searchbar = ({ handlesearchName, category }) => {
        
         
   
-      <div className={styles.container}>
-        <form className={styles.form}>
+      <div className="flex justify-center mt-20">
+        <form className="flex item-center">
           <input
             onChange={handlesearchName}
             type="search"
             placeholder="Buscar..."
-            className={styles.input}
+            className="p-10 rounded-md "
           />
           
           {/* <button

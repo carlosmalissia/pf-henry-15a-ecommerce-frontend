@@ -41,7 +41,7 @@ function Banner() {
   //`url(${slides[currentIndex].Image})`
 
   return (
-    <div className="max-w-[1080px] mx-auto h-[400px]  group">
+    <div className="max-w-[2000px] mx-auto h-[500px]  group">
       <Image
         src={slides[currentIndex].Image}
         alt="banner"

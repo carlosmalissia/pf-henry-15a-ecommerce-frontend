@@ -4,9 +4,7 @@ import Cards from "../Cards/Cards";
 import Filtros from "../Filtros/Filtros";
 import { useAppSelector, useAppDispatch } from "@/redux/hooks";
 import axios from "axios";
-import {
-  useGetProductByTitleQuery,
-} from "@/redux/services/productApi";
+import { useGetProductByPageQuery, useGetProductByTitleQuery } from "@/redux/services/productApi";
 import { pageone } from "@/redux/features/countPageSlice";
 import Banner from "../Banner/Banner";
 export default function Product() {
@@ -35,12 +33,9 @@ export default function Product() {
     }
   );
 
-  /* const { data, error, isLoading, isFetching } = useGetProductByPageQuery({
-    pageSize,
-    actualPage,
-  });
- */
-  const [product, setProduct] = useState([]); //estado para los productos
+ 
+
+  const [product, setProduct] = useState([]); 
   /*Estado para los select*/
   const [select, setSelect] = useState({
     category: "",
@@ -126,53 +121,53 @@ export default function Product() {
   return (
     <div>
       <div className=" w-full">
-      <Banner />
+        <Banner />
       </div>
-  
-      <div className="flex">
-        <Filtros
-          handleChange={handleChange}
-          handleChangeRange={handleChangeRange}
-          select={select}
-          selectRange={selectRange}
-        />
-        <div className="w-3/4 gap-4 max-lg:w-full">
-          <div className={``} >
-            <div className="flex justify-center gap-16 items-center my-5">
-              <Searchbar
-                handlesearchName={handlesearchName}
-                category={select.category}
-              />
-            </div>
-          </div>
+
+      <div className="flex mt-10">
+        <div className={`flex  w-1/4 flex-col`}>
           <div className="">
-            {searchLoading && <p>Buscando...</p>}
-            {searchError && (
-              <p>Error al realizar la búsqueda: {searchError.message}</p>
-            )}
-            {!searchLoading && !searchError && (
-              <div>
-                {searchData && searchData.products.length > 0 ? (
-                  <Cards
-                    data={searchData?.products}
-                    pageSize={pageSize}
-                    pageAmount={searchData?.totalPages}
-                  />
-                ) : (
-                  !searchTerm && (
-                    <Cards
-                      data={product?.products} // Mostrar todos los productos
-                      pageSize={pageSize}
-                      pageAmount={product?.totalPages}
-                    />
-                  )
-                )}
-                {searchData && searchData.length === 0 && searchTerm && (
-                  <p>No se encontraron resultados.</p>
-                )}
-              </div>
-            )}
+            <Searchbar
+              handlesearchName={handlesearchName}
+              category={select.category}
+            />
           </div>
+          <div>
+          <Filtros
+            handleChange={handleChange}
+            handleChangeRange={handleChangeRange}
+            select={select}
+            selectRange={selectRange}
+          />
+          </div>
+        </div>
+        <div className="w-3/4 gap-4 ">
+          {searchLoading && <p>Buscando...</p>}
+          {searchError && (
+            <p>Error al realizar la búsqueda: {searchError.message}</p>
+          )}
+          {!searchLoading && !searchError && (
+            <div>
+              {searchData && searchData.products.length > 0 ? (
+                <Cards
+                  data={searchData?.products}
+                  pageSize={pageSize}
+                  pageAmount={searchData?.totalPages}
+                />
+              ) : (
+                !searchTerm && (
+                  <Cards
+                    data={product?.products} // Mostrar todos los productos
+                    pageSize={pageSize}
+                    pageAmount={product?.totalPages}
+                  />
+                )
+              )}
+              {searchData && searchData.products.length === 0 && searchTerm && (
+                <p className="text-center text-bgred text-xl">No hubo coincidencias.</p>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -11,8 +11,8 @@ export default function Filtros({ handleChange, handleChangeRange, select, selec
   return (
     <>
 
-      <div className={`${show ? "hidden" : "bg-gray text-black fixed top-18 mt-10 lg:hidden"}`} onClick={() => setShow(true)}>
-        <button className="mt-2 text-black">
+      <div className={`${show ? "hidden" : "bg-gray text-black fixed  lg:hidden"}`} onClick={() => setShow(true)}>
+        <button className=" text-black">
           Filtros
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6 ml-2">
             <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
@@ -20,15 +20,15 @@ export default function Filtros({ handleChange, handleChangeRange, select, selec
         </button>
       </div>
 
-      <div className={`${show ? "lg:w-1/4 w-7/12 fixed z-10 h-48" : "lg:w-1/4 max-lg:hidden h-full"} bg-white mt-64 rounded-md pb-32`}>
-        <div className="bg-gray text-black fixed top-28 mt-12">
-          <button className="mt-2 text-black lg:hidden" onClick={() => setShow(false)}>
+      <div className={`${show ? "lg:w-1/4 w-7/12 fixed z-10 h-20" : "lg:w-1/4 max-lg:hidden h-full"}  rounded-md`}>
+        <div className="bg-gray text-black fixed top-28 mt-10">
+          <button className=" text-black lg:hidden" onClick={() => setShow(false)}>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
             </svg>
           </button>
         </div>
-        <div className="flex-col h-60 ml-[13%] mt-8 max-sm:ml-2">
+        <div className="flex-col h-60 ml-[13%] max-sm:ml-2">
           <div className="">
             <select
               name="category"
