@@ -1,19 +1,13 @@
 import React, { useState, useEffect } from "react";
-import Image from "next/image";
-import styles from "./product.module.css";
-import Searchbar from "../searchbar/searchbar";
+import Searchbar from "../Searchbar/Searchbar";
 import Cards from "../Cards/Cards";
 import Filtros from "../Filtros/Filtros";
 import { useAppSelector, useAppDispatch } from "@/redux/hooks";
 import axios from "axios";
 import {
-  useGetProductByPageQuery,
   useGetProductByTitleQuery,
-  useGetProductByFilterAndPageQuery,
 } from "@/redux/services/productApi";
-import { useDispatch } from "react-redux";
 import { pageone } from "@/redux/features/countPageSlice";
-import { getlogindata } from "@/redux/features/userSlice";
 import Banner from "../Banner/Banner";
 export default function Product() {
   const actualPage = useAppSelector((state) => state.countPageReducer.page);
@@ -134,7 +128,7 @@ export default function Product() {
       <div className=" w-full">
       <Banner />
       </div>
-
+  
       <div className="flex">
         <Filtros
           handleChange={handleChange}
@@ -143,9 +137,7 @@ export default function Product() {
           selectRange={selectRange}
         />
         <div className="w-3/4 gap-4 max-lg:w-full">
-          <div
-            className={`${styles.explore__content} ${styles.contaimer} ${styles.grid}`}
-          >
+          <div className={``} >
             <div className="flex justify-center gap-16 items-center my-5">
               <Searchbar
                 handlesearchName={handlesearchName}

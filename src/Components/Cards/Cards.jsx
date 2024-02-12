@@ -10,9 +10,9 @@ export default function Cards(props) {
   //const pageAmount = Math.ceil(props.data.length / props.pageSize); // cantidad de pag s/cant de cards
 
   return (
-    <div className="flex flex-col mb-16 xl:mb-0">
+      <div className="flex flex-col mb-16 xl:mb-0">
       <div
-        className={`grid sm:grid-cols-2 md:grid-cols-3 gap-10 md:w-[70vw] lg:w-[60vw]   mx-auto justify-end  `}
+        className={`grid sm:grid-cols-2 md:grid-cols-3 gap-10 md:w-[70vw] lg:w-[60vw]   mx-auto justify-end mt-20 `}
       >
         {Array.isArray(props?.data) &&
           props.data.map((e, index) => (
