@@ -14,7 +14,7 @@ import {
   useShoppingCartupdateUserMutation,
 } from "@/redux/services/usersApi";
 import { useNewReviewMutation } from "@/redux/services/reviewsApi";
-import  { toast, Toaster } from 'react-hot-toast';
+import { toast, Toaster } from "react-hot-toast";
 import Link from "next/link";
 import Similares from "@/Components/Similares/Similares";
 import ReviewForm from "@/Components/ReviewForm/ReviewForm";
@@ -49,9 +49,6 @@ export default function DetailID({ params }) {
     refetchOnMountOrArgChange: true,
     refetchInterval: 5000,
   });
-
-
-
 
   let idItems = [];
 
@@ -98,7 +95,6 @@ export default function DetailID({ params }) {
 
   const handleAddToCart = () => {
     if (quantity >= 1) {
-
       const productData = {
         _id: productById._id,
         title: productById.title,
@@ -109,11 +105,17 @@ export default function DetailID({ params }) {
         stock: productById.stock,
       };
 
-      const existingItem = cartItems.find(item => item._id === productById._id);
+      const existingItem = cartItems.find(
+        (item) => item._id === productById._id
+      );
 
-
-      if (existingItem && existingItem.quantity + quantity > existingItem.stock) {
-        toast.error("No hay suficiente stock disponible para agregar más unidades de este producto al carrito.");
+      if (
+        existingItem &&
+        existingItem.quantity + quantity > existingItem.stock
+      ) {
+        toast.error(
+          "No hay suficiente stock disponible para agregar más unidades de este producto al carrito."
+        );
       } else {
         dispatch(addItem(productData));
         toast.success("Producto agregado al carrito.");
@@ -124,8 +126,7 @@ export default function DetailID({ params }) {
     }
   };
 
-
-  useEffect(() => { }, [_id]);
+  useEffect(() => {}, [_id]);
 
   useEffect(() => {
     handleUpdateCart();
@@ -219,23 +220,24 @@ export default function DetailID({ params }) {
 
   return (
     <div>
-      <div className="bg-bggris2 relative pt-10 mx-auto min-w-[20rem] w-[90%] rounded-2xl flex flex-col md:flex-row mt-28 mb-10 shadow-md">
+      <div className="bg-bggris2 relative pt-10 mx-auto  w-[90%] rounded-2xl flex flex-col md:flex-row mt-28 mb-10 shadow-md">
         {/* Imagen a la izquierda en pantallas grandes */}
-        <div className="bg-white border-solid border-2 border-primary cursor-grab w-[40%] mb-5 mr-10 relative overflow-hidden flex items-center justify-center ml-10">
+        <div className="bg-white border-solid border-2 border-primary cursor-grab w-[40%] mb-5 mr-10 relative overflow-hidden flex items-center justify-center ml-10 max-md:m-auto
+       max-md:w-[80%] max-md:mb-4">
           <Image
             src={productById.image}
             alt={productById.title}
             width={400}
             height={300}
             priority={true}
-            className="border-none object-contain w-[400px] h-[300px] transition-transform transform hover:scale-110"
+            className="border-none object-contain w-[400px] h-[300px] transition-transform transform hover:scale-110 "
           />
         </div>
 
         {/* Detalles del producto a la derecha */}
-        <div className="md:w-[60%] ">
+        <div className="md:w-[60%] px-5 mx-5 mb-5 ">
           <br />
-          <h1 className="text-start text-xl text-black">{productById.title}</h1>
+          <h1 className="text-start -mt-6 text-2xl max-md:text-center text-black">{productById.title}</h1>
           <br />
           <div className="flex items-center">
             {/* Icono de corazón para agregar a favoritos */}
@@ -254,24 +256,25 @@ export default function DetailID({ params }) {
               </button>
             )}
             {/* rating y cuenta */}
-            <section className="text-lg text-yellow-500 flex flex-row gap-4">
+            <section className="text-lg text-yellow-500 flex flex-row gap-4 ">
               <p>
                 {" "}
                 {productById && productById.averageRating
                   ? productById.averageRating.toFixed(1) + " /5"
                   : 0 + "/5"}
               </p>
-
-              <Rating
-                className="text-sm "
-                readonly
-                value={roundedAverage}
-                unratedColor="yellow"
-                ratedColor="amber"
-              />
-              <p className="flex items-center text-center text-sm">
-                ({productById.reviews.length}) calificaciones
-              </p>
+              <div>
+                <Rating
+                  className="text-sm "
+                  readonly
+                  value={roundedAverage}
+                  unratedColor="yellow"
+                  ratedColor="amber"
+                />
+                <p className="flex items-center text-center text-sm">
+                  ({productById.reviews.length}) calificaciones
+                </p>
+              </div>
             </section>
           </div>
 
@@ -282,50 +285,51 @@ export default function DetailID({ params }) {
           </span>
           <br />
           <br />
-          <p className="text-start text-sm text-bggris mr-8">
+          <p className="text-start text-xl text-bggris mr-8">
             {productById.description}
           </p>
           <br />
-          <h2 className="text-start text-sm text-bggris">
+          <h2 className="text-start text-xl text-bggris">
             Categoria: {productById.category.name}
           </h2>
           <br />
-          <h2 className="text-start text-sm text-bggris">
+          <h2 className="text-start text-xl text-bggris">
             Disponibles: {productById.stock} unidades
           </h2>
           <br />
           {/* Precio */}
-          <div className="flex flex-col items-center md:items-start gap-2 md:w-full">
+          <div className="flex flex-col md:items-start gap-2  ">
             {/* Cantidad y botón Agregar al carrito */}
-            <div className="flex items-center mt-3 mb-10">
-              <label className="mr-2">Cantidad: </label>
+            <div className="flex items-center justify-center mt-3 mb-3 ">
+              <label className="text-xl mr-2">Cantidad: </label>
               <input
                 type="number"
                 min="1"
                 value={quantity}
                 onChange={handleQuantityChange}
-                className="border rounded-md p-1 w-16 text-black"
+                className="border rounded-md p-1 w-16 text-black text-xl"
               />
-              <button
-                onClick={handleAddToCart}
-                className={`bg-bgbotones text-white text-base py-2 px-10 rounded-lg mx-2 
-    flex justify-center items-center text-center 
-    transition duration-700 ease-in-out ${hoveredCarButon ? "hover:bg-bgred hover:text-white" : ""
-                  } whitespace-nowrap`}
-                onMouseEnter={() => setHoveredCarButon(true)}
-                onMouseLeave={() => setHoveredCarButon(false)}
-              >
-                <span className="w-20 flex justify-center items-center text-center">
-                  {hoveredCarButon ? (
-                    <MdOutlineShoppingCart className="text-2xl text-center" />
-                  ) : (
-                    "Agregar al carrito"
-                  )}
-                </span>
-              </button>
-              {/* Mostrar mensaje de inicio de sesión si es necesario */}
-              <Toaster position="top-center"/>
             </div>
+            <button
+              onClick={handleAddToCart}
+              className={`bg-bgbotones mb-4 text-white text-base py-2 px-10 rounded-lg 
+    flex justify-center items-center text-center 
+    transition duration-700 ease-in-out max-md:m-auto max-md:w-[80%] ${
+      hoveredCarButon ? "hover:bg-bgred hover:text-white" : ""
+    } whitespace-nowrap`}
+              onMouseEnter={() => setHoveredCarButon(true)}
+              onMouseLeave={() => setHoveredCarButon(false)}
+            >
+              <span className="w-20 flex justify-center items-center text-center">
+                {hoveredCarButon ? (
+                  <MdOutlineShoppingCart className="text-2xl text-center" />
+                ) : (
+                  "Agregar al carrito"
+                )}
+              </span>
+            </button>
+            {/* Mostrar mensaje de inicio de sesión si es necesario */}
+            <Toaster position="top-center" />
           </div>
         </div>
       </div>
@@ -336,27 +340,23 @@ export default function DetailID({ params }) {
           Calificaciones de este producto
         </h2>
         {/* Formulario de revision */}
-        <div className="w-full  p-4 flex flex-row">
-          <div className="w-[50%]  p-4">
+        <div className="w-full  flex flex-row">
+          <div className="w-[50%] max-md:w-full ">
             {/* calculo de revisiones */}
-            <section className="w-[80%] text-start text-lg text-yellow-500 flex flex-row gap-4">
-              <div>
-                <Rating
-                  className="text-xl "
-                  readonly
-                  value={roundedAverage}
-                />
-              </div>
-              <p className="text-center text-xl">
+            <section className=" w-[100%] py-4  text-start text-lg text-yellow-500 flex flex-row gap-2 ">
+              <Rating className="text-xl " readonly value={roundedAverage} />
+
+              <p className="max-md:w-full flex text-xl max-md:flex-row max-md:text-lg">
                 {productById && productById.averageRating
-                  ? `${productById.averageRating.toFixed(1)}/5 (${productById.reviews ? productById.reviews.length : 0
-                  } calificaciones)`
+                  ? `${productById.averageRating.toFixed(1)}/5 (${
+                      productById.reviews ? productById.reviews.length : 0
+                    } calificaciones)`
                   : "No hay reviews aún"}
               </p>
             </section>
 
             {/* Estadísticas de calificación */}
-            <div className="w-full p-4">
+            <div className="w-full py-4">
               <h2 className="text-lg text-black">
                 Estadísticas de Calificación
               </h2>
@@ -369,8 +369,9 @@ export default function DetailID({ params }) {
                       <div key={index} className="mb-2">
                         <div className="flex items-center">
                           <Rating
-                            className={`text-sm ${5 - index === 1 ? "text-bgred" : "text-yellow-500"
-                              } mr-2`}
+                            className={`text-sm ${
+                              5 - index === 1 ? "text-bgred" : "text-yellow-500"
+                            } mr-2`}
                             readonly
                             value={5 - index}
                           />
@@ -382,10 +383,11 @@ export default function DetailID({ params }) {
                                   <div className="h-2 bg-teal-500 rounded-full relative">
                                     <div
                                       style={{
-                                        width: `${ratingDistribution.percentagePerStar[
-                                          5 - index - 1
+                                        width: `${
+                                          ratingDistribution.percentagePerStar[
+                                            5 - index - 1
                                           ]
-                                          }%`,
+                                        }%`,
                                       }}
                                       className="h-full bg-teal-200 rounded-full absolute bottom-0"
                                     ></div>
@@ -411,27 +413,11 @@ export default function DetailID({ params }) {
               )}
             </div>
           </div>
-          {/* <div className="w-[50%]  p-4">
-            <h2 className="text-lg text-black text-center mb-4">
-              Deja un comentario
-            </h2>
-            <ReviewForm
-              handleReviewSubmit={handleReviewSubmit}
-              productById={productById}
-            />
-          </div> */}
         </div>
 
         {/* Seccion de revisiones  */}
         <ReviewList productById={productById} />
       </section>
-
-      {/* productos similares */}
-      {/* <section>
-        <Similares category={productById.category.name} _id={productById._id} />
-      </section> */}
-
-      {/* cierre del contenedor mayor */}
     </div>
   );
 }
