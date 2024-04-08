@@ -64,7 +64,7 @@
   .nav__list {
 
     text-align: left;
-    margin-left: 150px;
+    margin-left: 120px;
     display: flex;
     flex-direction: column;
     row-gap: 2.5rem;
