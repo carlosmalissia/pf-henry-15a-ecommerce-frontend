@@ -278,7 +278,7 @@ function NavBar() {
 
 
     /*=============== SHOW MENU  responsive===============*/
-    const navMenu = document.getElementById("nav-menu"),
+    const navMenu = document.getElementById("nav__menu"),
       navContainer = document.getElementById("header"),
       navToggle = document.getElementById("nav-toggle"),
       carrito = document.getElementById("carrito"),
