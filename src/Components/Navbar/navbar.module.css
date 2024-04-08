@@ -10,7 +10,7 @@
   -webkit-backdrop-filter: blur(24px);
   /*for Safari*/
   width: 100%;
-  background-color: transparent;
+  /* background-color: transparent; */
   top: 0;
   left: 0;
   z-index: var(--z-fixed);
@@ -51,8 +51,9 @@
 @media screen and (max-width: 1023px) {
   .nav__menu {
     position: absolute;
+    color: rgb(227, 232, 236);
     z-index: 102;
-    background-color: hlsa(0, 0%, 0%, 0.3);
+    background-color: hsla(0, 0%, 0%, 0.3);
     top: -35rem;
     left: 0;
     width: 100%;
@@ -61,7 +62,9 @@
   }
 
   .nav__list {
-    text-align: center;
+
+    text-align: left;
+    margin-left: 150px;
     display: flex;
     flex-direction: column;
     row-gap: 2.5rem;
@@ -69,16 +72,22 @@
 
   .nav__link {
     position: relative;
-    color: var(--title-color);
-    font-size: var(--second-font);
+    /* color: var(--title-color); */
+    font-size: var(--h2-font-size);
     font-weight: var(--font-medium);
+  }
+
+  .nav__item {
+    font-size: var(--h2-font-size);
+    color: rgb(227, 232, 236);
   }
 
   .nav__link::after {
     content: "";
+
     width: 0%;
     height: 2px;
-    background-color: var(--title-color);
+    background-color: white;
     position: absolute;
     left: 0;
     bottom: -0.5rem;
@@ -93,13 +102,16 @@
     position: absolute;
     top: 1rem;
     right: 1.5rem;
+    font-size: 1.5rem;
+    color: white;
   }
 }
 
 /* Show menu */
 .show_menu {
   top: 0;
-  height: calc(var(--header-height) + 18rem);
+  margin-top: 60px;
+  height: calc(var(--header-height) + 22rem);
 }
 
 .header.expanded {
@@ -113,9 +125,9 @@
   position: absolute;
   width: 1000%;
   height: 100%;
-  background-color: hsla(0, 0%, 100%, 0.3);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
+  background-color: hsla(0, 1%, 30%, 0.902);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   /*for Safari*/
   top: 0;
   left: 0;
