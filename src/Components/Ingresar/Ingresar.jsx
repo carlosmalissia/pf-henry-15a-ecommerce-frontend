@@ -156,7 +156,7 @@ const Ingresar = () => {
 
       {/* Muestra el formulario solo cuando se hace hover */}
       {isHovered && (
-        <div className='fixed flex justify-center items-center lg:right-2  right-20 lg:top-12 top-[-2px]' onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+        <div className='fixed flex justify-center items-center lg:right-2  right-6 lg:top-12 top-[-2px]' onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
           <LoginForm />
         </div>
       )}
