@@ -231,7 +231,7 @@ import { usePathname } from "next/navigation";
 //import CartCounter from "@/components/Cart/CartCounter/CartCounter";
 //import { useSession } from "next-auth/react";
 import Ingresar from "../Ingresar/Ingresar";
-
+import Image from "next/image";
 //import ProfileInfo from "@/components/ProfileInfo/ProfileInfo";
 //import { usePathname } from "next/navigation";
 
@@ -251,7 +251,7 @@ import { getlogindata } from "@/redux/features/userSlice";
 import { useDispatch } from "react-redux";
 import BotonPerfil from "../BotonPerfil/BotonPerfil";
 import { useSession } from "next-auth/react";
-
+import logo from "../../../public/images/logo2.png";
 const home = <FontAwesomeIcon icon={faHome} />;
 const favorite = <FontAwesomeIcon icon={faHeart} />;
 const productos = <FontAwesomeIcon icon={faShoppingBag} />;
@@ -362,11 +362,13 @@ function NavBar() {
   return (
     <header className={styles.header} id="header">
       <nav className={`${styles.nav} ${styles.container}`}>
-      <img
-           src="/images/LogoHenrucci.png"
-           alt="Logo Henrucci"
-           className="max-w-24 rounded-full"
-         />
+      <Image
+          src={logo}
+          width={150}
+          height={150}
+          alt="Logo Henrucci"
+          className="md:h-16 h-14 ml-16  "
+        />
         <div className={styles.nav__menu} id="nav__menu">
           <ul className={styles.nav__list}>
             <li className={styles.nav__item}>
