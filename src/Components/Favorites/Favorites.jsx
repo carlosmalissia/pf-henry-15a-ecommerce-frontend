@@ -25,7 +25,7 @@ export default function Popular() {
 
   return (
     <>
-      <h2 className="ml-80 items-center text-center text-2xl">
+      <h2 className="items-center text-center text-2xl">
         Los más votados por nuestros clientes 
       </h2>
       <div
