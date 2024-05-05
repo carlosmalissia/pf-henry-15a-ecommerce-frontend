@@ -40,7 +40,7 @@ export default function Home() {
           <Product />
         </section>
         {/*==================== Favoritos ====================*/}
-        <section className="py-12 px-4 xl:py-24 xl:px-8" id="votados">
+        <section className="py-12 px-4 xl:py-4 xl:px-8" id="votados">
           <Favorites />
         </section>
       </main>
