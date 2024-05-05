@@ -12,7 +12,7 @@ export default function Popular() {
 
   const getTopRatedProducts = async () => {
     try {
-      const response = await axios.get('https://pf-15a.up.railway.app/api/product/top/3');
+      const response = await axios.get('https://pf-15a.up.railway.app/api/product/top/4');
       setProducts(response.data);
     } catch (error) {
       throw new Error(error);
