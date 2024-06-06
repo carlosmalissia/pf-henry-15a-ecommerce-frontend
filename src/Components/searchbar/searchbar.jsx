@@ -1,7 +1,6 @@
 import React from "react";
 import { useAppSelector } from "@/redux/hooks";
 import { useGetProductByPageQuery } from "@/redux/services/productApi";
-import styles from './Searchbar.module.css';
 
 
 const Searchbar = ({ handlesearchName, category }) => {
@@ -21,28 +20,32 @@ const Searchbar = ({ handlesearchName, category }) => {
   };
 
   return (
-    
-       
-        
-  
-      <div className="flex justify-center mt-20">
-        <form className="flex item-center">
+    <div>
+      <div className="flex justyfy-between ml-4 max-sm:justify-center">
+        <h2 className="  text-center text-2xl">
+          Productos <i className="ri-arrow-right-line" />
+        </h2>
+        {(category == "") ? <h2 className="text-xl mt-1 ml-1">Todos</h2> :
+          (<h2 className="text-xl mt-1 ml-1">{category}</h2>)}
+
+
+      </div>
+      <div className="max-sm:text-center">
+        <form>
           <input
             onChange={handlesearchName}
             type="search"
             placeholder="Buscar..."
-            className="p-10 rounded-md "
+            className="max-sm:ml-3 bg-white-500 border-solid border border-gray-300 rounded-md w-[15em] h-[2em] text-center"
           />
-          
-          {/* <button
-            className="ml-2 bg-primary p-2 text-white rounded-lg"
-            onClick={fetchProducts}
-          >
+          <button className=" max-sm:ml-4 ml-6 bg-primary p-2 text-white rounded-lg" onClick={fetchProducts}>
             <i className="ri-refresh-line mr-2" />
             Recargar productos
-          </button> */}
+          </button>
         </form>
       </div>
+    </div>
   );
 };
+
 export default Searchbar;
