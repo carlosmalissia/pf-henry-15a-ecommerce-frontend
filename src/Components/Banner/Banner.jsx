@@ -6,11 +6,25 @@ import Image from "next/image";
 function Banner() {
   const slides = [
     {
-      Image: "/images/bannernuevacoleccion.png",
-    },
-    {
-      Image: "/images/henrruccicollection.png",
-    },
+            Image: "/images/banner1.webp",
+        },
+        {
+            Image: "/images/banner2.webp",
+        },
+        {
+            Image: "/images/banner3.webp",
+        },
+
+        {
+            Image: "/images/banner5.webp",
+        },
+        {
+            Image: "/images/banner6.webp",
+        },
+        {
+            Image: "/images/banner7.webp",
+        }
+    ];
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
