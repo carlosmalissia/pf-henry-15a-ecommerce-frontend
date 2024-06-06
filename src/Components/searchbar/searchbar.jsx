@@ -22,10 +22,10 @@ const Searchbar = ({ handlesearchName, category }) => {
   return (
     <div>
       <div className="flex justyfy-between ml-4 max-sm:justify-center">
-        <h2 className="  text-center text-2xl">
+        <h2 className="  text-center text-2xl mt-5">
           Productos <i className="ri-arrow-right-line" />
         </h2>
-        {(category == "") ? <h2 className="text-xl mt-1 ml-1">Todos</h2> :
+        {(category == "") ? <h2 className="text-xl mt-6 ml-1">Todos</h2> :
           (<h2 className="text-xl mt-1 ml-1">{category}</h2>)}
 
 
