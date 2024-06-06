@@ -5,8 +5,8 @@ import Image from "next/image";
 
 function Banner() {
   const slides = [
-    {
-            Image: "/images/banner1.webp",
+        {
+          Image: "/images/banner1.webp",
         },
         {
             Image: "/images/banner2.webp",
