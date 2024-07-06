@@ -364,8 +364,8 @@ function NavBar() {
       <nav className={`${styles.nav} ${styles.container}`}>
       <Image
           src={logo}
-          width={250}
-          height={250}
+          width={500}
+          height={500}
           alt="Logo Henrucci"
           className="md:h-16 h-14 ml-16  "
         />
