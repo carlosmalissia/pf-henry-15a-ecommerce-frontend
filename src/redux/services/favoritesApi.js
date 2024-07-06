@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const favoritesApi = createApi({
   reducerPath: "favoritesAPI",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://pf-15a.up.railway.app",
+    baseUrl: "https://api-henrucci.onrender.com/api/",
   }),
   endpoints: (builder) => ({
     addFavorite: builder.mutation({
