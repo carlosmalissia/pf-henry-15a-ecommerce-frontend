@@ -42,12 +42,12 @@ export default function Product() {
     }
   );
 
-  /* const { data, error, isLoading, isFetching } = useGetProductByPageQuery({
+  const { data, error, isLoading, isFetching } = useGetProductByPageQuery({
     pageSize,
     actualPage,
   });
- */
-  //const [product, setProduct] = useState([]); //estado para los productos
+
+  const [product, setProduct] = useState([]); //estado para los productos
   /*Estado para los select*/
   const [select, setSelect] = useState({
     category: "",
@@ -69,7 +69,7 @@ export default function Product() {
   //Seleccion solo de rangos de precios
   const [selectRange, setSelectRange] = useState({
     minprice: 0,
-    maxprice: 5000
+    maxprice: 5000000
 
   })
   const handleChangeRange = (e) => {
@@ -82,17 +82,17 @@ export default function Product() {
     } else if (e.target.value === "medium") {
       setSelectRange({
         minprice: 100,
-        maxprice: 500
+        maxprice: 50000
       })
     } else if (e.target.value === "max") {
       setSelectRange({
         minprice: 500,
-        maxprice: 5000
+        maxprice: 5000000
       })
     } else {
       setSelectRange({
         minprice: 0,
-        maxprice: 5000
+        maxprice: 5000000
       })
     }
 
@@ -105,34 +105,38 @@ export default function Product() {
   const maxprice = selectRange.maxprice
 
 
-  /*Peticion pe productos al back */
+  /*Peticion de productos al back */
   // console.log("categoria: " + select.category, " precio: " + select.price, " rating: " + select.rating);
 
-  /* axios a futuro back 
- 
- const getProduct = async () => {
+  //axios a futuro back 
+
+  const getProduct = async () => {
     try {
 
 
       const response = await axios
-        .get(`https://pf-15a.up.railway.app/api/filter?itemsperpage=${pageSize}&actualpage=${actualPage}&category=${category}&rating=${rating}&price=${price}&minprice=${minprice}&maxprice=${maxprice}`);
-      // console.log(response.data)
+        .get(`https://api-henrucci.onrender.com/api/filter?itemsperpage=${pageSize}&actualpage=${actualPage}&category=${category}&rating=${rating}&price=${price}&minprice=${minprice}&maxprice=${maxprice}`);
+
+
+      //.get('https://api-henrucci.onrender.com/api/product')
       setProduct(response.data)
+      console.log(response.data)
+      console.log("pageSize", pageSize, "actualPage", actualPage, "category", category, "rating", rating, "price", price, "min", minprice, "max", maxprice)
 
 
     } catch (error) {
       throw new Error(error);
     }
   }
- */
-  const product = data
-  console.log('productos', product);
-  /* useEffect(() => {
 
-    // getProduct();
-    //console.log(product)
+  // const product = data
+  console.log('productos', product);
+  useEffect(() => {
+
+    getProduct();
+    console.log(product)
   }, [actualPage, select, selectRange]);
-  // console.log(select.category, select.price, select.rating); */
+  // console.log(select.category, select.price, select.rating);
 
   const handlesearchName = (e) => {
     dispatch(pageone());
@@ -176,7 +180,9 @@ export default function Product() {
                   !searchTerm && (
                     <Cards
                       data={product?.products} // Mostrar todos los productos
+                      //data={product}
                       pageSize={pageSize}
+                      //pageAmount="1"
                       pageAmount={product?.totalPages}
                     />
                   )
