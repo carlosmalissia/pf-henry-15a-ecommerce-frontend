@@ -365,7 +365,7 @@ function NavBar() {
       <Image
           src={logo}
           width={150}
-          height={300}
+          height={400}
           alt="Logo Henrucci"
           className="md:h-20 h-16 ml-16  "
         />
