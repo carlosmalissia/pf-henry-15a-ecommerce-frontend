@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const reviewsApi = createApi({
     reducerPath: "reviewsAPI",
     baseQuery: fetchBaseQuery({
-        baseUrl: "https://pf-15a.up.railway.app",
+        baseUrl: "https://api-henrucci.onrender.com",
     }),
     endpoints: (builder) => ({
         getAllReviews: builder.query({
