@@ -251,7 +251,7 @@ import { getlogindata } from "@/redux/features/userSlice";
 import { useDispatch } from "react-redux";
 import BotonPerfil from "../BotonPerfil/BotonPerfil";
 import { useSession } from "next-auth/react";
-import logo from "../../../public/images/logo2.png";
+import logo from "../../../public/images/Henrucci.png";
 const home = <FontAwesomeIcon icon={faHome} />;
 const favorite = <FontAwesomeIcon icon={faHeart} />;
 const productos = <FontAwesomeIcon icon={faShoppingBag} />;
