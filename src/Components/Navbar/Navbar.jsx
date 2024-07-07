@@ -367,7 +367,7 @@ function NavBar() {
           width={100}
           height={400}
           alt="Logo Henrucci"
-          className="md:h-18 h-14 ml-16  "
+          className="md:h-20 h-14 ml-16  "
         />
         <div className={styles.nav__menu} id="nav__menu">
           <ul className={styles.nav__list}>
