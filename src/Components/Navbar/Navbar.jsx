@@ -364,10 +364,10 @@ function NavBar() {
       <nav className={`${styles.nav} ${styles.container}`}>
       <Image
           src={logo}
-          width={150}
-          height={400}
+          width={100}
+          height={350}
           alt="Logo Henrucci"
-          className="md:h-20 h-16 ml-16  "
+          className="md:h-16 h-14 ml-16  "
         />
         <div className={styles.nav__menu} id="nav__menu">
           <ul className={styles.nav__list}>
