@@ -251,7 +251,7 @@ import { getlogindata } from "@/redux/features/userSlice";
 import { useDispatch } from "react-redux";
 import BotonPerfil from "../BotonPerfil/BotonPerfil";
 import { useSession } from "next-auth/react";
-import logo from "../../../public/images/Henrucci (2).png";
+import logo from "../../../public/images/Henrucci (3).png";
 const home = <FontAwesomeIcon icon={faHome} />;
 const favorite = <FontAwesomeIcon icon={faHeart} />;
 const productos = <FontAwesomeIcon icon={faShoppingBag} />;
@@ -367,7 +367,7 @@ function NavBar() {
           width={100}
           height={350}
           alt="Logo Henrucci"
-          className="md:h-16 h-14 ml-16  "
+          className="md:h-18 h-14 ml-16  "
         />
         <div className={styles.nav__menu} id="nav__menu">
           <ul className={styles.nav__list}>
