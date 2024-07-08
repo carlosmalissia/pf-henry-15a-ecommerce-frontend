@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 
 const useScreenSize = () => {
-  const [width, setWidth] = useState(360);
-  const [height, setHeight] = useState(740);
+  const [width, setWidth] = useState(800);
+  const [height, setHeight] = useState(1200);
 
   useEffect(() => {
     window.addEventListener("resize", handleResize);
