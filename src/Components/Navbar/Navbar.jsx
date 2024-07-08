@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import styles from "./navbar.module.css";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
+import Image from "next/image";
 //import CartCounter from "@/components/Cart/CartCounter/CartCounter";
 //import { useSession } from "next-auth/react";
 import Ingresar from "../Ingresar/Ingresar";
@@ -29,6 +29,7 @@ import { getlogindata } from "@/redux/features/userSlice";
 import { useDispatch } from "react-redux";
 import BotonPerfil from "../BotonPerfil/BotonPerfil";
 import { useSession } from "next-auth/react";
+import logo from "../../../public/images/Henrucci (4).png";
 
 const home = <FontAwesomeIcon icon={faHome} />;
 const favorite = <FontAwesomeIcon icon={faHeart} />;
@@ -56,7 +57,7 @@ function NavBar() {
 
 
     /*=============== SHOW MENU  responsive===============*/
-    const navMenu = document.getElementById("nav-menu"),
+    const navMenu = document.getElementById("nav__menu"),
       navContainer = document.getElementById("header"),
       navToggle = document.getElementById("nav-toggle"),
       carrito = document.getElementById("carrito"),
@@ -113,7 +114,7 @@ function NavBar() {
           sectionsClass = document.querySelector(
             `#nav__menu a[href*=${sectionId}]`
           );
-        console.log("ver2", sectionsClass);
+        //console.log("ver2", sectionsClass);
         if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
           sectionsClass?.classList.add(styles.active_link);
         } else {
@@ -140,9 +141,17 @@ function NavBar() {
   return (
     <header className={styles.header} id="header">
       <nav className={`${styles.nav} ${styles.container}`}>
-        <a href="/#" className="text-2xl max-sm:ml-20">
-          Henrucci
-        </a>
+        {/*Toggle button*/}
+        <div className={styles.nav__toggle + " z-[103]"} id="nav-toggle">
+          <i className="ri-menu-fill" />
+        </div>
+        <Image
+          src={logo}
+          width={158}
+          height={64}
+          alt="Logo Henrucci"
+          className="md:h-14 h-14 ml-24 "
+        />
         <div className={styles.nav__menu} id="nav__menu">
           <ul className={styles.nav__list}>
             <li className={styles.nav__item}>
@@ -169,6 +178,8 @@ function NavBar() {
               {user} Quienes somos
             </Link>
 
+
+
             {/* este es mi login */}
             <li className={styles.nav__item}>
               {userName && status === 'unauthenticated' ? (
@@ -183,16 +194,15 @@ function NavBar() {
                 {cart} <span>{cartItemsCount}</span>
               </Link>
             </li>
+
+
+            {/*Close button*/}
+            <div className={styles.nav__close} id="nav-close">
+              <i className="ri-close-line" />
+            </div>
           </ul>
-          {/*Close button*/}
-          <div className={styles.nav__close} id="nav-close">
-            <i className="ri-close-line" />
-          </div>
         </div>
-        {/*Toggle button*/}
-        <div className={styles.nav__toggle + " z-[103]"} id="nav-toggle">
-          <i className="ri-menu-fill" />
-        </div>
+
       </nav>
     </header>
   );

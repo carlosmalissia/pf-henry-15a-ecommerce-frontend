@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const reviewsApi = createApi({
     reducerPath: "reviewsAPI",
     baseQuery: fetchBaseQuery({
-        baseUrl: "https://pf-15a.up.railway.app",
+        baseUrl: "https://api-henrucci.onrender.com",
     }),
     endpoints: (builder) => ({
         getAllReviews: builder.query({
@@ -12,16 +12,16 @@ export const reviewsApi = createApi({
         newReview: builder.mutation({
             query: ({ review, token }) => {
                 const config = {
-                    url: `/api/review`,  
+                    url: `/api/review`,
                     method: "POST",
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
-                    body: review 
+                    body: review
                 };
                 return config;
             },
-        })  
+        })
     })
 })
 

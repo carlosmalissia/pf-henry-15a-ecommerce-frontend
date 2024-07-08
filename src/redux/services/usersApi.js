@@ -4,11 +4,11 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const userApi = createApi({
     reducerPath: "usersAPI",
     baseQuery: fetchBaseQuery({
-        baseUrl: "https://pf-15a.up.railway.app",
+        baseUrl: "https://api-henrucci.onrender.com",
     }),
     tagTypes: ["Users", 'Reviews'],
     endpoints: (builder) => ({
-    
+
         updateReview: builder.mutation({
             query: ({ reviewId, userToken, updatedReview }) => {
                 console.log(userToken);
@@ -119,6 +119,6 @@ export const {
     useShoppingCartupdateUserMutation,
     useGetUserReviewsQuery,
     useUpdateReviewMutation,
-    
-    
+
+
 } = userApi;

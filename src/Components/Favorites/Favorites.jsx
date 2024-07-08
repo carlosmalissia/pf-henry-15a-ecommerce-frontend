@@ -6,7 +6,7 @@ import Link from "next/link";
 import axios from 'axios';
 import Card from "../Card/Card";
 import { useGetAllProductQuery } from "@/redux/services/productApi";
-
+import { data } from '../../../public/data'
 
 
 export default function Popular() {
@@ -14,7 +14,7 @@ export default function Popular() {
 
   const getProduct = async () => {
     try {
-      const response = await axios.get(`https://pf-15a.up.railway.app/api/product`);
+      const response = await axios.get(`https://api-henrucci.onrender.com/api/product`);
       setProduct(response.data)
     }
     catch (error) {
@@ -34,7 +34,7 @@ export default function Popular() {
     }
     return 0;
   })
-
+  //const filter = data.products
   return (
     <>
       <h2 className="items-center text-center text-2xl">

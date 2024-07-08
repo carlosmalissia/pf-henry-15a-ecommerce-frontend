@@ -130,11 +130,12 @@ const LoginForm = () => {
       ) : (
         <form className='bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full h-auto max-w-md mx-auto' onSubmit={handleLoginSubmit}>
           <div className='flex flex-col'>
-            <Link href='/Register' className='ml-32 text-red-500  font-light'>
-              Crea tu cuenta
-            </Link>
-            <h2 className='mb-4 text-lg'>Ingresa</h2>
-            <label htmlFor='loginEmail' className='mr-3 font-semibold font-[Poppins] pt-4'>
+            <span className=' lg:text-lg text-base text-black'>Ingresar
+              <Link href='/Register' className='lg:ml-30 ml-8  text-red-500 hover:font-bold font-light'>
+                Crea tu cuenta
+              </Link>
+            </span>
+            <label htmlFor='loginEmail' className='mr-3 font-semibold font-[Poppins] pt-2 text-black'>
               {envelopeIcon} Correo electrónico
             </label>
             <input
@@ -153,7 +154,7 @@ const LoginForm = () => {
           </div>
 
           <div className='flex flex-col'>
-            <label htmlFor='loginPassword' className='mt-8 p-1 mr-3 font-semibold font-[Poppins]'>
+            <label htmlFor='loginPassword' className='mt-2 p-1 mr-3 font-semibold font-[Poppins] text-black'>
               {lockIcon} Contraseña
             </label>
             <input

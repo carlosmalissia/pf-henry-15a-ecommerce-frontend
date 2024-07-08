@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const favoritesApi = createApi({
   reducerPath: "favoritesAPI",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://pf-15a.up.railway.app",
+    baseUrl: "https://api-henrucci.onrender.com",
   }),
   endpoints: (builder) => ({
     addFavorite: builder.mutation({
@@ -14,7 +14,7 @@ export const favoritesApi = createApi({
           headers: {
             Authorization: `Bearer ${token}`,
           },
-          body: {product: product},
+          body: { product: product },
         };
         return config;
       },
@@ -27,13 +27,13 @@ export const favoritesApi = createApi({
           headers: {
             Authorization: `Bearer ${token}`,
           },
-          body: {product: product}
+          body: { product: product }
         };
         return config;
       },
-    }) 
-  }), 
+    })
+  }),
 });
 
-export const {useAddFavoriteMutation, useRemoveFavoriteMutation } = favoritesApi;
+export const { useAddFavoriteMutation, useRemoveFavoriteMutation } = favoritesApi;
 
