@@ -1,7 +1,7 @@
 /*=============== HEADER & NAV ===============*/
 .container {
   max-width: 1250px;
-  margin-inline: 1.5rem;
+  margin-inline: 1rem;
 }
 
 .header {
@@ -14,6 +14,8 @@
   top: 0;
   left: 0;
   z-index: var(--z-fixed);
+  height: 64px;
+  margin-bottom: 8px;
 }
 
 .nav {
@@ -21,7 +23,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0px 15px;
+  padding: 0px 0px;
+
+
   box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
 }
 
@@ -42,7 +46,7 @@
 .nav__toggle {
   position: fixed;
   top: 17px;
-  right: 35px;
+  left: 35px;
   z-index: 101;
   justify-content: flex-end;
 }
@@ -64,7 +68,7 @@
   .nav__list {
 
     text-align: left;
-    margin-left: 120px;
+    margin-left: 20px;
     display: flex;
     flex-direction: column;
     row-gap: 2.5rem;
@@ -143,7 +147,7 @@
 /* For small devices */
 @media screen and (max-width: 340px) {
   .container {
-    margin-inline: 1rem;
+    margin-inline: 0rem;
   }
 }
 
