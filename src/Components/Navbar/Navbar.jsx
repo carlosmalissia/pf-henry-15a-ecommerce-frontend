@@ -175,7 +175,7 @@ function NavBar() {
             </li>
             <Link href="/about" className={`${styles.nav__link} ${(pathname === "/about") ? styles.active_link : ""}`}
             >
-              {user} Quiénes somos
+              {user} Quienes somos
             </Link>
 
 
