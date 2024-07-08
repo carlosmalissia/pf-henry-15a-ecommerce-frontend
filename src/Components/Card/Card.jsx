@@ -209,29 +209,31 @@ export default function Card({ _id, title, price, image, category, stock, rating
       </Link>
 
       {/* Contenido inferior de la tarjeta */}
-      <div className="flex items-center justify-center text-center mb-2">
-        {Array.from({ length: rating }, (_, index) => (
-          <FaStar key={index} className="text-yellow-500 text-xl" />
-        ))}
-      </div>
+
+        <div className="flex items-center justify-center text-center mb-2">
+          {Array.from({ length: rating }, (_, index) => (
+            <FaStar key={index} className="text-yellow-500 text-xl" />
+          ))}
+        </div>
       <div className="flex flex-col mt-auto">
         {/* Categoría */}
         <section className="flex flex-row justify-center font-bold gap-4">
-          <p className="text-bggris items-center text-center mb-1">
-            {category}
-          </p>
-          {/* Precio */}
-          <p className="text-bgpriceRed items-center text-center mb-1">
-            {price} U$
-          </p>
+        <p className="text-bggris items-center text-center mb-1">
+          {category}
+        </p>
+        {/* Precio */}
+        <p className="text-bgpriceRed items-center text-center mb-1">
+        {price} U$
+        </p>
         </section>
         {/* Botón de agregar al carrito */}
-
+        
         <button
           onClick={handleAddToCart}
           className={`relative text-sm py-2 px-6 text-center text-white border border-bg-bgred overflow-hidden transition-all ease-in-out before:absolute before:bg-bgred before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:-z-10 before:transition-all before:duration-300 before:w-full before:h-0 hover:before:h-full hover:text-white
-              bg-bgbotones p-2 rounded-lg mx-auto flex justify-center items-center  duration-300  transform ${hovered ? " hover:text-white " : ""
-            } w-32 whitespace-nowrap`}
+              bg-bgbotones p-2 rounded-lg mx-auto flex justify-center items-center  duration-300  transform ${
+                hovered ? " hover:text-white " : ""
+              } w-32 whitespace-nowrap`}
 
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}

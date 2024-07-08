@@ -1,9 +1,12 @@
+
 /* "use Client";
 
-import React, { useState, useEffect, useRef } from "react";
+
+import React, { useState, useRef } from "react";
 import axios from "axios";
 import { useAppSelector } from "@/redux/hooks";
-import {useGetUserByIdQuery} from "@/redux/services/usersApi"
+import { useGetUserByIdQuery } from "@/redux/services/usersApi"
+
 
 const PerfilUsuario = () => {
 
@@ -294,13 +297,16 @@ import perfil from "../../../public/images/perfil.jpg";
 
 const PerfilUsuario = () => {
 
+
   const [imageSelect, setImageSelect] = useState(null);
+
 
 
 
   const DEFAULT_AVATAR_URL = perfil;
   const foto = DEFAULT_AVATAR_URL.src
   console.log(foto);
+
 
   const localStorageToken = localStorage.getItem("token");
   const userD = useAppSelector((state) => state.loginReducer.user);
@@ -380,11 +386,19 @@ const PerfilUsuario = () => {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${localStorageToken}`
           }
-        });
-
-      }
+      
 
       console.log("esta es la data delusuario ", userData);
+
+
+      
+      console.log("esta es la data delusuario ", userData);
+
+      alert('Cambios guardados correctamente');
+
+    // Recargar la página
+    window.location.reload();
+      
 
     } catch (error) {
       console.error('Error en la solicitud:', error);

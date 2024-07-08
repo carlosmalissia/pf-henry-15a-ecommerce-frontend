@@ -2,7 +2,9 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
     page: 1,
+
     pageSize: 4
+
 }
 
 export const countPageSlice = createSlice({

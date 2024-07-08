@@ -9,9 +9,9 @@ import { useGetProductByIdQuery } from "@/redux/services/productApi";
 import { addItem } from "@/redux/features/cart";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import {
-    useCartShoppingQuery,
-    useGetUserByIdQuery,
-    useShoppingCartupdateUserMutation,
+  useCartShoppingQuery,
+  useGetUserByIdQuery,
+  useShoppingCartupdateUserMutation,
 } from "@/redux/services/usersApi";
 import { useNewReviewMutation } from "@/redux/services/reviewsApi";
 import { toast, Toaster } from "react-hot-toast";
@@ -21,14 +21,17 @@ import ReviewList from "@/Components/ReviewList/ReviewList";
 import { Rating } from "@material-tailwind/react";
 import { Progress } from "@material-tailwind/react";
 import {
-    useAddFavoriteMutation,
-    useRemoveFavoriteMutation,
+
+  useAddFavoriteMutation,
+  useRemoveFavoriteMutation,
+
 } from "@/redux/services/favoritesApi";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import Link from "next/link";
 import { FaWindowClose } from "react-icons/fa";
 
 export default function ProductDetail({ _id, handleCloseModal }) {
+
     const cartItems = useAppSelector((state) => state.cartReducer.cartItems);
     const dispatch = useAppDispatch();
     const userId = useAppSelector((state) => state.loginReducer.user);
@@ -347,3 +350,4 @@ export default function ProductDetail({ _id, handleCloseModal }) {
         </div>
     );
 }
+
