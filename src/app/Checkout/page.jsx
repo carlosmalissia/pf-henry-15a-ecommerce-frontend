@@ -68,37 +68,6 @@ const Page = () => {
   };
 
 
-  //? Purchase History
-
-  let cartItemsId = [];
-
-  cartItems.forEach((product) => {
-    for (let i = 0; i < product.quantity; i++) {
-      cartItemsId.push(product._id);
-    }
-  });
-
-  const purchase = {
-    user: userId,
-    product: cartItemsId
-  }
-
-  const handlePurchase = async () => {
-    try {
-      const config = {
-        purchase: purchase,
-        token: userToken
-      }
-
-      const { data, error } = await createPurchase(config)
-      console.log("Respuesta del backend:", data);
-      console.log("ver email", userId);
-
-    } catch (error) {
-      console.error("Error al procesar la respuesta del backend:", error);
-    }
-  }
-
   //envio de mail de compras
   const sendEmail = async () => {
     try {
@@ -123,6 +92,40 @@ const Page = () => {
       toast.error('An error occurred while sending the email. Please try again.');
     }
   };
+
+
+  //? Purchase History
+
+  let cartItemsId = [];
+
+  cartItems.forEach((product) => {
+    for (let i = 0; i < product.quantity; i++) {
+      cartItemsId.push(product._id);
+    }
+  });
+
+  const purchase = {
+    user: userId,
+    product: cartItemsId
+  }
+
+  const handlePurchase = async () => {
+    try {
+      const config = {
+        purchase: purchase,
+        token: userToken
+      }
+
+      const { data, error } = await createPurchase(config)
+      console.log("Respuesta del backend:", data);
+      sendEmail()
+
+    } catch (error) {
+      console.error("Error al procesar la respuesta del backend:", error);
+    }
+  }
+
+  
   
   return (
     <div className="p-14 font-bold">
@@ -231,11 +234,15 @@ const Page = () => {
                           });
                         }}
                         onApprove={async (data, actions) => {
+                          try {
                           const order = await actions.order?.capture()
                           console.log("order: ", order);
-                          // await handlePurchase();
-                          await sendEmail()
-                          /* dispatch(cleanCart()); */
+                          handlePurchase();
+                           dispatch(cleanCart());
+                            
+                          } catch (error) {
+                            console.log("error onAprove", error)
+                          }
                         }}
                         onCancel={() => {
                           console.log("compra cancelada");

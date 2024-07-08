@@ -27,9 +27,11 @@ const Pagination = ({ pageAmount }) => {
                 onClick={() => {
                     dispatch(decrement())
                 }}
-                className={styles.button}>
+                className={`${styles.button}  p-1`}
+            >
                 <i className="ri-arrow-left-circle-fill"></i>
             </button>
+
             {/* {numeracion.map((e) => {
                 return <NumberPage 
                     key = {e}    
@@ -37,7 +39,7 @@ const Pagination = ({ pageAmount }) => {
                     page = {page}
                     setPage = {setPage}
                 />})} */}
-            <div className=" block text-2xl bg-blue color-white">
+            <div className=" block text-2xl bg-blue color-white mt-2">
                 {actualPage} de {pageAmount}
             </div>
             <button
@@ -45,7 +47,7 @@ const Pagination = ({ pageAmount }) => {
                 onClick={() => {
                     dispatch(increment())
                 }}
-                className={styles.button}><i className="ri-arrow-right-circle-fill"></i>
+                className={`${styles.button}  p-1`}><i className="ri-arrow-right-circle-fill"></i>
             </button>
         </div>
     )

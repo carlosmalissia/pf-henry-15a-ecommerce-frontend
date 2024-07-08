@@ -5,6 +5,7 @@ import { getCartData, removeItem, updateQuantity } from "@/redux/features/cart";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import Link from "next/link";
 import { useShoppingCartupdateUserMutation } from "@/redux/services/usersApi";
+import  { toast, Toaster } from 'react-hot-toast';
 
 const CartDetailPage = () => {
   const dispatch = useAppDispatch();
@@ -63,6 +64,7 @@ const CartDetailPage = () => {
   const handleRemoveItem = async (_id) => {
     dispatch(removeItem({ _id }));
     handleUpdateCart();
+    toast.success("Removido del carrito")
   };
 
   const handleQuantityChange = async (itemId, newQuantity) => {
@@ -153,6 +155,7 @@ const CartDetailPage = () => {
                         Eliminar
                       </button>
                     </td>
+                    <Toaster position="top-center"/>
                   </tr>
                 ))}
               </tbody>

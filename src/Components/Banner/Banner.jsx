@@ -11,6 +11,7 @@ function Banner() {
     console.log(`width: ${width}, height: ${height}`);
 
     const slidesDeck = [
+
         {
             Image: "/images/banner1.webp",
         },
@@ -51,6 +52,7 @@ function Banner() {
     } else {
         var slides = slidesDeck
     }
+
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const prevSlide = () => {
@@ -86,6 +88,7 @@ function Banner() {
                 width={1080}
                 height={400}
                 className="w-full h-full object-cover rounded-md mt-4"
+
             />
             {/* <div
         style={{ backgroundImage: `url(${slides[currentIndex].Image})` }}
@@ -116,3 +119,4 @@ function Banner() {
 }
 
 export default Banner;
+
