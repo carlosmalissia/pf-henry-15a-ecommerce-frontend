@@ -209,6 +209,7 @@ export default function Card({ _id, title, price, image, category, stock, rating
       </Link>
 
       {/* Contenido inferior de la tarjeta */}
+
         <div className="flex items-center justify-center text-center mb-2">
           {Array.from({ length: rating }, (_, index) => (
             <FaStar key={index} className="text-yellow-500 text-xl" />

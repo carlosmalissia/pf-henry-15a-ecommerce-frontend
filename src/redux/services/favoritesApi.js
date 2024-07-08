@@ -14,7 +14,7 @@ export const favoritesApi = createApi({
           headers: {
             Authorization: `Bearer ${token}`,
           },
-          body: {product: product},
+          body: { product: product },
         };
         return config;
       },
@@ -27,13 +27,13 @@ export const favoritesApi = createApi({
           headers: {
             Authorization: `Bearer ${token}`,
           },
-          body: {product: product}
+          body: { product: product }
         };
         return config;
       },
-    }) 
-  }), 
+    })
+  }),
 });
 
-export const {useAddFavoriteMutation, useRemoveFavoriteMutation } = favoritesApi;
+export const { useAddFavoriteMutation, useRemoveFavoriteMutation } = favoritesApi;
 

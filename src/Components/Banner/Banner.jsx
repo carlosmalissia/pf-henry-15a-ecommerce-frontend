@@ -1,10 +1,17 @@
 import React, { useEffect, useState } from "react";
+import useScreenSize from "../../hooks/userScreenSize";
 import { BsChevronCompactLeft, BsChevronCompactRight } from "react-icons/bs";
 import { RxDotFilled } from "react-icons/rx";
 import Image from "next/image";
 
 function Banner() {
-    const slides = [
+
+    const { width, height } = useScreenSize();
+
+    console.log(`width: ${width}, height: ${height}`);
+
+    const slidesDeck = [
+
         {
             Image: "/images/banner1.webp",
         },
@@ -25,6 +32,26 @@ function Banner() {
             Image: "/images/banner7.webp",
         }
     ];
+
+    const slidesMobil = [
+        {
+            Image: "/images/banner1Movil.webp",
+        },
+        {
+            Image: "/images/banner2Mobil.webp",
+        },
+        {
+            Image: "/images/banner6Mobil.webp",
+        },
+        {
+            Image: "/images/banner7Mobil.webp",
+        }
+    ];
+    if (width < 700) {
+        var slides = slidesMobil
+    } else {
+        var slides = slidesDeck
+    }
 
     const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -60,7 +87,8 @@ function Banner() {
                 alt="banner"
                 width={1080}
                 height={400}
-                className="w-full h-full object-cover rounded-md"
+                className="w-full h-full object-cover rounded-md mt-4"
+
             />
             {/* <div
         style={{ backgroundImage: `url(${slides[currentIndex].Image})` }}
@@ -91,3 +119,4 @@ function Banner() {
 }
 
 export default Banner;
+

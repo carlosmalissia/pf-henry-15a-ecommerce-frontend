@@ -12,16 +12,16 @@ export const reviewsApi = createApi({
         newReview: builder.mutation({
             query: ({ review, token }) => {
                 const config = {
-                    url: `/api/review`,  
+                    url: `/api/review`,
                     method: "POST",
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
-                    body: review 
+                    body: review
                 };
                 return config;
             },
-        })  
+        })
     })
 })
 

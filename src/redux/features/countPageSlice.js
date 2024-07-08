@@ -1,8 +1,9 @@
-import {createSlice} from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 
-const initialState= {
+const initialState = {
     page: 1,
-    pageSize : 4
+
+    pageSize: 4
 
 }
 
@@ -16,12 +17,12 @@ export const countPageSlice = createSlice({
         decrement: (state) => {
             state.page -= 1
         },
-        pageone:(state) =>{
+        pageone: (state) => {
             state.page = 1
         }
     }
 })
 
-export const {increment, decrement, pageone} = countPageSlice.actions
+export const { increment, decrement, pageone } = countPageSlice.actions
 export default countPageSlice.reducer
 

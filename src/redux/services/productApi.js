@@ -19,7 +19,7 @@ export const productApi = createApi({
             query: ({ pageSize, actualPage, productTitle }) => `search/${productTitle}?itemsperpage=${pageSize}&actualpage=${actualPage}` // busca productos x title 
         }),
         getProductByFilterAndPage: builder.query({
-            query: ( filtro) =>({
+            query: (filtro) => ({
                 url: `filter?itemsperpage=12&actualpage=1`,
                 method: 'GET',
                 body: filtro
@@ -28,11 +28,11 @@ export const productApi = createApi({
     })
 })
 
-export const { 
-   useGetAllProductQuery, 
-   useGetProductByIdQuery, 
-   useGetProductByPageQuery,
-   useGetProductByTitleQuery,
-   useGetProductByFilterAndPageQuery
+export const {
+    useGetAllProductQuery,
+    useGetProductByIdQuery,
+    useGetProductByPageQuery,
+    useGetProductByTitleQuery,
+    useGetProductByFilterAndPageQuery
 
 } = productApi

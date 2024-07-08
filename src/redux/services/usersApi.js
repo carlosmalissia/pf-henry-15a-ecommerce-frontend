@@ -8,7 +8,7 @@ export const userApi = createApi({
     }),
     tagTypes: ["Users", 'Reviews'],
     endpoints: (builder) => ({
-    
+
         updateReview: builder.mutation({
             query: ({ reviewId, userToken, updatedReview }) => {
                 console.log(userToken);
@@ -119,6 +119,8 @@ export const {
     useShoppingCartupdateUserMutation,
     useGetUserReviewsQuery,
     useUpdateReviewMutation,
+
     
     
 } = userApi;
+

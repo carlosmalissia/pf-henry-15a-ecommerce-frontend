@@ -94,14 +94,14 @@ const PerfilUsuario = () => {
         });
 
       }
-      
+
       console.log("esta es la data delusuario ", userData);
 
       alert('Cambios guardados correctamente');
 
-    // Recargar la página
-    window.location.reload();
-      
+      // Recargar la página
+      window.location.reload();
+
     } catch (error) {
       console.error('Error en la solicitud:', error);
       if (error.response) {
