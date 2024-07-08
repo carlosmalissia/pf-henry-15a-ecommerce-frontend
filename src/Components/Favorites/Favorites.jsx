@@ -1,4 +1,3 @@
-
 import Image from "next/image";
 import styles from "./favorites.module.css";
 import "remixicon/fonts/remixicon.css";
@@ -11,11 +10,11 @@ import { data } from '../../../public/data'
 
 
 export default function Popular() {
-  /* const [product, setProduct] = useState([]); //estado para productos
+  const [product, setProduct] = useState([]); //estado para productos
 
   const getProduct = async () => {
     try {
-      const response = await axios.get(`https://pf-15a.up.railway.app/api/product`);
+      const response = await axios.get(`https://api-henrucci.onrender.com/api/product`);
       setProduct(response.data)
     }
     catch (error) {
@@ -34,8 +33,8 @@ export default function Popular() {
       return -1;
     }
     return 0;
-  }) */
-  const filter = data.products
+  })
+  //const filter = data.products
   return (
     <>
       <h2 className="items-center text-center text-2xl">
