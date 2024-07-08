@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect, useState } from "react";
 import useScreenSize from "../../hooks/userScreenSize";
 import { BsChevronCompactLeft, BsChevronCompactRight } from "react-icons/bs";
@@ -6,12 +7,7 @@ import Image from "next/image";
 
 function Banner() {
 
-    const { width, height } = useScreenSize();
-
-    console.log(`width: ${width}, height: ${height}`);
-
-    const slidesDeck = [
-
+    const [slides, setSlides] = useState([
         {
             Image: "/images/banner1.webp",
         },
@@ -31,7 +27,8 @@ function Banner() {
         {
             Image: "/images/banner7.webp",
         }
-    ];
+    ]
+    );
 
     const slidesMobil = [
         {
@@ -47,12 +44,25 @@ function Banner() {
             Image: "/images/banner7Mobil.webp",
         }
     ];
-    if (width < 700) {
-        var slides = slidesMobil
-    } else {
-        var slides = slidesDeck
-    }
 
+    const handleWidth = () => {
+        if (window.innerWidth < 700) {
+            setSlides(slidesMobil)
+        }
+    }
+    useEffect(() => {
+        const handleResize = () => handleWidth()
+        window.addEventListener("resize", handleResize);
+
+        return () => {
+            window.removeEventListener("resize", handleResize);
+        };
+
+    }, [])
+
+    useEffect(() => {
+        handleWidth()
+    }, [])
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const prevSlide = () => {
