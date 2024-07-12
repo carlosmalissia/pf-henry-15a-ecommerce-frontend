@@ -262,7 +262,7 @@ const cart = <FontAwesomeIcon icon={faCartShopping} />;
 function NavBar() {
 
   const pathname = usePathname()
-  console.log("url ", pathname === "/about");
+ 
 
   const userData = useAppSelector((state) => state.loginReducer.user);
   // console.log("userData", userData);
@@ -325,7 +325,7 @@ function NavBar() {
 
     /*=============== SCROLL SECTIONS ACTIVE LINK ===============*/
     const sections = document.querySelectorAll("section[id]");
-    console.log("ver ", sections);
+  
     const scrollActive = () => {
       const scrollY = window.pageYOffset;
       sections.forEach((current) => {
@@ -335,7 +335,7 @@ function NavBar() {
           sectionsClass = document.querySelector(
             `#nav__menu a[href*=${sectionId}]`
           );
-        console.log("ver2", sectionsClass);
+       
         if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
           sectionsClass?.classList.add(styles.active_link);
         } else {

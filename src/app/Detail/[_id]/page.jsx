@@ -26,90 +26,100 @@ import {
   useRemoveFavoriteMutation,
 } from "@/redux/services/favoritesApi";
 import { config } from "@fortawesome/fontawesome-svg-core";
+//data 
+import { data } from '/public/data.js';
 
 export default function DetailID({ params }) {
   const { _id } = params;
+  console.log("id:", _id)
+
+  const productId = parseInt(_id); 
+  const productos = data.products
+  console.log("productos:", productos)
+  const product = productos.find(product => product._id === productId);
+  console.log("product:", product)
+
 
   const cartItems = useAppSelector((state) => state.cartReducer.cartItems);
   const dispatch = useAppDispatch();
-  const userId = useAppSelector((state) => state.loginReducer.user);
-  const userToken = useAppSelector((state) => state.loginReducer.token);
-  const [showLoginMessage, setShowLoginMessage] = useState(false);
-  const [newReview] = useNewReviewMutation();
+  // const userId = useAppSelector((state) => state.loginReducer.user);
+  // const userToken = useAppSelector((state) => state.loginReducer.token);
+  // const [showLoginMessage, setShowLoginMessage] = useState(false);
+  // const [newReview] = useNewReviewMutation();
 
-  const { data: userData } = useGetUserByIdQuery(userId?._id);
-  const [isFavorite, setIsFavorite] = useState(userData?.favorites || []);
+  // const { data: userData } = useGetUserByIdQuery(userId?._id);
+  // const [isFavorite, setIsFavorite] = useState(userData?.favorites || []);
 
-  const {
-    data: productById,
-    error,
-    isLoading,
-    isFetching,
-  } = useGetProductByIdQuery(_id, {
-    refetchOnMountOrArgChange: true,
-    refetchInterval: 5000,
-  });
-
-
+  // const {
+  //   data: productById,
+  //   error,
+  //   isLoading,
+  //   isFetching,
+  // } = useGetProductByIdQuery(_id, {
+  //   refetchOnMountOrArgChange: true,
+  //   refetchInterval: 5000,
+  // });
 
 
-  let idItems = [];
 
-  cartItems.forEach((product) => {
-    for (let i = 0; i < product.quantity; i++) {
-      idItems.push(product._id);
-    }
-  });
 
-  const [updateCart] = useShoppingCartupdateUserMutation();
+  // let idItems = [];
 
-  const [addFavorite] = useAddFavoriteMutation();
-  const [removeFavorite] = useRemoveFavoriteMutation();
+  // cartItems.forEach((product) => {
+  //   for (let i = 0; i < product.quantity; i++) {
+  //     idItems.push(product._id);
+  //   }
+  // });
+
+  // const [updateCart] = useShoppingCartupdateUserMutation();
+
+  // const [addFavorite] = useAddFavoriteMutation();
+  // const [removeFavorite] = useRemoveFavoriteMutation();
 
   const handleUpdateCart = async () => {
-    try {
-      if (userId && userId?._id && userToken) {
-        const userID = userId?._id;
-        const token = userToken;
-        const shoppingCart = idItems;
+    // try {
+    //   // if (userId && userId?._id && userToken) {
+    //   //   const userID = userId?._id;
+    //   //   const token = userToken;
+    //   //   const shoppingCart = idItems;
 
-        const config = {
-          shoppingCart,
-          userID,
-          token,
-        };
+    //   //   const config = {
+    //   //     shoppingCart,
+    //   //     userID,
+    //   //     token,
+    //   //   };
 
-        const { data, error } = await updateCart(config);
+    //     // const { data, error } = await updateCart(config);
 
-        if (error) {
-          console.error("Error al actualizar el carrito:", error);
-        } else {
-          // console.log("Carrito actualizado con éxito:", data);
-        }
-      } else {
-        console.log(
-          "Usuario no autenticado. No se actualizará el carrito en la base de datos."
-        );
-      }
-    } catch (error) {
-      console.error("Error general al actualizar el carrito:", error);
-    }
+    //     if (error) {
+    //       console.error("Error al actualizar el carrito:", error);
+    //     } else {
+    //       // console.log("Carrito actualizado con éxito:", data);
+    //     }
+    //   } else {
+    //     console.log(
+    //       "Usuario no autenticado. No se actualizará el carrito en la base de datos."
+    //     );
+    //   }
+    // } catch (error) {
+    //   console.error("Error general al actualizar el carrito:", error);
+    // }
   };
 
   const handleAddToCart = () => {
     if (quantity >= 1) {
 
       const productData = {
-        _id: productById._id,
-        title: productById.title,
-        price: productById.price,
+        _id: product._id,
+        title: product.title,
+        price: product.price,
         quantity: quantity,
-        subtotal: productById.price * quantity,
-        image: productById.image,
-        stock: productById.stock,
+        subtotal: product.price * quantity,
+        image: product.image,
+        stock: product.stock,
       };
 
-      const existingItem = cartItems.find(item => item._id === productById._id);
+      const existingItem = cartItems.find(item => item._id === product._id);
 
 
       if (existingItem && existingItem.quantity + quantity > existingItem.stock) {
@@ -125,27 +135,27 @@ export default function DetailID({ params }) {
   };
 
 
-  useEffect(() => { }, [_id]);
+  // useEffect(() => { }, [_id]);
 
-  useEffect(() => {
-    handleUpdateCart();
-  }, [cartItems]);
+  // useEffect(() => {
+  //   handleUpdateCart();
+  // }, [cartItems]);
 
-  useEffect(() => {
-    setIsFavorite(userData?.favorites || []);
-  }, [userData?.favorites]);
+  // useEffect(() => {
+  //   setIsFavorite(userData?.favorites || []);
+  // }, [userData?.favorites]);
 
-  useEffect(() => {
-    console.log("Contenido de favoritos:", isFavorite);
-  }, [isFavorite]);
+  // useEffect(() => {
+  //   console.log("Contenido de favoritos:", isFavorite);
+  // }, [isFavorite]);
 
   const [hoveredCarButon, setHoveredCarButon] = useState(false);
   const [quantity, setQuantity] = useState(1);
 
   const handleQuantityChange = (e) => {
     const newQuantity = parseInt(e.target.value, 10);
-    if (newQuantity > productById.stock) {
-      setQuantity(productById.stock);
+    if (newQuantity > product.stock) {
+      setQuantity(product.stock);
     } else {
       setQuantity(newQuantity);
     }
@@ -153,69 +163,69 @@ export default function DetailID({ params }) {
 
   // Favoritos
 
-  const handleAddToFavorites = async () => {
-    try {
-      const userID = userId?._id;
-      const idProduct = productById?._id;
+  // const handleAddToFavorites = async () => {
+  //   try {
+  //     const userID = userId?._id;
+  //     const idProduct = productById?._id;
 
-      const config = {
-        product: idProduct,
-        token: userToken,
-        userId: userID,
-      };
+  //     const config = {
+  //       product: idProduct,
+  //       token: userToken,
+  //       userId: userID,
+  //     };
 
-      if (isFavorite.includes(idProduct)) {
-        const { data, error } = await removeFavorite(config);
-        toast.success("Producto eliminado de favoritos.");
-        setIsFavorite((prevFavorites) =>
-          prevFavorites.filter((productId) => productId !== idProduct)
-        );
-      } else {
-        const { data, error } = await addFavorite(config);
-        console.log("producto agregado a favoritos:", productById?.title);
-        toast.success("Producto agregado a favoritos.");
-        setIsFavorite((prevFavorites) => [...prevFavorites, idProduct]);
-      }
-    } catch (error) {
-      console.error(
-        "Error al agregar/eliminar el producto de favoritos:",
-        error
-      );
-    }
-  };
+  //     if (isFavorite.includes(idProduct)) {
+  //       const { data, error } = await removeFavorite(config);
+  //       toast.success("Producto eliminado de favoritos.");
+  //       setIsFavorite((prevFavorites) =>
+  //         prevFavorites.filter((productId) => productId !== idProduct)
+  //       );
+  //     } else {
+  //       const { data, error } = await addFavorite(config);
+  //       console.log("producto agregado a favoritos:", productById?.title);
+  //       toast.success("Producto agregado a favoritos.");
+  //       setIsFavorite((prevFavorites) => [...prevFavorites, idProduct]);
+  //     }
+  //   } catch (error) {
+  //     console.error(
+  //       "Error al agregar/eliminar el producto de favoritos:",
+  //       error
+  //     );
+  //   }
+  // };
 
-  if (isLoading || isFetching) return <p>Cargando...</p>;
+  // if (isLoading || isFetching) return <p>Cargando...</p>;
 
-  if (error) {
-    console.error("Error al obtener el producto:", error);
-    return <p>Hubo un error al obtener el producto.</p>;
-  }
+  // if (error) {
+  //   console.error("Error al obtener el producto:", error);
+  //   return <p>Hubo un error al obtener el producto.</p>;
+  // }
 
   //**reviews
   //calcular promedio de reviews
-  const calculateRatingDistribution = (reviews) => {
-    const starCounts = Array(5).fill(0);
+  // const calculateRatingDistribution = (reviews) => {
+  //   const starCounts = Array(5).fill(0);
 
-    reviews.forEach((review) => {
-      const rating = review.rating;
-      if (rating >= 1 && rating <= 5) {
-        starCounts[rating - 1]++;
-      }
-    });
+  //   reviews.forEach((review) => {
+  //     const rating = review.rating;
+  //     if (rating >= 1 && rating <= 5) {
+  //       starCounts[rating - 1]++;
+  //     }
+  //   });
 
-    const totalReviews = reviews.length;
-    const percentagePerStar = starCounts.map(
-      (count) => (count / totalReviews) * 100
-    );
+  //   const totalReviews = reviews.length;
+  //   const percentagePerStar = starCounts.map(
+  //     (count) => (count / totalReviews) * 100
+  //   );
 
-    return {
-      starCounts,
-      percentagePerStar,
-    };
-  };
+  //   return {
+  //     starCounts,
+  //     percentagePerStar,
+  //   };
+  // };
 
-  const ratingDistribution = calculateRatingDistribution(productById.reviews);
-  const roundedAverage = Math.floor(productById.averageRating);
+  // const ratingDistribution = calculateRatingDistribution(productById.reviews);
+  // const roundedAverage = Math.floor(productById.averageRating);
 
   return (
     <div>
@@ -223,8 +233,8 @@ export default function DetailID({ params }) {
         {/* Imagen a la izquierda en pantallas grandes */}
         <div className="bg-white border-solid border-2 border-primary cursor-grab w-[40%] mb-5 mr-10 relative overflow-hidden flex items-center justify-center ml-10">
           <Image
-            src={productById.image}
-            alt={productById.title}
+            src={product.image}
+            alt={product.title}
             width={400}
             height={300}
             priority={true}
@@ -235,11 +245,11 @@ export default function DetailID({ params }) {
         {/* Detalles del producto a la derecha */}
         <div className="md:w-[60%] ">
           <br />
-          <h1 className="text-start text-xl text-black">{productById.title}</h1>
+          <h1 className="text-start text-xl text-black">{product.title}</h1>
           <br />
           <div className="flex items-center">
             {/* Icono de corazón para agregar a favoritos */}
-            {userId && (
+            {/* {userId && (
               <button
                 onClick={handleAddToFavorites}
                 className={`text-bgred p-3 rounded-lg mx-2 
@@ -252,46 +262,46 @@ export default function DetailID({ params }) {
                   <BsHeart className="text-2xl" />
                 )}
               </button>
-            )}
+            )} */}
             {/* rating y cuenta */}
             <section className="text-lg text-yellow-500 flex flex-row gap-4">
-              <p>
+              {/* <p>
                 {" "}
                 {productById && productById.averageRating
                   ? productById.averageRating.toFixed(1) + " /5"
                   : 0 + "/5"}
-              </p>
+              </p> */}
 
               <Rating
                 className="text-sm "
                 readonly
-                value={roundedAverage}
+                value= {5}
                 unratedColor="yellow"
                 ratedColor="amber"
               />
-              <p className="flex items-center text-center text-sm">
+              {/* <p className="flex items-center text-center text-sm">
                 ({productById.reviews.length}) calificaciones
-              </p>
+              </p> */}
             </section>
           </div>
 
           {/* Titulo y descripción del producto */}
           <br />
           <span className="font-bold text-2xl text-bgred mt-4">
-            ${productById.price}
+            ${product.price}
           </span>
           <br />
           <br />
           <p className="text-start text-sm text-bggris mr-8">
-            {productById.description}
+            {product.description}
           </p>
           <br />
           <h2 className="text-start text-sm text-bggris">
-            Categoria: {productById.category.name}
+            Categoria: {product.category}
           </h2>
           <br />
           <h2 className="text-start text-sm text-bggris">
-            Disponibles: {productById.stock} unidades
+            Disponibles: {product.stock} unidades
           </h2>
           <br />
           {/* Precio */}
@@ -302,12 +312,11 @@ export default function DetailID({ params }) {
               <input
                 type="number"
                 min="1"
-                value={quantity}
-                onChange={handleQuantityChange}
+                value={1}
                 className="border rounded-md p-1 w-16 text-black"
               />
               <button
-                onClick={handleAddToCart}
+              onClick={handleAddToCart}
                 className={`bg-bgbotones text-white text-base py-2 px-10 rounded-lg mx-2 
     flex justify-center items-center text-center 
     transition duration-700 ease-in-out ${hoveredCarButon ? "hover:bg-bgred hover:text-white" : ""
@@ -330,101 +339,9 @@ export default function DetailID({ params }) {
         </div>
       </div>
 
-      {/* Sección de revisiones  */}
-      <section className="bg-bggris2 mx-auto mt-8 w-[90%]  p-4 rounded-xl md:mb-8 flex flex-col shadow-md">
-        <h2 className="text-2xl text-center m-4 text-black">
-          Calificaciones de este producto
-        </h2>
-        {/* Formulario de revision */}
-        <div className="w-full  p-4 flex flex-row">
-          <div className="w-[50%]  p-4">
-            {/* calculo de revisiones */}
-            <section className="w-[80%] text-start text-lg text-yellow-500 flex flex-row gap-4">
-              <div>
-                <Rating
-                  className="text-xl "
-                  readonly
-                  value={roundedAverage}
-                />
-              </div>
-              <p className="text-center text-xl">
-                {productById && productById.averageRating
-                  ? `${productById.averageRating.toFixed(1)}/5 (${productById.reviews ? productById.reviews.length : 0
-                  } calificaciones)`
-                  : "No hay reviews aún"}
-              </p>
-            </section>
 
-            {/* Estadísticas de calificación */}
-            <div className="w-full p-4">
-              <h2 className="text-lg text-black">
-                Estadísticas de Calificación
-              </h2>
-              {productById.reviews.length > 0 ? (
-                <div>
-                  {ratingDistribution.starCounts
-                    .slice()
-                    .reverse()
-                    .map((count, index) => (
-                      <div key={index} className="mb-2">
-                        <div className="flex items-center">
-                          <Rating
-                            className={`text-sm ${5 - index === 1 ? "text-bgred" : "text-yellow-500"
-                              } mr-2`}
-                            readonly
-                            value={5 - index}
-                          />
-                          <div className="relative pt-1 w-[80%]">
-                            <div className="flex mb-2 items-center justify-between"></div>
-                            <div className="flex flex-col items-end">
-                              <div className="flex w-full items-center justify-between">
-                                <div className="flex-1 mr-2">
-                                  <div className="h-2 bg-teal-500 rounded-full relative">
-                                    <div
-                                      style={{
-                                        width: `${ratingDistribution.percentagePerStar[
-                                          5 - index - 1
-                                          ]
-                                          }%`,
-                                      }}
-                                      className="h-full bg-teal-200 rounded-full absolute bottom-0"
-                                    ></div>
-                                  </div>
-                                </div>
-                                <span className="text-lg text-teal-600 ml-2">
-                                  ({count}){" "}
-                                  {`${ratingDistribution.percentagePerStar[
-                                    5 - index - 1
-                                  ].toFixed(1)}%`}
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                </div>
-              ) : (
-                <p className="text-gray-600">
-                  Este producto no tiene calificaciones
-                </p>
-              )}
-            </div>
-          </div>
-          {/* <div className="w-[50%]  p-4">
-            <h2 className="text-lg text-black text-center mb-4">
-              Deja un comentario
-            </h2>
-            <ReviewForm
-              handleReviewSubmit={handleReviewSubmit}
-              productById={productById}
-            />
-          </div> */}
-        </div>
 
-        {/* Seccion de revisiones  */}
-        <ReviewList productById={productById} />
-      </section>
+   
 
       {/* productos similares */}
       {/* <section>

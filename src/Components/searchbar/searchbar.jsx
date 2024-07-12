@@ -36,7 +36,7 @@ const Searchbar = ({ handlesearchName, category }) => {
             onChange={handlesearchName}
             type="search"
             placeholder="Buscar..."
-            className="max-sm:ml-3 bg-white-500 border-solid border border-gray-300 rounded-md w-[15em] h-[2em] text-center"
+            className="max-sm:ml-3 focus:border-2  bg-white-500 border-solid border border-gray-300 rounded-md w-[15em] h-[2em] text-center"
           />
           <button className=" max-sm:ml-4 ml-6 bg-primary p-2 text-white rounded-lg" onClick={fetchProducts}>
             <i className="ri-refresh-line mr-2" />
