@@ -221,7 +221,7 @@ export default function DetailID({ params }) {
     <div>
       <div className="bg-bggris2 relative pt-10 mx-auto min-w-[20rem] w-[90%] rounded-2xl flex flex-col md:flex-row mt-28 mb-10 shadow-md">
         {/* Imagen a la izquierda en pantallas grandes */}
-        <div className="bg-white border-solid border-2 border-primary cursor-grab md:w-[40%] w-[60%] mb-5 md:mr-10 relative overflow-hidden flex items-center justify-center ml-20">
+        <div className="bg-white border-solid border-2 border-primary cursor-grab md:w-[40%] w-[60%] mb-5 md:mr-10 relative overflow-hidden flex items-center justify-center ml-16">
           <Image
             src={productById.image}
             alt={productById.title}
