@@ -228,7 +228,7 @@ export default function DetailID({ params }) {
             width={400}
             height={300}
             priority={true}
-            className="border-none object-contain w-[400px] h-[300px] transition-transform transform hover:scale-110"
+            className="border-none object-contain w-[600px] md:w-[400px] h-[300px] transition-transform transform hover:scale-110"
           />
         </div>
 
