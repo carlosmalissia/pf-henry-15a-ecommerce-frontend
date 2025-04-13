@@ -106,7 +106,8 @@ const Page = () => {
 
   const purchase = {
     user: userId,
-    product: cartItemsId
+    product: cartItemsId,
+    total: totalPay,
   }
 
   const handlePurchase = async () => {
